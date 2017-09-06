@@ -30,10 +30,16 @@ public class Person5 {
 	 * @return the modified string
 	 */
 	private String calc(String input) {
-	  //Person 5 put your implementation here
-	  return null;
+		char[] str = input.toCharArray();
+		String newStr = "";
+		String end = "" + str[0] + str[1];
+		for (int i = 2; i < str.length; i++) {
+			newStr += str[i];
+		}
+
+		return newStr + end;
+
 	}
-	
 	/**
 	 * Return a string rep of this object
 	 * that varies with an input string
