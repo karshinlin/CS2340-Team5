@@ -30,8 +30,16 @@ public class Person1 {
 	 * @return the modified string
 	 */
 	private String calc(String input) {
-	  //Person 1 put your implementation here
-	  return null;
+	  //Person 1 put your implementation her
+        if (input.length() <= 1) {
+            return input;
+        }
+
+        char firstPos = input.charAt(0);
+        input = input.substring(1) + firstPos;
+        char secondPos = input.charAt(0);
+        input = input.substring(1) + secondPos;
+        return input;
 	}
 	
 	/**
