@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.gatech.teamraid.ratastic.LoginActivity">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Username:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="16dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Password:"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="98dp" />
+
+    <EditText
+        android:id="@+id/usernameEdit"
+        android:layout_width="111dp"
+        android:layout_height="21dp"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        android:text="Name"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="42dp" />
+
+    <EditText
+        android:id="@+id/passwordEdit"
+        android:layout_width="111dp"
+        android:layout_height="21dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="135dp" />
+
+    <Button
+        android:id="@+id/signInBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sign In"
+        tools:layout_editor_absoluteX="259dp"
+        tools:layout_editor_absoluteY="387dp" />
+
+    <TextView
+        android:id="@+id/helpTextBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Help"
+        tools:layout_editor_absoluteX="259dp"
+        tools:layout_editor_absoluteY="358dp" />
+</android.support.constraint.ConstraintLayout>
