@@ -22,7 +22,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         final EditText username = (EditText) findViewById(R.id.usernameEdit);
         final EditText password = (EditText) findViewById(R.id.passwordEdit);
-        //addInitialUser(); //COMMENT THIS OUT AFTER YOU HAVE RAN IT ONCE!!!!!!!!!!!
+        if (!userExists("admin")) {
+            addInitialUser();
+        }
         Button loginBtn = (Button) findViewById(R.id.signInBtn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,6 +51,31 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private boolean userExists(String username) {
+        DataLogger credentials = new DataLogger(getApplicationContext());
+        SQLiteDatabase db = credentials.getReadableDatabase();
+        String[] projection = {
+                "Username",
+                "Password"
+        };
+        // Filter results WHERE "title" = 'My Title'
+        String selection = "Username" + " = ?";
+        String[] selectionArgs = {username};
+        String sortOrder =
+                "Username" + " DESC";
+        Cursor cursor = db.query(
+                "Credentials",
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                sortOrder
+        );
+        cursor.moveToNext();
+        return cursor.getCount() > 0;
     }
 
     private boolean validateCredentials(String username, String password) {
