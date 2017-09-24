@@ -20,16 +20,18 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        final EditText username = (EditText) findViewById(R.id.usernameEdit);
+        final EditText password = (EditText) findViewById(R.id.passwordEdit);
         //addInitialUser(); //COMMENT THIS OUT AFTER YOU HAVE RAN IT ONCE!!!!!!!!!!!
         Button loginBtn = (Button) findViewById(R.id.signInBtn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = ((EditText) findViewById(R.id.usernameEdit)).getText().toString();
-                String password = ((EditText) findViewById(R.id.passwordEdit)).getText().toString();
-                if (username.equals("") || password.equals("")) {
+                String usernameText = username.getText().toString();
+                String passText = password.getText().toString();
+                if (usernameText.equals("") || usernameText.equals("")) {
                     ((TextView) findViewById(R.id.failedLoginText)).setVisibility(View.VISIBLE);
-                } else if (validateCredentials(username, password)) {
+                } else if (validateCredentials(usernameText, passText)) {
                     Intent main = new Intent(LoginActivity.this, MainActivity.class);
                     LoginActivity.this.startActivity(main);
                 } else {
