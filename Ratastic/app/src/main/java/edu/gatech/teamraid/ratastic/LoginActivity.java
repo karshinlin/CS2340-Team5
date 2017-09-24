@@ -20,6 +20,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        //addInitialUser(); //COMMENT THIS OUT AFTER YOU HAVE RAN IT ONCE!!!!!!!!!!!
         Button loginBtn = (Button) findViewById(R.id.signInBtn);
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -28,8 +29,7 @@ public class LoginActivity extends AppCompatActivity {
                 String password = ((EditText) findViewById(R.id.passwordEdit)).getText().toString();
                 if (username.equals("") || password.equals("")) {
                     ((TextView) findViewById(R.id.failedLoginText)).setVisibility(View.VISIBLE);
-                }
-                else if (validateCredentials(username, password)) {
+                } else if (validateCredentials(username, password)) {
                     Intent main = new Intent(LoginActivity.this, MainActivity.class);
                     LoginActivity.this.startActivity(main);
                 } else {
@@ -59,7 +59,7 @@ public class LoginActivity extends AppCompatActivity {
         };
         // Filter results WHERE "title" = 'My Title'
         String selection = "Username" + " = ?";
-        String[] selectionArgs = { username };
+        String[] selectionArgs = {username};
         String sortOrder =
                 "Username" + " DESC";
         Cursor cursor = db.query(
@@ -76,4 +76,13 @@ public class LoginActivity extends AppCompatActivity {
         cursor.close();
         return valid;
     }
+
+    private void addInitialUser() {
+        DataLogger credentials = new DataLogger(getApplicationContext());
+        String username = "admin";
+        String pw_hash = BCrypt.hashpw("pass", BCrypt.gensalt(4));
+        SQLiteDatabase db = credentials.getWritableDatabase();
+        credentials.write(db, username, pw_hash);
+    }
 }
+

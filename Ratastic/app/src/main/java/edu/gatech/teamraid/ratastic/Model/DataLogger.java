@@ -1,5 +1,6 @@
 package edu.gatech.teamraid.ratastic.Model;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -33,5 +34,12 @@ public class DataLogger extends SQLiteOpenHelper{
 
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public void write(SQLiteDatabase db, String username, String password) {
+        ContentValues values = new ContentValues();
+        values.put("Username", username);
+        values.put("Password", password);
+        long newRowId = db.insert("Credentials", null, values);
     }
 }
