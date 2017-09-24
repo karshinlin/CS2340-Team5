@@ -44,15 +44,16 @@
         android:id="@+id/usernameEdit"
         android:layout_width="111dp"
         android:layout_height="21dp"
+        android:layout_alignStart="@+id/textView"
+        android:layout_below="@+id/textView"
+        android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="Username"
         android:inputType="textPersonName"
-        android:text="Name"
+        android:textColor="#000000"
+        android:textColorHint="#999999"
         tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="42dp"
-        android:layout_marginTop="15dp"
-        android:layout_below="@+id/textView"
-        android:layout_alignStart="@+id/textView" />
+        tools:layout_editor_absoluteY="42dp" />
 
     <EditText
         android:id="@+id/passwordEdit"
@@ -60,6 +61,8 @@
         android:layout_height="21dp"
         android:ems="10"
         android:hint="Password"
+        android:textColorHint="#999999"
+        android:textColor="#000000"
         android:inputType="textPassword"
         tools:layout_editor_absoluteX="27dp"
         tools:layout_editor_absoluteY="135dp"

@@ -34,7 +34,7 @@ public class LoginActivity extends AppCompatActivity {
                     LoginActivity.this.startActivity(main);
                 } else {
                     //handle unvalid login
-
+                    ((TextView) findViewById(R.id.failedLoginText)).setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -72,9 +72,13 @@ public class LoginActivity extends AppCompatActivity {
                 sortOrder
         );
         cursor.moveToNext();
-        boolean valid = BCrypt.checkpw(password, cursor.getString(cursor.getColumnIndexOrThrow("Password")));
-        cursor.close();
-        return valid;
+        if (cursor.getCount() > 0) {
+            boolean valid = BCrypt.checkpw(password, cursor.getString(cursor.getColumnIndexOrThrow("Password")));
+            cursor.close();
+            return valid;
+        } else {
+            return false;
+        }
     }
 
     private void addInitialUser() {
