@@ -1,10 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="edu.gatech.teamraid.ratastic.LoginActivity">
+
+    <Button
+        android:id="@+id/cancelButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="387dp"
+        android:layout_marginStart="17dp"
+        android:layout_alignTop="@+id/signInBtn"
+        android:layout_toEndOf="@+id/textView" />
 
     <TextView
         android:id="@+id/textView"
@@ -12,7 +23,11 @@
         android:layout_height="wrap_content"
         android:text="Username:"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="16dp" />
+        tools:layout_editor_absoluteY="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="33dp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -20,7 +35,10 @@
         android:layout_height="wrap_content"
         android:text="Password:"
         tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="98dp" />
+        tools:layout_editor_absoluteY="98dp"
+        android:layout_marginTop="43dp"
+        android:layout_below="@+id/usernameEdit"
+        android:layout_alignStart="@+id/usernameEdit" />
 
     <EditText
         android:id="@+id/usernameEdit"
@@ -31,7 +49,10 @@
         android:inputType="textPersonName"
         android:text="Name"
         tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="42dp" />
+        tools:layout_editor_absoluteY="42dp"
+        android:layout_marginTop="15dp"
+        android:layout_below="@+id/textView"
+        android:layout_alignStart="@+id/textView" />
 
     <EditText
         android:id="@+id/passwordEdit"
@@ -41,7 +62,10 @@
         android:hint="Password"
         android:inputType="textPassword"
         tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="135dp" />
+        tools:layout_editor_absoluteY="135dp"
+        android:layout_marginTop="22dp"
+        android:layout_below="@+id/textView2"
+        android:layout_alignStart="@+id/textView2" />
 
     <Button
         android:id="@+id/signInBtn"
@@ -49,7 +73,12 @@
         android:layout_height="wrap_content"
         android:text="Sign In"
         tools:layout_editor_absoluteX="259dp"
-        tools:layout_editor_absoluteY="387dp" />
+        tools:layout_editor_absoluteY="387dp"
+        android:layout_marginLeft="58dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="38dp"
+        android:layout_marginBottom="89dp" />
 
     <TextView
         android:id="@+id/helpTextBtn"
@@ -57,5 +86,20 @@
         android:layout_height="wrap_content"
         android:text="Help"
         tools:layout_editor_absoluteX="259dp"
-        tools:layout_editor_absoluteY="358dp" />
-</android.support.constraint.ConstraintLayout>
+        tools:layout_editor_absoluteY="358dp"
+        android:layout_above="@+id/cancelButton"
+        android:layout_alignEnd="@+id/passwordEdit" />
+
+    <TextView
+        android:id="@+id/failedLoginText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Unsuccessful login. Please try again."
+        android:textColor="#FF0000"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="285dp"
+        android:visibility="gone"
+        android:layout_above="@+id/helpTextBtn"
+        android:layout_alignStart="@+id/passwordEdit"
+        android:layout_marginBottom="11dp" />
+</RelativeLayout>

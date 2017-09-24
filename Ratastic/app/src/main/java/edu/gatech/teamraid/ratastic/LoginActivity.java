@@ -26,12 +26,24 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String username = ((EditText) findViewById(R.id.usernameEdit)).getText().toString();
                 String password = ((EditText) findViewById(R.id.passwordEdit)).getText().toString();
-                if (validateCredentials(username, password)) {
-                    Intent welcome = new Intent(LoginActivity.this, WelcomeActivity.class);
-                    LoginActivity.this.startActivity(welcome);
+                if (username.equals("") || password.equals("")) {
+                    ((TextView) findViewById(R.id.failedLoginText)).setVisibility(View.VISIBLE);
+                }
+                else if (validateCredentials(username, password)) {
+                    Intent main = new Intent(LoginActivity.this, MainActivity.class);
+                    LoginActivity.this.startActivity(main);
                 } else {
                     //handle unvalid login
+
                 }
+            }
+        });
+        Button cancelBtn = (Button) findViewById(R.id.cancelButton);
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent canceled = new Intent(LoginActivity.this, WelcomeActivity.class);
+                LoginActivity.this.startActivity(canceled);
             }
         });
 
