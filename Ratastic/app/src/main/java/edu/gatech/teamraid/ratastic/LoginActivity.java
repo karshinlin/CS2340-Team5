@@ -22,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         final EditText username = (EditText) findViewById(R.id.usernameEdit);
         final EditText password = (EditText) findViewById(R.id.passwordEdit);
-        if (!userExists("admin")) {
+        if (!userExists("user")) {
             addInitialUser();
         }
         Button loginBtn = (Button) findViewById(R.id.signInBtn);
@@ -112,7 +112,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void addInitialUser() {
         DataLogger credentials = new DataLogger(getApplicationContext());
-        String username = "admin";
+        String username = "user";
         String pw_hash = BCrypt.hashpw("pass", BCrypt.gensalt(4));
         SQLiteDatabase db = credentials.getWritableDatabase();
         credentials.write(db, username, pw_hash);
