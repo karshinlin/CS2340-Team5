@@ -87,11 +87,12 @@
         android:id="@+id/helpTextBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Help"
-        tools:layout_editor_absoluteX="259dp"
-        tools:layout_editor_absoluteY="358dp"
         android:layout_above="@+id/cancelButton"
-        android:layout_alignEnd="@+id/passwordEdit" />
+        android:layout_alignEnd="@+id/passwordEdit"
+        android:text="Help"
+        android:visibility="invisible"
+        tools:layout_editor_absoluteX="259dp"
+        tools:layout_editor_absoluteY="358dp" />
 
     <TextView
         android:id="@+id/failedLoginText"
