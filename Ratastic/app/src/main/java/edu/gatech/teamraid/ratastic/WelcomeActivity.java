@@ -22,5 +22,14 @@ public class WelcomeActivity extends AppCompatActivity {
                 WelcomeActivity.this.startActivity(goSignIn);
             }
         });
+
+        Button register = (Button) findViewById(R.id.register);
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent goRegister = new Intent(WelcomeActivity.this, RegistrationActivity.class);
+                WelcomeActivity.this.startActivity(goRegister);
+            }
+        });
     }
 }
