@@ -13,9 +13,9 @@
         android:text="Password:"
         tools:layout_editor_absoluteX="34dp"
         tools:layout_editor_absoluteY="162dp"
+        android:layout_marginBottom="14dp"
         android:layout_above="@+id/passwordField"
-        android:layout_alignEnd="@+id/textView5"
-        android:layout_marginBottom="14dp" />
+        android:layout_alignStart="@+id/passwordField" />
 
     <EditText
         android:id="@+id/usernameField"
@@ -26,9 +26,9 @@
         android:inputType="text"
         tools:layout_editor_absoluteX="34dp"
         tools:layout_editor_absoluteY="111dp"
-        android:layout_above="@+id/passwordField"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="54dp" />
+        android:layout_marginBottom="12dp"
+        android:layout_above="@+id/textView4"
+        android:layout_alignStart="@+id/textView7" />
 
     <EditText
         android:id="@+id/nameField"
@@ -39,9 +39,9 @@
         android:inputType="textPersonName"
         tools:layout_editor_absoluteX="34dp"
         tools:layout_editor_absoluteY="33dp"
-        android:layout_above="@+id/usernameField"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="38dp" />
+        android:layout_marginBottom="11dp"
+        android:layout_above="@+id/textView7"
+        android:layout_alignStart="@+id/textView6" />
 
     <EditText
         android:id="@+id/passwordField"
@@ -52,9 +52,9 @@
         android:inputType="textPassword"
         tools:layout_editor_absoluteX="34dp"
         tools:layout_editor_absoluteY="179dp"
+        android:layout_marginBottom="69dp"
         android:layout_above="@+id/submit"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="69dp" />
+        android:layout_alignStart="@+id/usernameField" />
 
     <Button
         android:id="@+id/submit"
@@ -72,10 +72,10 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/nameField"
-        android:layout_alignParentStart="true"
         android:layout_marginBottom="12dp"
-        android:text="Name:" />
+        android:text="Name:"
+        android:layout_above="@+id/nameField"
+        android:layout_alignStart="@+id/submit" />
 
     <TextView
         android:id="@+id/textView7"
@@ -83,6 +83,15 @@
         android:layout_height="wrap_content"
         android:text="Username:"
         android:layout_above="@+id/usernameField"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_alignStart="@+id/nameField"
+        android:layout_marginBottom="14dp" />
+
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/submit"
+        android:layout_alignStart="@+id/passwordField"
+        android:layout_marginBottom="18dp"
+        android:text="Register as Admin" />
 </RelativeLayout>

@@ -106,4 +106,13 @@
         android:layout_above="@+id/helpTextBtn"
         android:layout_alignStart="@+id/passwordEdit"
         android:layout_marginBottom="11dp" />
+
+    <CheckBox
+        android:id="@+id/checkBox2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:text="Admin"
+        android:layout_below="@+id/passwordEdit"
+        android:layout_alignStart="@+id/passwordEdit" />
 </RelativeLayout>
