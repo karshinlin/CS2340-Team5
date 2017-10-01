@@ -21,7 +21,7 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Username:"
+        android:text="Email:"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="16dp"
         android:layout_marginStart="32dp"
@@ -37,18 +37,18 @@
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="98dp"
         android:layout_marginTop="43dp"
-        android:layout_below="@+id/usernameEdit"
-        android:layout_alignStart="@+id/usernameEdit" />
+        android:layout_below="@+id/emailEdit"
+        android:layout_alignStart="@+id/emailEdit" />
 
     <EditText
-        android:id="@+id/usernameEdit"
+        android:id="@+id/emailEdit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/textView"
         android:layout_below="@+id/textView"
         android:layout_marginTop="15dp"
         android:ems="10"
-        android:hint="Username"
+        android:hint="Email"
         android:inputType="text"
         android:textColor="#000000"
         android:textColorHint="#999999"
@@ -115,4 +115,16 @@
         android:text="Admin"
         android:layout_below="@+id/passwordEdit"
         android:layout_alignStart="@+id/passwordEdit" />
+
+    <TextView
+        android:id="@+id/unverified"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Account has not been verified."
+        android:textColor="#FF0000"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="285dp"
+        android:visibility="gone"
+        android:layout_above="@+id/helpTextBtn"
+        android:layout_alignStart="@+id/failedLoginText" />
 </RelativeLayout>
