@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "77080124064",
+    "firebase_url": "https://ratastic-39dab.firebaseio.com",
+    "project_id": "ratastic-39dab",
+    "storage_bucket": "ratastic-39dab.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:77080124064:android:75689cbd6296750d",
+        "android_client_info": {
+          "package_name": "edu.gatech.teamraid.ratastic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "77080124064-5ecj4r7h133qlugausjdauo0m0q1lodi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.gatech.teamraid.ratastic",
+            "certificate_hash": "0b8cc33e26bb25e615526c1274f3337e75267ed4"
+          }
+        },
+        {
+          "client_id": "77080124064-nn0n3lcm99nnejq63rgujkrlk89esf9e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjTzSQGCFou7YpqwiBTtW4tJct_YfKzNk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "77080124064-nn0n3lcm99nnejq63rgujkrlk89esf9e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
