@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseUser;
 import org.mindrot.jbcrypt.BCrypt;
 
 import edu.gatech.teamraid.ratastic.Model.DataLogger;
+import edu.gatech.teamraid.ratastic.Model.User;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -39,6 +40,10 @@ public class LoginActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null && user.isEmailVerified()) {
+                    if (User.currentUser == null) {
+                        User.currentUser = new User(user.getDisplayName(), user.getEmail(), user.getEmail(),
+                                User.UserType.USER);
+                    }
                     Intent main = new Intent(LoginActivity.this, MainActivity.class);
                     LoginActivity.this.startActivity(main);
                 } else if (user != null && !user.isEmailVerified()){
