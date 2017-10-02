@@ -118,4 +118,13 @@
         android:visibility="gone"
         android:layout_above="@+id/helpTextBtn"
         android:layout_alignStart="@+id/failedLoginText" />
+
+    <CheckBox
+        android:id="@+id/adminCheck"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:text="Admin"
+        android:layout_above="@+id/helpTextBtn"
+        android:layout_alignStart="@+id/passwordEdit" />
 </RelativeLayout>

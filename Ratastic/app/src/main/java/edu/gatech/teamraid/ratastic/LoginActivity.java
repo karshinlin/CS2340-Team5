@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import edu.gatech.teamraid.ratastic.Model.DataLogger;
 import edu.gatech.teamraid.ratastic.Model.User;
+import edu.gatech.teamraid.ratastic.Model.User.UserType;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -33,6 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ((TextView) findViewById(R.id.unverified)).setVisibility(View.GONE);
+        final CheckBox adminCheckBox = (CheckBox) findViewById(R.id.adminCheck);
         mAuth = FirebaseAuth.getInstance();
         mAuth.signOut();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -41,8 +44,10 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null && user.isEmailVerified()) {
                     if (User.currentUser == null) {
-                        User.currentUser = new User(user.getDisplayName(), user.getEmail(), user.getEmail(),
-                                User.UserType.USER);
+                        User.currentUser = new User(user.getDisplayName(), user.getEmail(),
+                                user.getEmail(),
+                                adminCheckBox.isChecked()
+                                        ? UserType.ADMIN : UserType.USER);
                     }
                     Intent main = new Intent(LoginActivity.this, MainActivity.class);
                     LoginActivity.this.startActivity(main);
