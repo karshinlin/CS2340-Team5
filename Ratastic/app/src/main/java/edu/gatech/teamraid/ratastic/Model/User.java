@@ -27,7 +27,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.userType = userType;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
     }
 
@@ -59,9 +59,5 @@ public class User {
         this.email = email;
     }
 
-    private void writeNewUser(String name, String username, String email, UserType userType) {
-        User user = new User(name, username, email, userType);
-        mDatabase.child("users").child(username).setValue(user);
-    }
 
 }

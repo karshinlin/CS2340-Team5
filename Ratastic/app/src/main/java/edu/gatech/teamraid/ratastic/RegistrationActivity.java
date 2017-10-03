@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
@@ -30,6 +31,9 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String name;
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference myRef;
+    private static final String TAG = "RegistrationActivity";
 
 
 
@@ -46,6 +50,8 @@ public class RegistrationActivity extends AppCompatActivity {
 //
 //        }
         mAuth = FirebaseAuth.getInstance();
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        myRef = mFirebaseDatabase.getReference();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -90,7 +96,22 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
 
+        // Read from the database
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Object value = dataSnapshot.getValue();
+                Log.d(TAG, "Value is: " + value);
+            }
 
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,12 +151,16 @@ public class RegistrationActivity extends AppCompatActivity {
 
 
                                 }
+
                                 // ...
                             }
+
                         });
                 //RegistrationActivity.this.finish();
-                User user = new User(name, name, email, User.UserType.USER);
-                user.writeNewUser(name, email, User.UserType.USER);
+                String userId = mAuth.getCurrentUser().getUid();
+                writeNewUser(userId, name, email);
+
+
 
         }
         });
@@ -154,6 +179,12 @@ public class RegistrationActivity extends AppCompatActivity {
         if (mAuthListener != null) {
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    private void writeNewUser(String userId, String name, String email) {
+        FirebaseUser curr = FirebaseAuth.getInstance().getCurrentUser();
+        User user = new User(curr.getDisplayName(), curr.getDisplayName(), curr.getEmail(), User.UserType.USER);
+        myRef.child("users").child(userId).setValue(user);
     }
 
 
