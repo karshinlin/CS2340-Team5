@@ -45,10 +45,7 @@ public class RegistrationActivity extends AppCompatActivity {
         final EditText nameField = (EditText) findViewById(R.id.nameField);
         final EditText emailField = (EditText) findViewById(R.id.emailField);
         Button submit = (Button) findViewById(R.id.submit);
-//        CheckBox checkBox = R.id.checkBox;
-//        if(checkBox.isChecked()){
-//
-//        }
+        final CheckBox adminCheckbox =  (CheckBox) findViewById(R.id.checkBox);
         mAuth = FirebaseAuth.getInstance();
         mFirebaseDatabase = FirebaseDatabase.getInstance();
         myRef = mFirebaseDatabase.getReference();
@@ -133,6 +130,12 @@ public class RegistrationActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     //Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed, Toast.LENGTH_SHORT).show();
                                 } else {
+                                    String userId = mAuth.getCurrentUser().getUid();
+                                    if (adminCheckbox.isChecked()) {
+                                        writeNewAdmin(userId, name, email);
+                                    } else {
+                                        writeNewUser(userId, name, email);
+                                    }
 //                                    mAuth.signInWithEmailAndPassword(email, password)
 //                                            .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
 //                                                @Override
@@ -148,29 +151,26 @@ public class RegistrationActivity extends AppCompatActivity {
 //                                                    // ...
 //                                                }
 //                                            });
-
-
                                 }
-
                                 // ...
-                            }
 
+
+                            }
                         });
                 //RegistrationActivity.this.finish();
-                String userId = mAuth.getCurrentUser().getUid();
-                writeNewUser(userId, name, email);
-
 
 
         }
         });
+
+
     }
 
 
     @Override
     public void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
+//        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override
@@ -182,10 +182,14 @@ public class RegistrationActivity extends AppCompatActivity {
     }
 
     private void writeNewUser(String userId, String name, String email) {
-        FirebaseUser curr = FirebaseAuth.getInstance().getCurrentUser();
-        User user = new User(curr.getDisplayName(), curr.getDisplayName(), curr.getEmail(), User.UserType.USER);
+        User user = new User(name, name, email, User.UserType.USER);
         myRef.child("users").child(userId).setValue(user);
     }
+    private void writeNewAdmin(String userId, String name, String email) {
+        User user = new User(name, name, email, User.UserType.ADMIN);
+        myRef.child("admins").child(userId).setValue(user);
+    }
+
 
 
 }
