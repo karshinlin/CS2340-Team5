@@ -1,5 +1,8 @@
 package edu.gatech.teamraid.ratastic.Model;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * Created by colby on 9/27/17.
  */
@@ -16,12 +19,16 @@ public class User {
     private String username;
     private String email;
     private UserType userType;
+    private DatabaseReference mDatabase;
+
 
     public User(String name, String username, String email, UserType userType) {
         this.name = name;
         this.username = username;
         this.email = email;
         this.userType = userType;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+
     }
 
     public UserType getUserType() { return userType; }
@@ -50,6 +57,11 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    private void writeNewUser(String name, String username, String email, UserType userType) {
+        User user = new User(name, username, email, userType);
+        mDatabase.child("users").child(username).setValue(user);
     }
 
 }
