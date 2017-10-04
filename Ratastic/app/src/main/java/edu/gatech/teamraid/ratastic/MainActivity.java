@@ -7,6 +7,15 @@ import android.view.View;
 import android.widget.Button;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.opencsv.CSVReader;
+
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
+import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,5 +37,28 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        try {
+            CSVReader reader = new CSVReader(new FileReader(new File("/raw/ratsightings.csv")));
+            String []nextLine;
+            ArrayList<RatSighting> sightings = new ArrayList<>();
+            while ((nextLine = reader.readNext()) != null) {
+                if (nextLine[0].equals("Unique Key")) {
+                    continue;
+                }
+                String UID = nextLine[0];
+                float lat = Float.parseFloat(nextLine[nextLine.length - 3]);
+                float lng = Float.parseFloat(nextLine[nextLine.length - 2]);
+                String createdDate = nextLine[1];
+                String locationType = nextLine[7];
+                String incidentZip = nextLine[8];
+                String incidentAddress = nextLine[9];
+                String city = nextLine[16];
+                String borough = nextLine[23];
+                sightings.add(new RatSighting(UID, createdDate, locationType, incidentZip, incidentAddress, city, borough, lat, lng));
+            }
+        } catch (IOException e) {
+            //Couldn't load data
+            e.printStackTrace();
+        }
     }
 }
