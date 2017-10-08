@@ -19,7 +19,7 @@ public class User {
     private String username;
     private String email;
     private UserType userType;
-    private DatabaseReference mDatabase;
+    //private DatabaseReference mDatabase;
 
 
     public User(String name, String username, String email, UserType userType) {
@@ -27,7 +27,7 @@ public class User {
         this.username = username;
         this.email = email;
         this.userType = userType;
-        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        //mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
     }
 

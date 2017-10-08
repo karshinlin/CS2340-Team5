@@ -136,30 +136,9 @@ public class RegistrationActivity extends AppCompatActivity {
                                     } else {
                                         writeNewUser(userId, name, email);
                                     }
-//                                    mAuth.signInWithEmailAndPassword(email, password)
-//                                            .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
-//                                                @Override
-//                                                public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//                                                    // If sign in fails, display a message to the user. If sign in succeeds
-//                                                    // the auth state listener will be notified and logic to handle the
-//                                                    // signed in user can be handled in the listener.
-//                                                    if (!task.isSuccessful()) {
-//
-//                                                    }
-//
-//                                                    // ...
-//                                                }
-//                                            });
                                 }
-                                // ...
-
-
                             }
                         });
-                //RegistrationActivity.this.finish();
-
-
         }
         });
 
@@ -187,7 +166,7 @@ public class RegistrationActivity extends AppCompatActivity {
     }
     private void writeNewAdmin(String userId, String name, String email) {
         User user = new User(name, name, email, User.UserType.ADMIN);
-        myRef.child("admins").child(userId).setValue(user);
+        myRef.child("users").child(userId).setValue(user);
     }
 
 
