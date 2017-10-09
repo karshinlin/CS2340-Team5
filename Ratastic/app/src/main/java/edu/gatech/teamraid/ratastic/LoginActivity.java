@@ -35,52 +35,41 @@ import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
+//    private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+//    private DatabaseReference myRef = mFirebaseDatabase.getReference();
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ((TextView) findViewById(R.id.unverified)).setVisibility(View.GONE);
         final CheckBox adminCheckBox = (CheckBox) findViewById(R.id.adminCheck);
-        mAuth = FirebaseAuth.getInstance();
-        mAuth.signOut();
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        mAuth.signOut();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null && user.isEmailVerified()) {
-                    DatabaseReference countsDb = myRef.child("accountsTable");
-                    countsDb.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-
-                            try{
-
-                                User currUser  = snapshot.getChildren().iterator().next()
-                                        .getValue(User.class);
-                                if (User.currentUser == null) {
-                                    User.currentUser = new User(user.getDisplayName(), user.getEmail(),
-                                            user.getEmail(), currUser.getUserType());
-                                }
-                            } catch (Throwable e) {
-                                Log.d("FINE", "Unable to retrieve current user");
-                            }
-                        }
-                        @Override public void onCancelled(DatabaseError error) { }
-                    });
-
                     Intent main = new Intent(LoginActivity.this, MainActivity.class);
                     LoginActivity.this.startActivity(main);
                 } else if (user != null && !user.isEmailVerified()){
                     ((TextView) findViewById(R.id.unverified)).setVisibility(View.VISIBLE);
+                    if (!user.isEmailVerified()) {
+                        user.sendEmailVerification()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            //Log.d(TAG, "Email sent.");
+
+                                        }
+                                    }
+                                });
+                    }
                     FirebaseAuth.getInstance().signOut();
                 }
             }
@@ -107,6 +96,30 @@ public class LoginActivity extends AppCompatActivity {
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
                                     ((TextView) findViewById(R.id.failedLoginText)).setVisibility(View.VISIBLE);
+                                } else {
+                                    final FirebaseUser user = mAuth.getCurrentUser();
+//                                    if (user != null) {
+//                                        DatabaseReference countsDb = myRef.child("accountsTable");
+//                                        countsDb.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                                            @Override
+//                                            public void onDataChange(DataSnapshot snapshot) {
+//
+//                                                try{
+//
+//                                                    User currUser  = snapshot.getChildren().iterator().next()
+//                                                            .getValue(User.class);
+//                                                    if (currUser != null && User.currentUser == null ) {
+//                                                        User.currentUser = new User(user.getDisplayName(), user.getEmail(),
+//                                                                user.getEmail(), currUser.getUserType());
+//                                                    }
+//                                                } catch (Throwable e) {
+//                                                    Log.d("FINE", "Unable to retrieve current user");
+//                                                }
+//                                            }
+//                                            @Override public void onCancelled(DatabaseError error) { }
+//                                        });
+//                                    }
+
                                 }
 
                                 // ...

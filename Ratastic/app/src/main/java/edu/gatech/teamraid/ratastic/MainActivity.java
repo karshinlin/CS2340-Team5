@@ -21,14 +21,13 @@ import edu.gatech.teamraid.ratastic.Model.User;
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
         Button logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         TextView text = (TextView) findViewById(R.id.userType);
-        text.setText("Hello " + User.currentUser.getUserType());
+        if (User.currentUser != null) text.setText("Hello " + User.currentUser.getUserType());
         try {
             CSVReader reader = new CSVReader(new FileReader(new File("/raw/ratsightings.csv")));
             String []nextLine;

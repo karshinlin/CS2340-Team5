@@ -28,11 +28,12 @@ import edu.gatech.teamraid.ratastic.Model.User;
 
 public class RegistrationActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
     private String name;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
+    private String email;
+//    private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+//    private DatabaseReference myRef = mFirebaseDatabase.getReference();
     private static final String TAG = "RegistrationActivity";
 
 
@@ -46,9 +47,7 @@ public class RegistrationActivity extends AppCompatActivity {
         final EditText emailField = (EditText) findViewById(R.id.emailField);
         Button submit = (Button) findViewById(R.id.submit);
         final CheckBox adminCheckbox =  (CheckBox) findViewById(R.id.checkBox);
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        mAuth.signOut();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -69,6 +68,12 @@ public class RegistrationActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
+                        String userId = user.getUid();
+//                        if (adminCheckbox.isChecked()) {
+//                            writeNewAdmin(userId, name, email);
+//                        } else {
+//                            writeNewUser(userId, name, email);
+//                        }
                     }
                     if (!user.isEmailVerified()) {
                         user.sendEmailVerification()
@@ -77,14 +82,14 @@ public class RegistrationActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             //Log.d(TAG, "Email sent.");
-                                            Intent main = new Intent(RegistrationActivity.this, WelcomeActivity.class);
-                                            RegistrationActivity.this.startActivity(main);
-                                            mAuth.signOut();
+
                                         }
                                     }
                                 });
                     }
-
+                    Intent main = new Intent(RegistrationActivity.this, WelcomeActivity.class);
+                    RegistrationActivity.this.startActivity(main);
+                    mAuth.signOut();
 
                 } else {
                     // User is signed out
@@ -94,26 +99,26 @@ public class RegistrationActivity extends AppCompatActivity {
         };
 
         // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Object value = dataSnapshot.getValue();
-                Log.d(TAG, "Value is: " + value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
+//        myRef.addValueEventListener(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                // This method is called once with the initial value and again
+//                // whenever data at this location is updated.
+//                Object value = dataSnapshot.getValue();
+//                Log.d(TAG, "Value is: " + value);
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error) {
+//                // Failed to read value
+//                Log.w(TAG, "Failed to read value.", error.toException());
+//            }
+//        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String email = emailField.getText().toString();
+                email = emailField.getText().toString();
                 final String password = passwordField.getText().toString();
                 name = nameField.getText().toString();
 
@@ -130,12 +135,7 @@ public class RegistrationActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     //Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed, Toast.LENGTH_SHORT).show();
                                 } else {
-                                    String userId = mAuth.getCurrentUser().getUid();
-                                    if (adminCheckbox.isChecked()) {
-                                        writeNewAdmin(userId, name, email);
-                                    } else {
-                                        writeNewUser(userId, name, email);
-                                    }
+
                                 }
                             }
                         });
@@ -160,14 +160,14 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
-    private void writeNewUser(String userId, String name, String email) {
-        User user = new User(name, name, email, User.UserType.USER);
-        myRef.child("users").child(userId).setValue(user);
-    }
-    private void writeNewAdmin(String userId, String name, String email) {
-        User user = new User(name, name, email, User.UserType.ADMIN);
-        myRef.child("users").child(userId).setValue(user);
-    }
+//    private void writeNewUser(String userId, String name, String email) {
+//        User user = new User(name, name, email, User.UserType.USER);
+//        myRef.child("users").child(userId).setValue(user);
+//    }
+//    private void writeNewAdmin(String userId, String name, String email) {
+//        User user = new User(name, name, email, User.UserType.ADMIN);
+//        myRef.child("users").child(userId).setValue(user);
+//    }
 
 
 
