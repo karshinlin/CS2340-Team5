@@ -19,6 +19,17 @@ import java.util.ArrayList;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 import edu.gatech.teamraid.ratastic.Model.User;
 
+/**
+ * Login Page for Application. Linked to activity_login.xml
+
+ * SQLite class.
+ * UPDATES:
+ * DATE     | DEV    | DESCRIPTION
+ * 10/1/17:  KLIN     Created.
+ * 10/9/17:  KLIN     Configured Firebase database usage to capture userType
+ *
+ */
+
 public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -39,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         TextView text = (TextView) findViewById(R.id.userType);
-        if (User.currentUser != null) text.setText("Hello " + User.currentUser.getUserType());
+        if (User.currentUser != null && User.currentUser.getUserType() != null) text.setText("Hello " + User.currentUser.getUserType().toString());
         try {
             CSVReader reader = new CSVReader(new FileReader(new File("/raw/ratsightings.csv")));
             String []nextLine;

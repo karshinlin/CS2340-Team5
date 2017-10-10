@@ -5,7 +5,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 /**
- * Created by karshinlin on 9/22/17.
+ * SQLite class.
+ * UPDATES:
+ * DATE     | DEV    | DESCRIPTION
+ * 10/9/17:  KLIN     No longer used. Replaced by Firebase
+ *
  */
 
 public class DataLogger extends SQLiteOpenHelper{
