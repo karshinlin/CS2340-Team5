@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.opencsv.CSVReader;
@@ -17,17 +18,28 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
+import edu.gatech.teamraid.ratastic.Model.User;
+
+/**
+ * Login Page for Application. Linked to activity_login.xml
+
+ * SQLite class.
+ * UPDATES:
+ * DATE     | DEV    | DESCRIPTION
+ * 10/1/17:  KLIN     Created.
+ * 10/9/17:  KLIN     Configured Firebase database usage to capture userType
+ *
+ */
 
 public class MainActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
         Button logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        TextView text = (TextView) findViewById(R.id.userType);
+        if (User.currentUser != null && User.currentUser.getUserType() != null) text.setText("Hello " + User.currentUser.getUserType().toString());
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(getResources().openRawResource(R.raw.ratsightings)));
             String []nextLine;

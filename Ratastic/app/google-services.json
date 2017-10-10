@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "77080124064-0o7k923e4o9og2hut9dg3cfa6ktlt3jv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.gatech.teamraid.ratastic",
+            "certificate_hash": "255e8a36e87ebf4fa05b15c595f34996a38af4d1"
+          }
+        },
+        {
           "client_id": "77080124064-5ecj4r7h133qlugausjdauo0m0q1lodi.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

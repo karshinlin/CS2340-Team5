@@ -26,17 +26,43 @@ import com.google.firebase.database.ValueEventListener;
 
 import edu.gatech.teamraid.ratastic.Model.User;
 
+/**
+ * Registration Page for Application. Linked to activity_registration.xml
+
+ * SQLite class.
+ * UPDATES:
+ * DATE     | DEV    | DESCRIPTION
+ * 10/1/17:  KLIN     Created.
+ * 10/9/17:  KLIN     Debugged Firebase Database calls to store all users/admins under child "users"
+ *
+ */
+
 public class RegistrationActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    /**
+     * Firebase Auth instance variables
+     */
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    /**
+     * User related instance variables
+     */
     private String name;
-    private FirebaseDatabase mFirebaseDatabase;
-    private DatabaseReference myRef;
+    private String email;
+
+    /**
+     * Firebase Database instance variables
+     */
+    private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = mFirebaseDatabase.getReference("users");
     private static final String TAG = "RegistrationActivity";
 
 
-
+    /**
+     * Default onCreate
+     * @param savedInstanceState savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,9 +72,7 @@ public class RegistrationActivity extends AppCompatActivity {
         final EditText emailField = (EditText) findViewById(R.id.emailField);
         Button submit = (Button) findViewById(R.id.submit);
         final CheckBox adminCheckbox =  (CheckBox) findViewById(R.id.checkBox);
-        mAuth = FirebaseAuth.getInstance();
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        myRef = mFirebaseDatabase.getReference();
+        mAuth.signOut();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -56,6 +80,7 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (user != null) {
                     // User is signed in
                     if (user.getDisplayName() == null) {
+                        //Update display name in authentication profiles
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(name)
                                 .build();
@@ -69,7 +94,15 @@ public class RegistrationActivity extends AppCompatActivity {
                                         }
                                     }
                                 });
+                        String userId = user.getUid();
+                        //update database to store name, email, and usertype
+                        if (adminCheckbox.isChecked()) {
+                            writeNewAdmin(userId, name, email);
+                        } else {
+                            writeNewUser(userId, name, email);
+                        }
                     }
+                    //send verification email initially
                     if (!user.isEmailVerified()) {
                         user.sendEmailVerification()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -77,14 +110,15 @@ public class RegistrationActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             //Log.d(TAG, "Email sent.");
-                                            Intent main = new Intent(RegistrationActivity.this, WelcomeActivity.class);
-                                            RegistrationActivity.this.startActivity(main);
-                                            mAuth.signOut();
+
                                         }
                                     }
                                 });
                     }
-
+                    //navigate back to the WelcomeActivity
+                    Intent main = new Intent(RegistrationActivity.this, WelcomeActivity.class);
+                    RegistrationActivity.this.startActivity(main);
+                    mAuth.signOut();
 
                 } else {
                     // User is signed out
@@ -93,31 +127,14 @@ public class RegistrationActivity extends AppCompatActivity {
             }
         };
 
-        // Read from the database
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Object value = dataSnapshot.getValue();
-                Log.d(TAG, "Value is: " + value);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String email = emailField.getText().toString();
+                email = emailField.getText().toString();
                 final String password = passwordField.getText().toString();
                 name = nameField.getText().toString();
 
-                //TODO make DB call
+                //make a new user account
                 mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
@@ -130,49 +147,28 @@ public class RegistrationActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     //Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed, Toast.LENGTH_SHORT).show();
                                 } else {
-                                    String userId = mAuth.getCurrentUser().getUid();
-                                    if (adminCheckbox.isChecked()) {
-                                        writeNewAdmin(userId, name, email);
-                                    } else {
-                                        writeNewUser(userId, name, email);
-                                    }
-//                                    mAuth.signInWithEmailAndPassword(email, password)
-//                                            .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
-//                                                @Override
-//                                                public void onComplete(@NonNull Task<AuthResult> task) {
-//
-//                                                    // If sign in fails, display a message to the user. If sign in succeeds
-//                                                    // the auth state listener will be notified and logic to handle the
-//                                                    // signed in user can be handled in the listener.
-//                                                    if (!task.isSuccessful()) {
-//
-//                                                    }
-//
-//                                                    // ...
-//                                                }
-//                                            });
+
                                 }
-                                // ...
-
-
                             }
                         });
-                //RegistrationActivity.this.finish();
-
-
         }
         });
 
-
     }
 
-
+    /**
+     * Necessary onStart method.
+     * Binds the AuthListener to the Firebase Auth instance
+     */
     @Override
     public void onStart() {
         super.onStart();
-//        mAuth.addAuthStateListener(mAuthListener);
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
+    /**
+     * Necessary onStop method
+     */
     @Override
     public void onStop() {
         super.onStop();
@@ -181,13 +177,26 @@ public class RegistrationActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Creates a regular user and stores into the Firebase database
+     * @param userId unique ID of user
+     * @param name provided name, also Display name in Auth profile
+     * @param email username/email in Auth profile
+     */
     private void writeNewUser(String userId, String name, String email) {
         User user = new User(name, name, email, User.UserType.USER);
-        myRef.child("users").child(userId).setValue(user);
+        myRef.child(userId).setValue(user);
     }
+
+    /**
+     * Creates a admin user and stores into the Firebase database
+     * @param userId unique ID of user
+     * @param name provided name, also Display name in Auth profile
+     * @param email username/email in Auth profile
+     */
     private void writeNewAdmin(String userId, String name, String email) {
         User user = new User(name, name, email, User.UserType.ADMIN);
-        myRef.child("admins").child(userId).setValue(user);
+        myRef.child(userId).setValue(user);
     }
 
 

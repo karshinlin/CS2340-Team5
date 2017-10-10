@@ -5,8 +5,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
+
+/**
+ * Welcome Page for Application. Linked to activity_welcome.xml
+
+ * SQLite class.
+ * UPDATES:
+ * DATE     | DEV    | DESCRIPTION
+ * 10/1/17:  KLIN     Created.
+ *
+ */
 
 public class WelcomeActivity extends AppCompatActivity {
 

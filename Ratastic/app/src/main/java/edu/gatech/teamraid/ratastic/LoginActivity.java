@@ -18,51 +18,117 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.mindrot.jbcrypt.BCrypt;
+
+import java.util.HashMap;
 
 import edu.gatech.teamraid.ratastic.Model.DataLogger;
 import edu.gatech.teamraid.ratastic.Model.User;
 import edu.gatech.teamraid.ratastic.Model.User.UserType;
 
+import static android.webkit.ConsoleMessage.MessageLevel.LOG;
+
+/**
+ * Login Page for Application. Linked to activity_login.xml
+
+ * SQLite class.
+ * UPDATES:
+ * DATE     | DEV    | DESCRIPTION
+ * 10/1/17:  KLIN     Created.
+ * 10/9/17:  KLIN     Configured Firebase database usage to capture userType
+ *
+ */
 
 public class LoginActivity extends AppCompatActivity {
 
-    private FirebaseAuth mAuth;
+    /**
+     * Firebase Auth instance variables
+     */
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    /**
+     * Firebase Database instance variables
+     */
+    private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    private DatabaseReference myRef = mFirebaseDatabase.getReference("users");
+
+    /**
+     * Default onCreate
+     * @param savedInstanceState savedInstanceState
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ((TextView) findViewById(R.id.unverified)).setVisibility(View.GONE);
         final CheckBox adminCheckBox = (CheckBox) findViewById(R.id.adminCheck);
-        mAuth = FirebaseAuth.getInstance();
+
         mAuth.signOut();
+
+        /**
+         * On Authentication state changed. Will update current user.
+         * Logs User in and sets User.currentUser singleton.
+         * Transitions to the MainActivity
+         */
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null && user.isEmailVerified()) {
-                    if (User.currentUser == null) {
-                        User.currentUser = new User(user.getDisplayName(), user.getEmail(),
-                                user.getEmail(),
-                                adminCheckBox.isChecked()
-                                        ? UserType.ADMIN : UserType.USER);
-                    }
-                    Intent main = new Intent(LoginActivity.this, MainActivity.class);
-                    LoginActivity.this.startActivity(main);
+                    DatabaseReference currentUser = myRef.child(user.getUid());
+                    currentUser.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            // This method is called once with the initial value and again
+                            // whenever data at this location is updated.
+                            //String value = dataSnapshot.getValue(String.class);
+                            try {
+                                HashMap map = (HashMap) dataSnapshot.getValue();
+                                User currUser = new User (user.getDisplayName(), user.getEmail(), user.getEmail(), UserType.getUserType(map.get("userType").toString()));
+                                if (currUser != null) {
+                                    User.currentUser = currUser;
+                                }
+                            } catch (Throwable e) {
+                                Log.d("FINE", "Unable to retrieve current user");
+                            }
+                            Intent main = new Intent(LoginActivity.this, MainActivity.class);
+                            LoginActivity.this.startActivity(main);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                        }
+                    });
+
                 } else if (user != null && !user.isEmailVerified()){
                     ((TextView) findViewById(R.id.unverified)).setVisibility(View.VISIBLE);
+                    //resends verification email
+                    if (!user.isEmailVerified()) {
+                        user.sendEmailVerification()
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            //Log.d(TAG, "Email sent.");
+                                        }
+                                    }
+                                });
+                    }
                     FirebaseAuth.getInstance().signOut();
                 }
             }
         };
         final EditText email = (EditText) findViewById(R.id.emailEdit);
         final EditText password = (EditText) findViewById(R.id.passwordEdit);
-//        if (!userExists("user")) {
-//            addInitialUser();
-//        }
         Button loginBtn = (Button) findViewById(R.id.signInBtn);
+        //handler for clicking login button
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -81,23 +147,17 @@ public class LoginActivity extends AppCompatActivity {
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
                                     ((TextView) findViewById(R.id.failedLoginText)).setVisibility(View.VISIBLE);
+                                } else {
+                                    final FirebaseUser user = mAuth.getCurrentUser();
+                                    if (user != null) {
+                                    }
                                 }
-
-                                // ...
                             }
                         });
-//                if (emailText.equals("") || emailText.equals("")) {
-//                    ((TextView) findViewById(R.id.failedLoginText)).setVisibility(View.VISIBLE);
-//                } else if (validateCredentials(emailText, passText)) {
-//                    Intent main = new Intent(LoginActivity.this, MainActivity.class);
-//                    LoginActivity.this.startActivity(main);
-//                } else {
-//                    //handle unvalid login
-//                    ((TextView) findViewById(R.id.failedLoginText)).setVisibility(View.VISIBLE);
-//                }
             }
         });
         Button cancelBtn = (Button) findViewById(R.id.cancelButton);
+        //cancel button will bring user back to welcome page
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,6 +167,11 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
+    /**
+     * Necessary onStart method.
+     * Binds the AuthListener to the Firebase Auth instance
+     */
     @Override
     public void onStart() {
         super.onStart();
@@ -121,69 +186,6 @@ public class LoginActivity extends AppCompatActivity {
             mAuth.removeAuthStateListener(mAuthListener);
         }
     }
-    private boolean userExists(String username) {
-        DataLogger credentials = new DataLogger(getApplicationContext());
-        SQLiteDatabase db = credentials.getReadableDatabase();
-        String[] projection = {
-                "Username",
-                "Password"
-        };
-        // Filter results WHERE "title" = 'My Title'
-        String selection = "Username" + " = ?";
-        String[] selectionArgs = {username};
-        String sortOrder =
-                "Username" + " DESC";
-        Cursor cursor = db.query(
-                "Credentials",
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder
-        );
-        cursor.moveToNext();
-        return cursor.getCount() > 0;
-    }
 
-    private boolean validateCredentials(String username, String password) {
-        DataLogger credentials = new DataLogger(getApplicationContext());
-        String pw_hash = BCrypt.hashpw(password, BCrypt.gensalt(4));
-        SQLiteDatabase db = credentials.getReadableDatabase();
-        String[] projection = {
-                "Username",
-                "Password"
-        };
-        // Filter results WHERE "title" = 'My Title'
-        String selection = "Username" + " = ?";
-        String[] selectionArgs = {username};
-        String sortOrder =
-                "Username" + " DESC";
-        Cursor cursor = db.query(
-                "Credentials",
-                projection,
-                selection,
-                selectionArgs,
-                null,
-                null,
-                sortOrder
-        );
-        cursor.moveToNext();
-        if (cursor.getCount() > 0) {
-            boolean valid = BCrypt.checkpw(password, cursor.getString(cursor.getColumnIndexOrThrow("Password")));
-            cursor.close();
-            return valid;
-        } else {
-            return false;
-        }
-    }
-
-    private void addInitialUser() {
-        DataLogger credentials = new DataLogger(getApplicationContext());
-        String username = "user";
-        String pw_hash = BCrypt.hashpw("pass", BCrypt.gensalt(4));
-        SQLiteDatabase db = credentials.getWritableDatabase();
-        credentials.write(db, username, pw_hash);
-    }
 }
 

@@ -13,6 +13,17 @@
         android:text="Logout"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="70dp"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="72dp" />
+
+    <TextView
+        android:id="@+id/userType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:text="Hello"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 </RelativeLayout>
