@@ -123,8 +123,9 @@
         android:id="@+id/adminCheck"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/helpTextBtn"
+        android:layout_alignStart="@+id/passwordEdit"
         android:layout_marginBottom="36dp"
         android:text="Admin"
-        android:layout_above="@+id/helpTextBtn"
-        android:layout_alignStart="@+id/passwordEdit" />
+        android:visibility="invisible" />
 </RelativeLayout>

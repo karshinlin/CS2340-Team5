@@ -100,4 +100,8 @@ public class RatSighting {
     public void setLng(float lng) {
         this.lng = lng;
     }
+
+    public String toString() {
+        return "Sighting in " + city;
+    }
 }

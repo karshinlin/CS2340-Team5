@@ -5,8 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ListView;
+import android.widget.ArrayAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.opencsv.CSVReader;
@@ -36,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    public static RatSighting currentSighting;
+
+    public static RatSighting getCurrentSighting() {
+        return currentSighting;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,10 +61,10 @@ public class MainActivity extends AppCompatActivity {
         });
         TextView text = (TextView) findViewById(R.id.userType);
         if (User.currentUser != null && User.currentUser.getUserType() != null) text.setText("Hello " + User.currentUser.getUserType().toString());
+        ArrayList<RatSighting> sightings = new ArrayList<>();
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(getResources().openRawResource(R.raw.ratsightings)));
             String []nextLine;
-            ArrayList<RatSighting> sightings = new ArrayList<>();
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals("Unique Key") || nextLine[0].equals("")) {
                     continue;
@@ -78,5 +87,21 @@ public class MainActivity extends AppCompatActivity {
             //Couldn't load data
             e.printStackTrace();
         }
+
+        //creates the main ListView shown upon login
+        ListView mainList;
+
+        mainList = (ListView)findViewById(R.id.mainListView);
+        final ArrayAdapter<RatSighting> mainAdapter = new ArrayAdapter<RatSighting>(this, R.layout.activity_listview, R.id.listTextView, sightings);
+        mainList.setAdapter(mainAdapter);
+
+        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent cityClick = new Intent(MainActivity.this, SightingListActivity.class);
+                currentSighting = (RatSighting) mainAdapter.getItem(i);
+                startActivity(cityClick);
+            }
+        });
     }
 }
