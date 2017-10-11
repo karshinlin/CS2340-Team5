@@ -5,8 +5,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ListView;
+import android.widget.ArrayAdapter;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.opencsv.CSVReader;
@@ -52,10 +55,10 @@ public class MainActivity extends AppCompatActivity {
         });
         TextView text = (TextView) findViewById(R.id.userType);
         if (User.currentUser != null && User.currentUser.getUserType() != null) text.setText("Hello " + User.currentUser.getUserType().toString());
+        ArrayList<RatSighting> sightings = new ArrayList<>();
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(getResources().openRawResource(R.raw.ratsightings)));
             String []nextLine;
-            ArrayList<RatSighting> sightings = new ArrayList<>();
             while ((nextLine = reader.readNext()) != null) {
                 if (nextLine[0].equals("Unique Key") || nextLine[0].equals("")) {
                     continue;
@@ -78,5 +81,28 @@ public class MainActivity extends AppCompatActivity {
             //Couldn't load data
             e.printStackTrace();
         }
+
+        //creates the main ListView shown upon login
+        ListView mainList;
+        ArrayList<String> cityList = new ArrayList<>();
+        int count = 0;
+        for (RatSighting thisSighting : sightings) {
+            if (count < 6) {
+                cityList.add("Sighting in " + thisSighting.getCity());
+            }
+            count++;
+        }
+
+        mainList = (ListView)findViewById(R.id.mainListView);
+        ArrayAdapter mainAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, R.id.listTextView, cityList);
+        mainList.setAdapter(mainAdapter);
+
+        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent cityClick = new Intent(MainActivity.this, SightingListActivity.class);
+                startActivity(cityClick);
+            }
+        });
     }
 }

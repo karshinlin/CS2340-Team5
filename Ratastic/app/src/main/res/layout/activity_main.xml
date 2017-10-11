@@ -13,17 +13,26 @@
         android:text="Logout"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="70dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="72dp" />
+        android:layout_marginStart="30dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="14dp" />
+
+    <ListView
+        android:id="@+id/mainListView"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:layout_alignStart="@+id/logout"
+        android:layout_below="@+id/logout" />
 
     <TextView
         android:id="@+id/userType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:text="Hello"
-        android:textSize="24sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:text="Click a sighting below"
+        android:layout_alignBaseline="@+id/logout"
+        android:layout_alignBottom="@+id/logout"
+        android:layout_toEndOf="@+id/logout"
+        android:layout_marginStart="32dp" />
+
 </RelativeLayout>
