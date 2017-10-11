@@ -39,6 +39,12 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    public static RatSighting currentSighting;
+
+    public static RatSighting getCurrentSighting() {
+        return currentSighting;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,23 +90,16 @@ public class MainActivity extends AppCompatActivity {
 
         //creates the main ListView shown upon login
         ListView mainList;
-        ArrayList<String> cityList = new ArrayList<>();
-        int count = 0;
-        for (RatSighting thisSighting : sightings) {
-            if (count < 6) {
-                cityList.add("Sighting in " + thisSighting.getCity());
-            }
-            count++;
-        }
 
         mainList = (ListView)findViewById(R.id.mainListView);
-        ArrayAdapter mainAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, R.id.listTextView, cityList);
+        final ArrayAdapter<RatSighting> mainAdapter = new ArrayAdapter<RatSighting>(this, R.layout.activity_listview, R.id.listTextView, sightings);
         mainList.setAdapter(mainAdapter);
 
         mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent cityClick = new Intent(MainActivity.this, SightingListActivity.class);
+                currentSighting = (RatSighting) mainAdapter.getItem(i);
                 startActivity(cityClick);
             }
         });
