@@ -27,8 +27,7 @@ public class SightingListActivity extends AppCompatActivity {
         Button backBtn = (Button) findViewById(R.id.backButton);
         backBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent goBack = new Intent(SightingListActivity.this, MainActivity.class);
-                startActivity(goBack);
+                SightingListActivity.this.finish();
             }
         });
 
