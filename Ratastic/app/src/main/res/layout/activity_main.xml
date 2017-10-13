@@ -32,7 +32,16 @@
         android:text="Click a sighting below"
         android:layout_alignBaseline="@+id/logout"
         android:layout_alignBottom="@+id/logout"
-        android:layout_toEndOf="@+id/logout"
-        android:layout_marginStart="32dp" />
+        android:layout_toEndOf="@+id/logout" />
+
+    <Button
+        android:id="@+id/report"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-condensed"
+        android:text="Report Sighting"
+        android:layout_alignBaseline="@+id/userType"
+        android:layout_alignBottom="@+id/userType"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

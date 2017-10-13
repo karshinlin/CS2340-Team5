@@ -1,5 +1,7 @@
 package edu.gatech.teamraid.ratastic.Model;
 
+import java.util.ArrayList;
+
 /**
  * Created by colby on 10/4/17.
  */
@@ -15,6 +17,8 @@ public class RatSighting {
     private String borough;
     private float lat;
     private float lng;
+
+    public static ArrayList<RatSighting> ratSightingArray = new ArrayList<>();
 
     public RatSighting(String UID, String createdDate, String locationType, String incidentZip,
                        String incidentAddress, String city, String borough, float lat, float lng) {

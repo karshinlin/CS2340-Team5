@@ -3,7 +3,6 @@ package edu.gatech.teamraid.ratastic;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -14,11 +13,8 @@ import android.widget.ArrayAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.opencsv.CSVReader;
 
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 import edu.gatech.teamraid.ratastic.Model.User;
@@ -34,10 +30,12 @@ import edu.gatech.teamraid.ratastic.Model.User;
  *
  */
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private ListView mainList;
+    private ArrayAdapter<RatSighting> mainAdapter;
 
     public static RatSighting currentSighting;
 
@@ -59,9 +57,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        Button reportSighting = (Button) findViewById(R.id.report);
+        reportSighting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MainActivity.this, ReportRatSightingActivity.class);
+                startActivity(i);
+            }
+        });
         TextView text = (TextView) findViewById(R.id.userType);
         if (User.currentUser != null && User.currentUser.getUserType() != null) text.setText("Hello " + User.currentUser.getUserType().toString());
-        ArrayList<RatSighting> sightings = new ArrayList<>();
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(getResources().openRawResource(R.raw.ratsightings)));
             String []nextLine;
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 String incidentAddress = nextLine[9];
                 String city = nextLine[16];
                 String borough = nextLine[23];
-                sightings.add(new RatSighting(UID, createdDate, locationType, incidentZip, incidentAddress, city, borough, lat, lng));
+                RatSighting.ratSightingArray.add(new RatSighting(UID, createdDate, locationType, incidentZip, incidentAddress, city, borough, lat, lng));
             }
         } catch (IOException e) {
             //Couldn't load data
@@ -89,19 +94,27 @@ public class MainActivity extends AppCompatActivity {
         }
 
         //creates the main ListView shown upon login
-        ListView mainList;
 
         mainList = (ListView)findViewById(R.id.mainListView);
-        final ArrayAdapter<RatSighting> mainAdapter = new ArrayAdapter<RatSighting>(this, R.layout.activity_listview, R.id.listTextView, sightings);
+        mainAdapter = new ArrayAdapter<RatSighting>(this, R.layout.activity_listview, R.id.listTextView, RatSighting.ratSightingArray);
         mainList.setAdapter(mainAdapter);
 
-        mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent cityClick = new Intent(MainActivity.this, SightingListActivity.class);
-                currentSighting = (RatSighting) mainAdapter.getItem(i);
-                startActivity(cityClick);
-            }
-        });
+        mainList.setOnItemClickListener(this);
+    }
+
+
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent cityClick = new Intent(MainActivity.this, SightingListActivity.class);
+        currentSighting = (RatSighting) mainAdapter.getItem(i);
+        startActivity(cityClick);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mainAdapter.notifyDataSetChanged();
+
     }
 }
