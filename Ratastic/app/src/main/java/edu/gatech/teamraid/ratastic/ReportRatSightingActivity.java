@@ -45,7 +45,8 @@ public class ReportRatSightingActivity extends AppCompatActivity {
                     RatSighting newSighting = new RatSighting("", time.toString(), locationType.getText().toString(),
                             zip.getText().toString(), streetAddress.getText().toString(), city.getText().toString(),
                             borough.getText().toString(), lat, lng);
-                    RatSighting.ratSightingArray.add(newSighting);
+
+                    RatSighting.ratSightingArray.add(0, newSighting);
                     ReportRatSightingActivity.this.finish();
                 } catch (NumberFormatException e) {
                     return;
