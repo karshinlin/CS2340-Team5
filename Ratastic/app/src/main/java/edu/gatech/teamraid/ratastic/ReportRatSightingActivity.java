@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -49,7 +50,8 @@ public class ReportRatSightingActivity extends AppCompatActivity {
                     RatSighting.ratSightingArray.add(0, newSighting);
                     ReportRatSightingActivity.this.finish();
                 } catch (NumberFormatException e) {
-                    return;
+                    TextView errorMsg = (TextView) findViewById(R.id.latlongerror);
+                    errorMsg.setVisibility(view.VISIBLE);
                 }
 
 
