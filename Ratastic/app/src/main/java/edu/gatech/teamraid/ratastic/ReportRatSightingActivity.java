@@ -8,6 +8,7 @@ import android.widget.EditText;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
@@ -26,22 +27,31 @@ public class ReportRatSightingActivity extends AppCompatActivity {
             }
         });
 
-        final EditText address = (EditText) findViewById(R.id.address);
+        final EditText streetAddress = (EditText) findViewById(R.id.address);
         final EditText zip = (EditText) findViewById(R.id.zip);
         final EditText city = (EditText) findViewById(R.id.city);
         final EditText locationType = (EditText) findViewById(R.id.locationType);
         final EditText borough = (EditText) findViewById(R.id.borough);
-
+        final EditText latitude = (EditText) findViewById(R.id.latitude);
+        final EditText longitude = (EditText) findViewById(R.id.longitude);
         Button report = (Button) findViewById(R.id.reportSighting);
         report.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Date time = Calendar.getInstance().getTime();
-                RatSighting newSighting = new RatSighting("", time.toString(), locationType.getText().toString(),
-                        zip.getText().toString(), address.getText().toString(), city.getText().toString(),
-                        borough.getText().toString(), 0, 0);
-                RatSighting.ratSightingArray.add(newSighting);
-                ReportRatSightingActivity.this.finish();
+                try {
+                    Date time = Calendar.getInstance().getTime();
+                    float lat = Float.parseFloat(latitude.getText().toString());
+                    float lng = Float.parseFloat(longitude.getText().toString());
+                    RatSighting newSighting = new RatSighting("", time.toString(), locationType.getText().toString(),
+                            zip.getText().toString(), streetAddress.getText().toString(), city.getText().toString(),
+                            borough.getText().toString(), lat, lng);
+                    RatSighting.ratSightingArray.add(newSighting);
+                    ReportRatSightingActivity.this.finish();
+                } catch (NumberFormatException e) {
+                    return;
+                }
+
+
             }
         });
 

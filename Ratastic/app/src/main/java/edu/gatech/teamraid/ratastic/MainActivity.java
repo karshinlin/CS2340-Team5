@@ -70,7 +70,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(getResources().openRawResource(R.raw.ratsightings)));
             String []nextLine;
-            while ((nextLine = reader.readNext()) != null) {
+            int count = 0;
+            while ((nextLine = reader.readNext()) != null && count < 26) {
                 if (nextLine[0].equals("Unique Key") || nextLine[0].equals("")) {
                     continue;
                 }
@@ -87,6 +88,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 String city = nextLine[16];
                 String borough = nextLine[23];
                 RatSighting.ratSightingArray.add(new RatSighting(UID, createdDate, locationType, incidentZip, incidentAddress, city, borough, lat, lng));
+                count++;
             }
         } catch (IOException e) {
             //Couldn't load data

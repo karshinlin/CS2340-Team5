@@ -10,23 +10,24 @@
         android:id="@+id/cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginStart="30dp"
+        android:layout_marginBottom="28dp"
+        android:layout_marginStart="31dp"
         android:text="Cancel"
         tools:layout_editor_absoluteX="34dp"
-        tools:layout_editor_absoluteY="422dp" />
+        tools:layout_editor_absoluteY="422dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/reportSighting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="28dp"
         android:text="Report Sighting"
+        android:layout_marginLeft="62dp"
         android:layout_alignBaseline="@+id/cancel"
         android:layout_alignBottom="@+id/cancel"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="24dp" />
 
     <EditText
         android:id="@+id/borough"
@@ -81,6 +82,27 @@
         android:layout_marginTop="39dp"
         android:ems="10"
         android:hint="Address"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/latitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/borough"
+        android:layout_below="@+id/borough"
+        android:layout_marginTop="11dp"
+        android:ems="10"
+        android:hint="Latitude"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/longitude"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/latitude"
+        android:layout_below="@+id/latitude"
+        android:ems="10"
+        android:hint="Longitude"
         android:inputType="textPersonName" />
 
 </RelativeLayout>
