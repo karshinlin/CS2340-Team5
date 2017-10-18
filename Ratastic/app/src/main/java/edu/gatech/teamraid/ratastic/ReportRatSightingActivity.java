@@ -9,6 +9,7 @@ import android.widget.EditText;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
@@ -40,9 +41,14 @@ public class ReportRatSightingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     Date time = Calendar.getInstance().getTime();
+                    String UID = "";
+                    for (int i = 0; i < 8; i++) {
+                        Random random = new Random();
+                        UID = UID + random.nextInt(10);
+                    }
                     float lat = Float.parseFloat(latitude.getText().toString());
                     float lng = Float.parseFloat(longitude.getText().toString());
-                    RatSighting newSighting = new RatSighting("", time.toString(), locationType.getText().toString(),
+                    RatSighting newSighting = new RatSighting(UID, time.toString(), locationType.getText().toString(),
                             zip.getText().toString(), streetAddress.getText().toString(), city.getText().toString(),
                             borough.getText().toString(), lat, lng);
 
