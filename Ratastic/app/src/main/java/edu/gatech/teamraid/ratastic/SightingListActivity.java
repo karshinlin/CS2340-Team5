@@ -35,13 +35,13 @@ public class SightingListActivity extends AppCompatActivity {
         RatSighting thisSighting = MainActivity.getCurrentSighting();
         sightingList.add("Unique Key: " + thisSighting.getUID());
         sightingList.add("Created Date: " + thisSighting.getCreatedDate());
-        sightingList.add("Location Type: " + thisSighting.getLocationType());
-        sightingList.add("Incident Zip: " + thisSighting.getIncidentZip());
-        sightingList.add("Incident Address: " + thisSighting.getIncidentAddress());
-        sightingList.add("City: " + thisSighting.getCity());
-        sightingList.add("Borough: " + thisSighting.getBorough());
-        sightingList.add("Latitude: " + thisSighting.getLat());
-        sightingList.add("Longitude: " + thisSighting.getLng());
+        sightingList.add("Location Type: " + thisSighting.getLocation().getLocationType());
+        sightingList.add("Incident Zip: " + thisSighting.getLocation().getIncidentZip());
+        sightingList.add("Incident Address: " + thisSighting.getLocation().getIncidentAddress());
+        sightingList.add("City: " + thisSighting.getLocation().getCity());
+        sightingList.add("Borough: " + thisSighting.getLocation().getBorough());
+        sightingList.add("Latitude: " + thisSighting.getLocation().getLat());
+        sightingList.add("Longitude: " + thisSighting.getLocation().getLng());
 
         ListView sightingListView = (ListView)findViewById(R.id.sightingListView);
         final ArrayAdapter<String> sightingAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, R.id.listTextView, sightingList);

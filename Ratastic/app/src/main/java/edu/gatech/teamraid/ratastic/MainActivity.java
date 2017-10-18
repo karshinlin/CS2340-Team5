@@ -16,6 +16,7 @@ import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 import edu.gatech.teamraid.ratastic.Model.User;
 
@@ -87,7 +88,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 String incidentAddress = nextLine[9];
                 String city = nextLine[16];
                 String borough = nextLine[23];
-                RatSighting.ratSightingArray.add(new RatSighting(UID, createdDate, locationType, incidentZip, incidentAddress, city, borough, lat, lng));
+                Location ratLocation = new Location(locationType, incidentZip,
+                        incidentAddress, city, borough, lat, lng);
+                RatSighting.ratSightingArray.add(new RatSighting(UID, createdDate, ratLocation));
                 count++;
             }
         } catch (IOException e) {

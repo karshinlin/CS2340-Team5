@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 
+import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
 public class ReportRatSightingActivity extends AppCompatActivity {
@@ -49,9 +50,10 @@ public class ReportRatSightingActivity extends AppCompatActivity {
                     }
                     float lat = Float.parseFloat(latitude.getText().toString());
                     float lng = Float.parseFloat(longitude.getText().toString());
-                    RatSighting newSighting = new RatSighting(UID, time.toString(), locationType.getText().toString(),
+                    Location ratLocation = new Location(locationType.getText().toString(),
                             zip.getText().toString(), streetAddress.getText().toString(), city.getText().toString(),
                             borough.getText().toString(), lat, lng);
+                    RatSighting newSighting = new RatSighting(UID, time.toString(), ratLocation);
 
                     RatSighting.ratSightingArray.add(0, newSighting);
                     ReportRatSightingActivity.this.finish();
