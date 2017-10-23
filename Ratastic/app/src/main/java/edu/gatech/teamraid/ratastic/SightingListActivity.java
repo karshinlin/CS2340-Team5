@@ -32,7 +32,7 @@ public class SightingListActivity extends AppCompatActivity {
         });
 
         ArrayList<String> sightingList = new ArrayList<>();
-        RatSighting thisSighting = MainActivity.getCurrentSighting();
+        RatSighting thisSighting = MapsActivity.getCurrentSighting();
         sightingList.add("Unique Key: " + thisSighting.getUID());
         sightingList.add("Created Date: " + thisSighting.getCreatedDate());
         sightingList.add("Location Type: " + thisSighting.getLocation().getLocationType());
