@@ -31,4 +31,13 @@
     tools:context="edu.gatech.teamraid.ratastic.MapsActivity"
         android:layout_below="@+id/addRatSighting" />
 
+    <Button
+        android:id="@+id/listButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="14dp"
+        android:text="View in List"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/logoutButton" />
+
 </RelativeLayout>
