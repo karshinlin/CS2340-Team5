@@ -1,6 +1,5 @@
 package edu.gatech.teamraid.ratastic;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,7 +23,7 @@ public class SightingListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sightingview);
 
-        Button backBtn = (Button) findViewById(R.id.backButton);
+        Button backBtn = (Button) findViewById(R.id.logoutButton);
         backBtn.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 SightingListActivity.this.finish();
@@ -40,8 +39,8 @@ public class SightingListActivity extends AppCompatActivity {
         sightingList.add("Incident Address: " + thisSighting.getLocation().getIncidentAddress());
         sightingList.add("City: " + thisSighting.getLocation().getCity());
         sightingList.add("Borough: " + thisSighting.getLocation().getBorough());
-        sightingList.add("Latitude: " + thisSighting.getLocation().getLat());
-        sightingList.add("Longitude: " + thisSighting.getLocation().getLng());
+        sightingList.add("Latitude: " + thisSighting.getLocation().getLat() + " N");
+        sightingList.add("Longitude: " + Math.abs(thisSighting.getLocation().getLng()) + " W");
 
         ListView sightingListView = (ListView)findViewById(R.id.sightingListView);
         final ArrayAdapter<String> sightingAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, R.id.listTextView, sightingList);

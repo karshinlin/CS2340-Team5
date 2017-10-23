@@ -4,8 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -14,13 +13,12 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.opencsv.CSVReader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.List;
-import java.util.WeakHashMap;
+import java.util.Map;
 
 import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
@@ -31,6 +29,9 @@ import edu.gatech.teamraid.ratastic.Model.RatSighting;
  */
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+
+
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private GoogleMap mMap;
     public static RatSighting currentSighting;
@@ -43,15 +44,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+
+        Button logout = (Button) findViewById(R.id.logoutButton);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), WelcomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mAuth.signOut();
+                startActivity(intent);
+            }
+        });
+
+        Button reportSighting = (Button) findViewById(R.id.addRatSighting);
+        reportSighting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(MapsActivity.this, ReportRatSightingActivity.class);
+                MapsActivity.this.startActivity(i);
+            }
+        });
+
 
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(getResources().openRawResource(R.raw.ratsightings)));
             String []nextLine;
             int count = 0;
-            while ((nextLine = reader.readNext()) != null && count < 26) {
+            while ((nextLine = reader.readNext()) != null && count < 5) {
                 if (nextLine[0].equals("Unique Key") || nextLine[0].equals("")) {
                     continue;
                 }
@@ -76,6 +95,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Couldn't load data
             e.printStackTrace();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
     }
 
 
