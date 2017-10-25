@@ -38,12 +38,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ListView mainList;
     private ArrayAdapter<RatSighting> mainAdapter;
 
-    public static RatSighting currentSighting;
-
-    public static RatSighting getCurrentSighting() {
-        return currentSighting;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent cityClick = new Intent(MainActivity.this, SightingListActivity.class);
-        currentSighting = (RatSighting) mainAdapter.getItem(i);
+        cityClick.putExtra("RatSighting", (RatSighting) mainAdapter.getItem(i));
         startActivity(cityClick);
     }
 

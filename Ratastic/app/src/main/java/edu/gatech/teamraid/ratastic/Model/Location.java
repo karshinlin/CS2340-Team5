@@ -1,12 +1,13 @@
 package edu.gatech.teamraid.ratastic.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by colby on 10/18/17.
  */
 
-public class Location {
+public class Location implements Serializable{
 
     private String locationType;
     private String incidentZip;

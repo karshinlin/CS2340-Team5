@@ -1,12 +1,13 @@
 package edu.gatech.teamraid.ratastic.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by colby on 10/4/17.
  */
 
-public class RatSighting {
+public class RatSighting implements Serializable{
 
     private String UID;
     private String createdDate;
