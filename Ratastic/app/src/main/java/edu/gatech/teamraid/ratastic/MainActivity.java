@@ -60,6 +60,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 startActivity(i);
             }
         });
+
+        Button mapBtn = (Button) findViewById(R.id.mapButton);
+        mapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent switchList = new Intent(MainActivity.this, MapsActivity.class);
+                MainActivity.this.startActivity(switchList);
+            }
+        });
+
         TextView text = (TextView) findViewById(R.id.userType);
         if (User.currentUser != null && User.currentUser.getUserType() != null) text.setText("Hello " + User.currentUser.getUserType().toString());
         try {

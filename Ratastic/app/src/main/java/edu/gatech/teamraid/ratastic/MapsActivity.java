@@ -65,6 +65,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+        Button listBtn = (Button) findViewById(R.id.listButton);
+        listBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent switchMap = new Intent(MapsActivity.this, MainActivity.class);
+                MapsActivity.this.startActivity(switchMap);
+            }
+        });
+
 
         try {
             CSVReader reader = new CSVReader(new InputStreamReader(getResources().openRawResource(R.raw.ratsightings)));
