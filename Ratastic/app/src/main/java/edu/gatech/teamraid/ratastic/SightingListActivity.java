@@ -32,15 +32,19 @@ public class SightingListActivity extends AppCompatActivity {
 
         ArrayList<String> sightingList = new ArrayList<>();
         RatSighting thisSighting = MapsActivity.getCurrentSighting();
-        sightingList.add("Unique Key: " + thisSighting.getUID());
-        sightingList.add("Created Date: " + thisSighting.getCreatedDate());
-        sightingList.add("Location Type: " + thisSighting.getLocation().getLocationType());
-        sightingList.add("Incident Zip: " + thisSighting.getLocation().getIncidentZip());
-        sightingList.add("Incident Address: " + thisSighting.getLocation().getIncidentAddress());
-        sightingList.add("City: " + thisSighting.getLocation().getCity());
-        sightingList.add("Borough: " + thisSighting.getLocation().getBorough());
-        sightingList.add("Latitude: " + thisSighting.getLocation().getLat() + " N");
-        sightingList.add("Longitude: " + Math.abs(thisSighting.getLocation().getLng()) + " W");
+        if (thisSighting != null) {
+
+            sightingList.add("Unique Key: " + thisSighting.getUID());
+            sightingList.add("Created Date: " + thisSighting.getCreatedDate());
+            sightingList.add("Location Type: " + thisSighting.getLocation().getLocationType());
+            sightingList.add("Incident Zip: " + thisSighting.getLocation().getIncidentZip());
+            sightingList.add("Incident Address: " + thisSighting.getLocation().getIncidentAddress());
+            sightingList.add("City: " + thisSighting.getLocation().getCity());
+            sightingList.add("Borough: " + thisSighting.getLocation().getBorough());
+            sightingList.add("Latitude: " + thisSighting.getLocation().getLat() + " N");
+            sightingList.add("Longitude: " + Math.abs(thisSighting.getLocation().getLng()) + " W");
+        }
+
 
         ListView sightingListView = (ListView)findViewById(R.id.sightingListView);
         final ArrayAdapter<String> sightingAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, R.id.listTextView, sightingList);

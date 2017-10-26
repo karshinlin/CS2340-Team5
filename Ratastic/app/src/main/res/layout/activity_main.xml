@@ -13,17 +13,15 @@
         android:text="Logout"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="70dp"
-        android:layout_marginStart="30dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="14dp" />
+        android:layout_alignParentStart="true" />
 
     <ListView
         android:id="@+id/mainListView"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_alignStart="@+id/logout"
-        android:layout_below="@+id/logout" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toDate" />
 
     <TextView
         android:id="@+id/userType"
@@ -40,18 +38,63 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="Report Sighting"
+        android:text="Report"
         android:layout_alignBaseline="@+id/userType"
         android:layout_alignBottom="@+id/userType"
-        android:layout_alignParentEnd="true" />
+        android:layout_toEndOf="@+id/mapButton" />
 
     <Button
         android:id="@+id/mapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/userType"
-        android:layout_alignBottom="@+id/userType"
-        android:layout_centerHorizontal="true"
-        android:text="View Map" />
+        android:text="View Map"
+        android:layout_alignBaseline="@+id/logout"
+        android:layout_alignBottom="@+id/logout"
+        android:layout_toEndOf="@+id/logout" />
+
+    <Button
+        android:id="@+id/loadCsv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Load CSV"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/countSightings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/logout"
+        android:text="Number of Sightings:" />
+
+    <EditText
+        android:id="@+id/toDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="150dp"
+        android:ems="10"
+        android:layout_alignBaseline="@+id/fromDate"
+        android:layout_alignBottom="@+id/fromDate"
+        android:layout_toEndOf="@+id/fromDate"
+        android:hint="To Date:"/>
+
+    <EditText
+        android:id="@+id/fromDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/countSightings"
+        android:width="150dp"
+        android:ems="10"
+        android:hint="From Date:"/>
+
+    <Button
+        android:id="@+id/filterOnDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mainListView"
+        android:layout_toEndOf="@+id/toDate"
+        android:text="Filter" />
 
 </RelativeLayout>

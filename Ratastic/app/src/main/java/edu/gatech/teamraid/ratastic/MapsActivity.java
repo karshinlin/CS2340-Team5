@@ -38,6 +38,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public static RatSighting getCurrentSighting() {
         return currentSighting;
     }
+    public static void setCurrentSighting(RatSighting curr) { currentSighting = curr; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,37 +74,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MapsActivity.this.startActivity(switchMap);
             }
         });
-
-
-        try {
-            CSVReader reader = new CSVReader(new InputStreamReader(getResources().openRawResource(R.raw.ratsightings)));
-            String []nextLine;
-            int count = 0;
-            while ((nextLine = reader.readNext()) != null && count < 5) {
-                if (nextLine[0].equals("Unique Key") || nextLine[0].equals("")) {
-                    continue;
-                }
-                String UID = nextLine[0];
-                if (nextLine[49].equals("") || nextLine[50].equals("")) {
-                    continue;
-                }
-                float lat = Float.parseFloat(nextLine[49]);
-                float lng = Float.parseFloat(nextLine[50]);
-                String createdDate = nextLine[1];
-                String locationType = nextLine[7];
-                String incidentZip = nextLine[8];
-                String incidentAddress = nextLine[9];
-                String city = nextLine[16];
-                String borough = nextLine[23];
-                Location ratLocation = new Location(locationType, incidentZip,
-                        incidentAddress, city, borough, lat, lng);
-                RatSighting.ratSightingArray.add(new RatSighting(UID, createdDate, ratLocation));
-                count++;
-            }
-        } catch (IOException e) {
-            //Couldn't load data
-            e.printStackTrace();
-        }
     }
 
     @Override

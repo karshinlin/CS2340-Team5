@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                             } catch (Throwable e) {
                                 Log.d("FINE", "Unable to retrieve current user");
                             }
-                            Intent main = new Intent(LoginActivity.this, MapsActivity.class);
+                            Intent main = new Intent(LoginActivity.this, MainActivity.class);
                             LoginActivity.this.startActivity(main);
                         }
 
