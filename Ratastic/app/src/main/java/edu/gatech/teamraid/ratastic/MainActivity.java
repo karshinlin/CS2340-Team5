@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private SimpleDateFormat dateFormatter;
 
-    @Override
+@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -408,7 +408,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent cityClick = new Intent(MainActivity.this, SightingListActivity.class);
-        currentSighting = (RatSighting) mainAdapter.getItem(i);
+        cityClick.putExtra("RatSighting", (RatSighting) mainAdapter.getItem(i));
         startActivity(cityClick);
     }
 

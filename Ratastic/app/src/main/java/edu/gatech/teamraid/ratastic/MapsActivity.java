@@ -121,7 +121,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 @Override
                 public void onInfoWindowClick(Marker marker) {
                     Intent intent = new Intent(MapsActivity.this, SightingListActivity.class);
-                    currentSighting = (RatSighting) marker.getTag();
+                    intent.putExtra("RatSighting", (RatSighting) marker.getTag());
                     startActivity(intent);
                 }
             });
