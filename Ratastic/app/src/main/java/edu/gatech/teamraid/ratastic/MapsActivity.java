@@ -34,11 +34,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     private GoogleMap mMap;
-    public static RatSighting currentSighting;
-    public static RatSighting getCurrentSighting() {
-        return currentSighting;
-    }
-    public static void setCurrentSighting(RatSighting curr) { currentSighting = curr; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

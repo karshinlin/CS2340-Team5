@@ -58,12 +58,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private ListView mainList;
     private ArrayAdapter<RatSighting> mainAdapter;
 
-    public static RatSighting currentSighting;
-
-    public static RatSighting getCurrentSighting() {
-        return currentSighting;
-    }
-
     TextView countSightings;
 
     private DatePickerDialog fromDateDialog;
@@ -131,8 +125,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                MapsActivity.setCurrentSighting(RatSighting.ratSightingArray.get(position));
                 Intent intent = new Intent(MainActivity.this, SightingListActivity.class);
+                intent.putExtra("RatSighting", RatSighting.ratSightingArray.get(position));
                 startActivity(intent);
             }
         });
