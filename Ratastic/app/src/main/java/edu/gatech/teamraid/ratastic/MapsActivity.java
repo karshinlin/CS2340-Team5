@@ -69,6 +69,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 MapsActivity.this.startActivity(switchMap);
             }
         });
+
+        Button graphBtn = (Button) findViewById(R.id.graphButton);
+        graphBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent switchToGraph = new Intent(MapsActivity.this, GraphActivity.class);
+                MapsActivity.this.startActivity(switchToGraph);
+            }
+        });
     }
 
     @Override
