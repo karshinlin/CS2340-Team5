@@ -22,10 +22,10 @@
         android:text="Sighting Information:"
         android:layout_marginTop="22dp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/backButton" />
+        android:layout_alignStart="@+id/logoutButton" />
 
     <Button
-        android:id="@+id/backButton"
+        android:id="@+id/logoutButton"
         android:layout_width="146dp"
         android:layout_height="wrap_content"
         android:text="Back"

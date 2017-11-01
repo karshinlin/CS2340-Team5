@@ -1,12 +1,15 @@
 package edu.gatech.teamraid.ratastic.Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 /**
  * Created by colby on 10/4/17.
  */
 
-public class RatSighting {
+public class RatSighting implements Serializable{
 
     private String UID;
     private String createdDate;
@@ -14,6 +17,7 @@ public class RatSighting {
     private Location location;
 
     public static ArrayList<RatSighting> ratSightingArray = new ArrayList<>();
+    public static HashMap<String, RatSighting> ratSightingHashMap = new HashMap<>();
 
     public RatSighting(String UID, String createdDate, Location location) {
         this.UID = UID;
