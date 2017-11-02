@@ -39,17 +39,15 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
         android:text="Report"
-        android:layout_alignBaseline="@+id/userType"
-        android:layout_alignBottom="@+id/userType"
-        android:layout_toEndOf="@+id/mapButton" />
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/loadCsv" />
 
     <Button
         android:id="@+id/mapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="View Map"
-        android:layout_alignBaseline="@+id/logout"
-        android:layout_alignBottom="@+id/logout"
+        android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/logout" />
 
     <Button
