@@ -40,7 +40,11 @@ public class GraphActivity extends AppCompatActivity {
                 GraphActivity.this.startActivity(switchToMap);
             }
         });
+        CreateBarChart();
+    }
 
+    //Creates the bar chart for number of sightings by date
+    public void CreateBarChart() {
         barChart = (BarChart) findViewById(R.id.barChart);
 
         barChart.setDrawGridBackground(true);
