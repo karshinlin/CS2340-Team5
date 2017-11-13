@@ -19,11 +19,11 @@ public class DateFilterUnitTest {
     public void testFilter() throws Exception {
         RatSighting.ratSightingArray.clear();
 
-        RatSighting r1 = new RatSighting("", "11/13/2017", new Location("", "", "", "", "", 0, 0));
-        RatSighting r2 = new RatSighting("", "11/14/2017", new Location("", "", "", "", "", 0, 0));
-        RatSighting r3 = new RatSighting("", "11/13/2017", new Location("", "", "", "", "", 0, 0));
-        RatSighting r4 = new RatSighting("", "11/14/2017", new Location("", "", "", "", "", 0, 0));
-        RatSighting r5 = new RatSighting("", "11/16/2017", new Location("", "", "", "", "", 0, 0));
+        RatSighting r1 = new RatSighting("", "2017/11/13", new Location("", "", "", "", "", 0, 0));
+        RatSighting r2 = new RatSighting("", "2017/11/14", new Location("", "", "", "", "", 0, 0));
+        RatSighting r3 = new RatSighting("", "2017/11/13", new Location("", "", "", "", "", 0, 0));
+        RatSighting r4 = new RatSighting("", "2017/11/14", new Location("", "", "", "", "", 0, 0));
+        RatSighting r5 = new RatSighting("", "2017/11/16", new Location("", "", "", "", "", 0, 0));
 
         RatSighting.ratSightingArray.add(r1);
         RatSighting.ratSightingArray.add(r2);
@@ -31,14 +31,17 @@ public class DateFilterUnitTest {
         RatSighting.ratSightingArray.add(r4);
         RatSighting.ratSightingArray.add(r5);
 
-        ArrayList<RatSighting> filtered = RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "11/13/2017", "11/15/2017");
-        assertEquals(filtered.size(), 4);
+        ArrayList<RatSighting> filtered = RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "2017/11/13", "2017/11/15");
+        assertEquals(4, filtered.size());
 
-        filtered = RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "11/14/2017", "11/16/2017");
-        assertEquals(filtered.size(), 3);
+        filtered = RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "2017/11/14", "2017/11/16");
+        assertEquals(3, filtered.size());
 
-        filtered = RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "11/10/2017", "11/12/2017");
-        assertEquals(filtered.size(), 0);
+        filtered = RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "2017/11/10", "2017/11/12");
+        assertEquals(0, filtered.size());
+
+        filtered = RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "2017/11/10", "2018/11/12");
+        assertEquals(5, filtered.size());
 
     }
 
