@@ -23,30 +23,58 @@ public class Location implements Serializable{
         this.lng = lng;
     }
 
+    /**
+     * Returns the type
+     * @return string of the type
+     */
     public String getLocationType() {
         return locationType;
     }
 
+    /**
+     * returns incident zip
+     * @return zip
+     */
     public String getIncidentZip() {
         return incidentZip;
     }
 
+    /**
+     * returns incident address
+     * @return address
+     */
     public String getIncidentAddress() {
         return incidentAddress;
     }
 
+    /**
+     * Returns city
+     * @return city
+     */
     public String getCity() {
         return city;
     }
 
+    /**
+     * returns borough
+     * @return borough
+     */
     public String getBorough() {
         return borough;
     }
 
+    /**
+     * returns latitude
+     * @return returns latitude
+     */
     public float getLat() {
         return lat;
     }
 
+    /**
+     * returns longitude
+     * @return longitude
+     */
     public float getLng() {
         return lng;
     }

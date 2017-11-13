@@ -22,20 +22,43 @@ public class RatSighting implements Serializable{
 
     }
 
+    /**
+     * Gets uid of sighting
+     * @return uid
+     */
     public String getUID() {
         return UID;
     }
 
+    /**
+     * Returns rat sighting date
+     * @return date
+     */
     public String getCreatedDate() {
         return createdDate;
     }
 
+    /**
+     * returns location object
+     * @return location
+     */
     public Location getLocation() { return location; }
 
+    /**
+     * returns city
+     * @return city string
+     */
     public String toString() {
         return "Sighting in " + location.getCity();
     }
 
+    /**
+     * Filters singleton Rat Sighting array between dates
+     * @param ratSightings Array List
+     * @param start start date
+     * @param end end date
+     * @return list of rat sightings
+     */
     public static ArrayList<RatSighting> getRatSightingArrayBetweenDates(ArrayList<RatSighting> ratSightings,
                                                                          String start, String end) {
 

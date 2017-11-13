@@ -30,11 +30,21 @@ public class DataLogger extends SQLiteOpenHelper {
                     "Borough" + " TEXT," +
                     "Latitude" + " FLOAT," +
                     "Longitude" + " FLOAT)";
+
+    /**
+     * Method to create a new DB connection
+     * @param context application that requests the new connection
+     */
     public DataLogger(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
     private static DataLogger instance;
 
+    /**
+     * Getting the singleton instance of the open database connection
+     * @param context application requesting connection
+     * @return returns the DataLogger object with the connection
+     */
     public static synchronized DataLogger getHelper(Context context)
     {
         if (instance == null)
@@ -43,6 +53,10 @@ public class DataLogger extends SQLiteOpenHelper {
         return instance;
     }
 
+    /**
+     * creates new database in the Android application
+     * @param db db to create
+     */
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQL_CREATE_ENTRIES);
@@ -55,6 +69,13 @@ public class DataLogger extends SQLiteOpenHelper {
 //                "City, Borough, Latitude, Longitude)";
 //        db.execSQL(INDEX);
     }
+
+    /**
+     * If new db version is created (schema change)
+     * @param db db being modified
+     * @param oldVersion old version number
+     * @param newVersion new version number
+     */
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // This database is only a cache for online data, so its upgrade policy is
@@ -62,11 +83,31 @@ public class DataLogger extends SQLiteOpenHelper {
         db.execSQL(SQL_DELETE_ENTRIES);
         onCreate(db);
     }
+
+    /**
+     * If db needs to be downgraded
+     * @param db db to be downgraded
+     * @param oldVersion old version number
+     * @param newVersion new version number
+     */
     @Override
     public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    /**
+     * method to add new rat report to database
+     * @param db db which holds the table
+     * @param uid uid
+     * @param createdDate date
+     * @param locType type
+     * @param incidentZip zip
+     * @param incidentAddress address
+     * @param city city
+     * @param borough borough
+     * @param latitude latitude
+     * @param longitude longitude
+     */
     public void writeNormal(SQLiteDatabase db, String uid, String createdDate, String locType, String incidentZip,
                       String incidentAddress, String city, String borough, String latitude, String longitude) {
         ContentValues values = new ContentValues();
