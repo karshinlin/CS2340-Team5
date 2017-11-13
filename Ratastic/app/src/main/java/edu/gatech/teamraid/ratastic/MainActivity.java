@@ -51,7 +51,6 @@ import static edu.gatech.teamraid.ratastic.Model.DataLogger.Lock;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseAuth.AuthStateListener mAuthListener;
     private ArrayAdapter<RatSighting> mainAdapter;
 
     private TextView countSightings;
@@ -178,61 +177,61 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    class AsyncLoadDBTask extends AsyncTask<String, String, String> {
-        final DataLogger databaseHandler;
-        final String type;
-        int count;
-
-        protected AsyncLoadDBTask(String task) {
-            this.databaseHandler = new DataLogger(MainActivity.this);
-            type = task;
-            count = 0;
-        }
-
-
-        @Override
-        protected String doInBackground(String... url) {
-            switch (type) {
-                case "LoadList":
-                    try {
-                        synchronized (Lock) {
-                            loadListFromDb();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case "LoadDB":
-                    try {
-                        synchronized (Lock) {
-                            count = loadDBfromCSV();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case "LoadDB_List":
-                    try {
-                        synchronized (Lock) {
-                            count = loadDBfromCSV();
-                        }
-                        synchronized (Lock) {
-                            loadListFromDb();
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                default: break;
-            }
-            return null;
-        }
-        protected void onPostExecute(String unused) {
-            countSightings.setText(count + "");
-            //load arraylist
-            mainAdapter.notifyDataSetChanged();
-        }
-    }
+//    class AsyncLoadDBTask extends AsyncTask<String, String, String> {
+//        final DataLogger databaseHandler;
+//        final String type;
+//        int count;
+//
+//        protected AsyncLoadDBTask(String task) {
+//            this.databaseHandler = new DataLogger(MainActivity.this);
+//            type = task;
+//            count = 0;
+//        }
+//
+//
+//        @Override
+//        protected String doInBackground(String... url) {
+//            switch (type) {
+//                case "LoadList":
+//                    try {
+//                        synchronized (Lock) {
+//                            loadListFromDb();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    break;
+//                case "LoadDB":
+//                    try {
+//                        synchronized (Lock) {
+//                            count = loadDBfromCSV();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    break;
+//                case "LoadDB_List":
+//                    try {
+//                        synchronized (Lock) {
+//                            count = loadDBfromCSV();
+//                        }
+//                        synchronized (Lock) {
+//                            loadListFromDb();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    break;
+//                default: break;
+//            }
+//            return null;
+//        }
+//        protected void onPostExecute(String unused) {
+//            countSightings.setText(count + "");
+//            //load arraylist
+//            mainAdapter.notifyDataSetChanged();
+//        }
+//    }
 
 
     private int loadDBfromCSV() {

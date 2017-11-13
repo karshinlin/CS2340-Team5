@@ -134,7 +134,7 @@ public class LoginActivity extends AppCompatActivity {
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {
                                     findViewById(R.id.failedLoginText).setVisibility(View.VISIBLE);
-                                } else {
+//                                } else {
                                     //final FirebaseUser user = mAuth.getCurrentUser();
 //                                    if (user != null) {
 //                                    }

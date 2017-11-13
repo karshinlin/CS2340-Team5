@@ -50,7 +50,7 @@ public class RegistrationActivity extends AppCompatActivity {
      */
     private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
     private final DatabaseReference myRef = mFirebaseDatabase.getReference("users");
-    private static final String TAG = "RegistrationActivity";
+    //private static final String TAG = "RegistrationActivity";
 
 
     /**

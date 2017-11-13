@@ -83,12 +83,6 @@ public class User {
     public UserType getUserType() { return userType; }
 
     /**
-     * Sets the usertype
-     * @param userType usertype
-     */
-    public void setUserType(UserType userType) { this.userType = userType; }
-
-    /**
      * Gets user's display name
      * @return display name
      */
@@ -96,21 +90,6 @@ public class User {
         return name;
     }
 
-    /**
-     * Get's the username, currently the email
-     * @return email
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * User's email
-     * @return email
-     */
-    public String getEmail() {
-        return email;
-    }
 
     /**
      * Set display name
@@ -119,22 +98,4 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
-
-    /**
-     * Set username
-     * @param username new username
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * Set email
-     * @param email new email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
 }

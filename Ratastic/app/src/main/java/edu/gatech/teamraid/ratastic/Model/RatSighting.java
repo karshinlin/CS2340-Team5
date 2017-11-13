@@ -26,20 +26,8 @@ public class RatSighting implements Serializable{
         return UID;
     }
 
-    public void setUID(String UID) {
-        this.UID = UID;
-    }
-
     public String getCreatedDate() {
         return createdDate;
-    }
-
-    public void setCreatedDate(String createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public void setLocation(Location location) {
-        this.location = location;
     }
 
     public Location getLocation() { return location; }
