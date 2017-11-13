@@ -55,7 +55,7 @@ public class RatSighting implements Serializable{
     public static ArrayList<RatSighting> getRatSightingArrayBetweenDates(ArrayList<RatSighting> ratSightings,
                                                                          String start, String end) {
 
-        if (start.compareTo(end) > 0) {
+        if (start.equals("") || end.equals("") || start.compareTo(end) > 0) {
             throw new IllegalArgumentException("The start date must be after the end date.");
         }
         ArrayList<RatSighting> newSightings = new ArrayList<>();
