@@ -19,7 +19,7 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sighting Information:"
+        android:text="@string/sighting_information"
         android:layout_marginTop="22dp"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/logoutButton" />
@@ -28,7 +28,7 @@
         android:id="@+id/logoutButton"
         android:layout_width="146dp"
         android:layout_height="wrap_content"
-        android:text="Back"
+        android:text="@string/back"
         android:layout_marginStart="20dp"
         android:layout_below="@+id/sightingListView"
         android:layout_alignParentStart="true"

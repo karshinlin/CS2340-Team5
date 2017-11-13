@@ -10,7 +10,7 @@
         android:id="@+id/logoutButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="@string/logout"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
@@ -18,7 +18,7 @@
         android:id="@+id/addRatSighting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Report" />
+        android:text="@string/report" />
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -35,7 +35,7 @@
         android:id="@+id/listButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View in List"
+        android:text="@string/view_in_list"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/logoutButton" />
 
@@ -43,7 +43,7 @@
         android:id="@+id/graphButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Graph"
+        android:text="@string/graph"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/addRatSighting" />
 

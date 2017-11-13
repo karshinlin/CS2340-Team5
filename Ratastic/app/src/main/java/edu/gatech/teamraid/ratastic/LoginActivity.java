@@ -7,9 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -63,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
         mAuth.signOut();
 
-        /**
+        /*
          * On Authentication state changed. Will update current user.
          * Logs User in and sets User.currentUser singleton.
          * Transitions to the MainActivity
@@ -82,8 +80,7 @@ public class LoginActivity extends AppCompatActivity {
                             //String value = dataSnapshot.getValue(String.class);
                             try {
                                 HashMap map = (HashMap) dataSnapshot.getValue();
-                                User currUser = new User (user.getDisplayName(), user.getEmail(), user.getEmail(), UserType.getUserType(map.get("userType").toString()));
-                                User.currentUser = currUser;
+                                User.currentUser = new User (user.getDisplayName(), user.getEmail(), user.getEmail(), UserType.getUserType(map.get("userType").toString()));
                             } catch (Throwable e) {
                                 Log.d("FINE", "Unable to retrieve current user");
                             }
@@ -138,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     findViewById(R.id.failedLoginText).setVisibility(View.VISIBLE);
                                 } else {
-                                    final FirebaseUser user = mAuth.getCurrentUser();
+                                    //final FirebaseUser user = mAuth.getCurrentUser();
 //                                    if (user != null) {
 //                                    }
                                 }

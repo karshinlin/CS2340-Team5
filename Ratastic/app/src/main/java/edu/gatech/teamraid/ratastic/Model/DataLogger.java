@@ -67,7 +67,7 @@ public class DataLogger extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public long writeNormal(SQLiteDatabase db, String uid, String createdDate, String locType, String incidentZip,
+    public void writeNormal(SQLiteDatabase db, String uid, String createdDate, String locType, String incidentZip,
                       String incidentAddress, String city, String borough, String latitude, String longitude) {
         ContentValues values = new ContentValues();
         values.put("UID", uid);

@@ -1,13 +1,7 @@
 package edu.gatech.teamraid.ratastic;
 
-import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
-import android.net.ParseException;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.espresso.Espresso;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.widget.EditText;
 
 import junit.framework.Assert;
 
@@ -15,26 +9,13 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
-
-import edu.gatech.teamraid.ratastic.Model.DataLogger;
-import edu.gatech.teamraid.ratastic.Model.LinkedHashMapAdapter;
-import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-import static edu.gatech.teamraid.ratastic.R.id.addRatSighting;
-import static edu.gatech.teamraid.ratastic.R.id.locationType;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Checks if a rat sighting was added.

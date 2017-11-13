@@ -10,7 +10,7 @@
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="@string/logout"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="70dp"
         android:layout_alignParentTop="true"
@@ -30,7 +30,7 @@
         android:layout_alignBaseline="@+id/logout"
         android:layout_alignBottom="@+id/logout"
         android:layout_toEndOf="@+id/logout"
-        android:text="Click a sighting below"
+        android:text="@string/selectSighting"
         android:visibility="invisible" />
 
     <Button
@@ -38,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="Report"
+        android:text="@string/report"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/loadCsv" />
 
@@ -46,7 +46,7 @@
         android:id="@+id/mapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View Map"
+        android:text="@string/view_map"
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/logout" />
 
@@ -54,7 +54,7 @@
         android:id="@+id/loadCsv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Load CSV"
+        android:text="@string/load_csv"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
 
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/logout"
-        android:text="Number of Sightings:" />
+        android:text="@string/number_of_sightings" />
 
     <EditText
         android:id="@+id/toDate"
@@ -76,7 +76,7 @@
         android:layout_alignBaseline="@+id/fromDate"
         android:layout_alignBottom="@+id/fromDate"
         android:layout_toEndOf="@+id/fromDate"
-        android:hint="To Date:"/>
+        android:hint="@string/to_date"/>
 
     <EditText
         android:id="@+id/fromDate"
@@ -87,7 +87,7 @@
         android:width="150dp"
         android:ems="10"
         android:inputType="date"
-        android:hint="From Date:"/>
+        android:hint="@string/from_date"/>
 
     <Button
         android:id="@+id/filterOnDate"
@@ -95,6 +95,6 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/mainListView"
         android:layout_toEndOf="@+id/toDate"
-        android:text="Filter" />
+        android:text="@string/filter" />
 
 </RelativeLayout>

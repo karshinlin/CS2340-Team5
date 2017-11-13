@@ -7,7 +7,7 @@
         android:id="@+id/toMapButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="View Map" />
+        android:text="@string/View_Map" />
 
     <com.github.mikephil.charting.charts.BarChart
         android:layout_width="match_parent"

@@ -22,7 +22,6 @@ import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
 public class GraphActivity extends AppCompatActivity {
 
-    private BarChart barChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +41,7 @@ public class GraphActivity extends AppCompatActivity {
 
     //Creates the bar chart for number of sightings by date
     private void CreateBarChart() {
-        barChart = (BarChart) findViewById(R.id.barChart);
+        BarChart barChart = (BarChart) findViewById(R.id.barChart);
 
         barChart.setDrawGridBackground(true);
 

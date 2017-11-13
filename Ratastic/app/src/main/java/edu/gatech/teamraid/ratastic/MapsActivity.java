@@ -88,9 +88,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        GoogleMap mMap = googleMap;
         LatLng ny = new LatLng(40.7128, 74.0060);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ny));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(ny));
         for(RatSighting rs : RatSighting.ratSightingArray) {
             // Creating a marker
             MarkerOptions markerOptions = new MarkerOptions();
