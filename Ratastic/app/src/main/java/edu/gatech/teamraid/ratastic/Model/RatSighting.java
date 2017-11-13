@@ -51,6 +51,9 @@ public class RatSighting implements Serializable{
     public static ArrayList<RatSighting> getRatSightingArrayBetweenDates(ArrayList<RatSighting> ratSightings,
                                                                          String start, String end) {
 
+        if (ratSightings == null) {
+            throw new IllegalArgumentException("Cannot pass null data into method");
+        }
         if (start.equals("") || end.equals("") || start.compareTo(end) > 0) {
             throw new IllegalArgumentException("The start date must be after the end date.");
         }

@@ -102,8 +102,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             markerOptions.title(rs.toString() + " #" + rs.getUID());
 
             // Adding marker to map
-            Marker amarker = mMap.addMarker(markerOptions);
-            amarker.setTag(rs);
+            Marker aMarker = mMap.addMarker(markerOptions);
+            aMarker.setTag(rs);
 
             // Animating to the touched position
             mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(rs.getLocation().getLat(), rs.getLocation().getLng())));

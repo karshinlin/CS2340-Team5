@@ -61,4 +61,9 @@ public class DateFilterUnitTest {
         RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "", "");
     }
 
+    @Test (expected = IllegalArgumentException.class)
+    public void testNull() throws Exception {
+        RatSighting.getRatSightingArrayBetweenDates(null, "2017/11/13", "2017/12/13");
+    }
+
 }
