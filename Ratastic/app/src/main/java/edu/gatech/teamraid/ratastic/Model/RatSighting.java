@@ -51,4 +51,20 @@ public class RatSighting implements Serializable{
     public String toString() {
         return "Sighting in " + location.getCity();
     }
+
+    public static ArrayList<RatSighting> getRatSightingArrayBetweenDates(ArrayList<RatSighting> ratSightings,
+                                                                         String start, String end) {
+
+        if (start.compareTo(end) > 0) {
+            throw new IllegalArgumentException("The start date must be after the end date.");
+        }
+        ArrayList<RatSighting> newSightings = new ArrayList<>();
+        for (RatSighting sighting : ratSightings) {
+            if (sighting.createdDate.compareTo(start) >= 0 && sighting.createdDate.compareTo(end) <= 0) {
+                newSightings.add(sighting);
+            }
+        }
+
+        return newSightings;
+    }
 }
