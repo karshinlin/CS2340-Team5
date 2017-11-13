@@ -10,7 +10,6 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.InputType;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -26,13 +25,10 @@ import com.opencsv.CSVReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 
 import edu.gatech.teamraid.ratastic.Model.DataLogger;
-import edu.gatech.teamraid.ratastic.Model.LinkedHashMapAdapter;
 import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 import edu.gatech.teamraid.ratastic.Model.User;
@@ -62,8 +58,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private DatePickerDialog fromDateDialog;
     private DatePickerDialog toDateDialog;
-    private EditText fromDateEtxt;
-    private EditText toDateEtxt;
+    private EditText fromDateEditTxt;
+    private EditText toDateEditTxt;
 
     private SimpleDateFormat dateFormatter;
 
@@ -138,34 +134,34 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
 
-        fromDateEtxt = (EditText) findViewById(R.id.fromDate);
-        fromDateEtxt.requestFocus();
-        fromDateEtxt.setInputType(InputType.TYPE_NULL);
+        fromDateEditTxt = (EditText) findViewById(R.id.fromDate);
+        fromDateEditTxt.requestFocus();
+        fromDateEditTxt.setInputType(InputType.TYPE_NULL);
 
 
-        toDateEtxt = (EditText) findViewById(R.id.toDate);
-        toDateEtxt.setInputType(InputType.TYPE_NULL);
+        toDateEditTxt = (EditText) findViewById(R.id.toDate);
+        toDateEditTxt.setInputType(InputType.TYPE_NULL);
         setDateTimeField();
 
         Button filterOnDate = (Button) findViewById(R.id.filterOnDate);
         filterOnDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                countSightings.setText("Number of Sightings: " + loadListFromDb(fromDateEtxt.getText().toString(), toDateEtxt.getText().toString()));
+                countSightings.setText("Number of Sightings: " + loadListFromDb(fromDateEditTxt.getText().toString(), toDateEditTxt.getText().toString()));
             }
         });
 
     }
     private void setDateTimeField() {
-        fromDateEtxt.setOnClickListener(this);
-        toDateEtxt.setOnClickListener(this);
+        fromDateEditTxt.setOnClickListener(this);
+        toDateEditTxt.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
         fromDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                fromDateEtxt.setText(dateFormatter.format(newDate.getTime()));
+                fromDateEditTxt.setText(dateFormatter.format(newDate.getTime()));
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -175,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                toDateEtxt.setText(dateFormatter.format(newDate.getTime()));
+                toDateEditTxt.setText(dateFormatter.format(newDate.getTime()));
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -198,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         @Override
-        protected String doInBackground(String... aurl) {
+        protected String doInBackground(String... url) {
             if (type.equals("LoadList")) {
                 try {
                     synchronized (Lock) {
@@ -343,12 +339,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String date = cursor.getString(1);
             String locType = cursor.getString(2);
             String incZip = cursor.getString(3);
-            String incAddr = cursor.getString(4);
+            String incAddress = cursor.getString(4);
             String city = cursor.getString(5);
             String borough = cursor.getString(6);
             Float lat = Float.parseFloat(cursor.getString(7));
             Float lng = Float.parseFloat(cursor.getString(8));
-            Location loc = new Location(locType, incZip, incAddr, city, borough, lat, lng);
+            Location loc = new Location(locType, incZip, incAddress, city, borough, lat, lng);
             RatSighting aRatSighting = new RatSighting(uid, date, loc);
             if (!RatSighting.ratSightingHashMap.containsKey(uid)) {
                 RatSighting.ratSightingHashMap.put(uid, aRatSighting);
@@ -378,12 +374,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String date = cursor.getString(1);
             String locType = cursor.getString(2);
             String incZip = cursor.getString(3);
-            String incAddr = cursor.getString(4);
+            String incAddress = cursor.getString(4);
             String city = cursor.getString(5);
             String borough = cursor.getString(6);
             Float lat = Float.parseFloat(cursor.getString(7));
             Float lng = Float.parseFloat(cursor.getString(8));
-            Location loc = new Location(locType, incZip, incAddr, city, borough, lat, lng);
+            Location loc = new Location(locType, incZip, incAddress, city, borough, lat, lng);
             RatSighting aRatSighting = new RatSighting(uid, date, loc);
             if (!RatSighting.ratSightingHashMap.containsKey(uid)) {
                 RatSighting.ratSightingHashMap.put(uid, aRatSighting);
@@ -415,9 +411,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onClick(View view) {
-        if(view == fromDateEtxt) {
+        if(view == fromDateEditTxt) {
             fromDateDialog.show();
-        } else if(view == toDateEtxt) {
+        } else if(view == toDateEditTxt) {
             toDateDialog.show();
         }
     }

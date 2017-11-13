@@ -50,8 +50,8 @@ public class DataLogger extends SQLiteOpenHelper {
         db.execSQL(SQL_CREATE_ENTRIES);
         // create the index for our INSERT OR REPLACE INTO statement.
         // this acts as the WHERE UID="uid input" AND Created_Date="created date input" AND ...so on...
-        // if that WHERE clause is true, then that tuple in the database is REPLACEd
-        // ELSE, what's in the database will remain and the input will be INSERTed (new record)
+        // if that WHERE clause is true, then that tuple in the database is REPLACED
+        // ELSE, what's in the database will remain and the input will be INSERTED (new record)
 //        String INDEX = "CREATE UNIQUE INDEX locations_index ON "
 //                + "RatSighting" + " (UID, Created_Date, Location_Type, Incident_Zip, Incident_Address," +
 //                "City, Borough, Latitude, Longitude)";
@@ -70,13 +70,13 @@ public class DataLogger extends SQLiteOpenHelper {
     }
 
     public long writeNormal(SQLiteDatabase db, String uid, String createdDate, String locType, String incidentZip,
-                      String incidentAddr, String city, String borough, String latitude, String longitude) {
+                      String incidentAddress, String city, String borough, String latitude, String longitude) {
         ContentValues values = new ContentValues();
         values.put("UID", uid);
         values.put("Created_Date", createdDate);
         values.put("Location_Type", locType);
         values.put("Incident_Zip", incidentZip);
-        values.put("Incident_Address", incidentAddr);
+        values.put("Incident_Address", incidentAddress);
         values.put("City", city);
         values.put("Borough", borough);
         values.put("Latitude", latitude);
