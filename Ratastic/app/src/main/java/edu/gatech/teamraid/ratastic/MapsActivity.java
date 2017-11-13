@@ -101,14 +101,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             markerOptions.title(rs.toString() + " #" + rs.getUID());
 
             // Adding marker to map
-            Marker aMarker = mMap.addMarker(markerOptions);
+            Marker aMarker = googleMap.addMarker(markerOptions);
             aMarker.setTag(rs);
 
             // Animating to the touched position
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(rs.getLocation().getLat(), rs.getLocation().getLng())));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(rs.getLocation().getLat(), rs.getLocation().getLng())));
 
             // Go to details on click
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
                     Intent intent = new Intent(MapsActivity.this, SightingListActivity.class);
