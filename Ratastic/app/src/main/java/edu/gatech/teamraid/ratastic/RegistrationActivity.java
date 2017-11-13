@@ -1,16 +1,13 @@
 package edu.gatech.teamraid.ratastic;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -18,11 +15,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import edu.gatech.teamraid.ratastic.Model.User;
 
@@ -42,7 +36,7 @@ public class RegistrationActivity extends AppCompatActivity {
     /**
      * Firebase Auth instance variables
      */
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     /**
@@ -54,8 +48,8 @@ public class RegistrationActivity extends AppCompatActivity {
     /**
      * Firebase Database instance variables
      */
-    private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef = mFirebaseDatabase.getReference("users");
+    private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    private final DatabaseReference myRef = mFirebaseDatabase.getReference("users");
     private static final String TAG = "RegistrationActivity";
 
 
@@ -89,9 +83,9 @@ public class RegistrationActivity extends AppCompatActivity {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-
-                                        }
+//                                        if (task.isSuccessful()) {
+//
+//                                        }
                                     }
                                 });
                         String userId = user.getUid();
@@ -108,10 +102,9 @@ public class RegistrationActivity extends AppCompatActivity {
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            //Log.d(TAG, "Email sent.");
-
-                                        }
+//                                        if (task.isSuccessful()) {
+//                                            //Log.d(TAG, "Email sent.");
+//                                        }
                                     }
                                 });
                     }
@@ -120,8 +113,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     RegistrationActivity.this.startActivity(main);
                     mAuth.signOut();
 
-                } else {
-                    // User is signed out
+//                } else {
+//                    // User is signed out
                 }
                 // ...
             }
@@ -144,11 +137,11 @@ public class RegistrationActivity extends AppCompatActivity {
                                 // If sign in fails, display a message to the user. If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    //Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed, Toast.LENGTH_SHORT).show();
-                                } else {
-
-                                }
+//                                if (!task.isSuccessful()) {
+//                                    //Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed, Toast.LENGTH_SHORT).show();
+//                                } else {
+//
+//                                }
                             }
                         });
         }

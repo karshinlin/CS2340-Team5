@@ -2,8 +2,8 @@ package edu.gatech.teamraid.ratastic;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ParseException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import edu.gatech.teamraid.ratastic.Model.DataLogger;
@@ -47,9 +47,8 @@ public class ReportRatSightingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     Date time = Calendar.getInstance().getTime();
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                    String timeString = df.format(time);
-                    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                    String timeString;
                     try {
                         timeString = df.format(time);
                     } catch (ParseException ex) {
@@ -81,7 +80,7 @@ public class ReportRatSightingActivity extends AppCompatActivity {
                     ReportRatSightingActivity.this.finish();
                 } catch (NumberFormatException e) {
                     TextView errorMsg = (TextView) findViewById(R.id.latlongerror);
-                    errorMsg.setVisibility(view.VISIBLE);
+                    errorMsg.setVisibility(View.VISIBLE);
                 }
 
 

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import java.sql.Date;
-
 /**
  * SQLite class.
  * UPDATES:
@@ -15,10 +13,10 @@ import java.sql.Date;
  */
 
 public class DataLogger extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 5;
-    public static final String DATABASE_NAME = "Ratastic.db";
+    private static final int DATABASE_VERSION = 5;
+    private static final String DATABASE_NAME = "Ratastic.db";
     public static final String DATABASE_TABLE_NAME = "RatSighting";
-    public static String Lock = "Lock";
+    public static final String Lock = "Lock";
     private static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + DATABASE_TABLE_NAME;
     private static final String SQL_CREATE_ENTRIES =
@@ -69,7 +67,7 @@ public class DataLogger extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
-    public long writeNormal(SQLiteDatabase db, String uid, String createdDate, String locType, String incidentZip,
+    public void writeNormal(SQLiteDatabase db, String uid, String createdDate, String locType, String incidentZip,
                       String incidentAddr, String city, String borough, String latitude, String longitude) {
         ContentValues values = new ContentValues();
         values.put("UID", uid);
@@ -81,7 +79,6 @@ public class DataLogger extends SQLiteOpenHelper {
         values.put("Borough", borough);
         values.put("Latitude", latitude);
         values.put("Longitude", longitude);
-        long newRowId = db.insert(DATABASE_TABLE_NAME, null, values);
-        return newRowId;
+        db.insert(DATABASE_TABLE_NAME, null, values);
     }
 }

@@ -62,10 +62,10 @@ public class User {
 
     /**
      * Constructor for a user
-     * @param name
-     * @param username
-     * @param email
-     * @param userType
+     * @param name name of user
+     * @param username username provided
+     * @param email email provided
+     * @param userType type of user indicated
      */
     public User(String name, String username, String email, UserType userType) {
         this.name = name;

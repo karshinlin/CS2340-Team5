@@ -5,34 +5,31 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.net.ParseException;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.ListView;
-import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.opencsv.CSVReader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Locale;
 
 import edu.gatech.teamraid.ratastic.Model.DataLogger;
-import edu.gatech.teamraid.ratastic.Model.LinkedHashMapAdapter;
 import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 import edu.gatech.teamraid.ratastic.Model.User;
@@ -53,12 +50,11 @@ import static edu.gatech.teamraid.ratastic.Model.DataLogger.Lock;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
 
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
-    private ListView mainList;
     private ArrayAdapter<RatSighting> mainAdapter;
 
-    TextView countSightings;
+    private TextView countSightings;
 
     private DatePickerDialog fromDateDialog;
     private DatePickerDialog toDateDialog;
@@ -117,8 +113,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //creates the main ListView shown upon login
 
+        ListView mainList;
         mainList = (ListView)findViewById(R.id.mainListView);
-        mainAdapter = new ArrayAdapter<RatSighting>(this, R.layout.activity_listview, R.id.listTextView, RatSighting.ratSightingArray);
+        mainAdapter = new ArrayAdapter<>(this, R.layout.activity_listview, R.id.listTextView, RatSighting.ratSightingArray);
         mainList.setAdapter(mainAdapter);
 //        mainAdapter = new LinkedHashMapAdapter<String, RatSighting>(this, R.layout.activity_listview, R.id.listTextView, RatSighting.ratSightingArray);
         //sets the onItemClickListener correctly
@@ -136,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
         //countSightings.setText("Number of Sightings: " + RatSighting.ratSightingArray.size());
 
-        dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
         fromDateEtxt = (EditText) findViewById(R.id.fromDate);
         fromDateEtxt.requestFocus();
@@ -182,8 +179,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
     class AsyncLoadDBTask extends AsyncTask<String, String, String> {
-        DataLogger databaseHandler;
-        String type;
+        final DataLogger databaseHandler;
+        final String type;
         int count;
 
         protected AsyncLoadDBTask(String task) {
@@ -192,40 +189,41 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             count = 0;
         }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
 
         @Override
         protected String doInBackground(String... aurl) {
-            if (type.equals("LoadList")) {
-                try {
-                    synchronized (Lock) {
-                        loadListFromDb();
+            switch (type) {
+                case "LoadList":
+                    try {
+                        synchronized (Lock) {
+                            loadListFromDb();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (type.equals("LoadDB")) {
-                try {
-                    synchronized (Lock) {
-                        count = loadDBfromCSV();
+                    break;
+                case "LoadDB":
+                    try {
+                        synchronized (Lock) {
+                            count = loadDBfromCSV();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (type.equals("LoadDB_List")) {
-                try {
-                    synchronized (Lock) {
-                        count = loadDBfromCSV();
+                    break;
+                case "LoadDB_List":
+                    try {
+                        synchronized (Lock) {
+                            count = loadDBfromCSV();
+                        }
+                        synchronized (Lock) {
+                            loadListFromDb();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    synchronized (Lock) {
-                        loadListFromDb();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                    break;
+                default: break;
             }
             return null;
         }
@@ -237,7 +235,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-    public int loadDBfromCSV() {
+    private int loadDBfromCSV() {
         DataLogger dbHelper = DataLogger.getHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         int count = 0;
@@ -264,10 +262,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 float lng = Float.parseFloat(nextLine[50]);
                 String createdDate = nextLine[1];
                 //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a", Locale.US);
                 try {
                     Date date = format.parse(createdDate);
-                    format = new SimpleDateFormat("yyyy-MM-dd");
+                    format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                     createdDate = format.format(date);
                 } catch (ParseException ex) {
                     //Logger.getLogger(Prime.class.getName()).log(Level.SEVERE, null, ex);
@@ -305,14 +303,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             //Couldn't load data
             e.printStackTrace();
             db.close();
-        } finally {
-            db.endTransaction();
-            db.close();
-            return count;
         }
+        db.endTransaction();
+        db.close();
+        return count;
     }
 
-    public int loadListFromDb() {
+    private int loadListFromDb() {
         DataLogger dbHelper = DataLogger.getHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.beginTransactionNonExclusive();
@@ -363,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return count;
     }
 
-    public int loadListFromDb(String fromDate, String toDate) {
+    private int loadListFromDb(String fromDate, String toDate) {
         DataLogger dbHelper = DataLogger.getHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.beginTransactionNonExclusive();
@@ -402,7 +399,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent cityClick = new Intent(MainActivity.this, SightingListActivity.class);
-        cityClick.putExtra("RatSighting", (RatSighting) mainAdapter.getItem(i));
+        cityClick.putExtra("RatSighting", mainAdapter.getItem(i));
         startActivity(cityClick);
     }
 

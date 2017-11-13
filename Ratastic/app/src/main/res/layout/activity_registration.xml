@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Email"
-        android:inputType="text"
+        android:inputType="textEmailAddress"
         tools:layout_editor_absoluteX="34dp"
         tools:layout_editor_absoluteY="111dp"
         android:layout_below="@+id/textView7"

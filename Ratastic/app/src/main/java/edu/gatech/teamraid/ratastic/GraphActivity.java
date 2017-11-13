@@ -19,13 +19,10 @@ import java.util.ArrayList;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
-/**
- * Created by maxengle on 10/31/17.
- */
 
 public class GraphActivity extends AppCompatActivity {
 
-    BarChart barChart;
+    private BarChart barChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +41,15 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     //Creates the bar chart for number of sightings by date
-    public void CreateBarChart() {
+    private void CreateBarChart() {
         barChart = (BarChart) findViewById(R.id.barChart);
 
         barChart.setDrawGridBackground(true);
 
-        String thisDate = "";
-        ArrayList<String> dateArray = new ArrayList<String>();
-        ArrayList<Integer> countArray = new ArrayList<Integer>();
+        ArrayList<String> dateArray = new ArrayList<>();
+        ArrayList<Integer> countArray = new ArrayList<>();
         for (RatSighting ratSight : RatSighting.ratSightingArray) {
-            thisDate = ratSight.getCreatedDate();
+            String thisDate = ratSight.getCreatedDate();
             thisDate = thisDate.substring(0, 7);
             if (dateArray.contains(thisDate)) {
                 int index = dateArray.indexOf(thisDate);
@@ -87,7 +83,7 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     private class MyXAxisValueFormatter implements IAxisValueFormatter {
-        private ArrayList<String> dateValues;
+        private final ArrayList<String> dateValues;
         private MyXAxisValueFormatter(ArrayList<String> values) {
             this.dateValues = values;
         }

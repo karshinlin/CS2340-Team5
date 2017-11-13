@@ -12,10 +12,6 @@ import java.util.ArrayList;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
 
-/**
- * Created by maxengle on 10/10/17.
- */
-
 public class SightingListActivity extends AppCompatActivity {
 
     @Override
@@ -44,7 +40,7 @@ public class SightingListActivity extends AppCompatActivity {
         sightingList.add("Longitude: " + Math.abs(thisSighting.getLocation().getLng()) + " W");
 
         ListView sightingListView = (ListView)findViewById(R.id.sightingListView);
-        final ArrayAdapter<String> sightingAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, R.id.listTextView, sightingList);
+        final ArrayAdapter<String> sightingAdapter = new ArrayAdapter<>(this, R.layout.activity_listview, R.id.listTextView, sightingList);
         sightingListView.setAdapter(sightingAdapter);
     }
 }
