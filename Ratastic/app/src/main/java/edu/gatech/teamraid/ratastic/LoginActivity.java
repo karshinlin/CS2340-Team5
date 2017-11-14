@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -122,25 +123,30 @@ public class LoginActivity extends AppCompatActivity {
                 String emailText = email.getText().toString();
                 String passText = password.getText().toString();
                 if (emailText.equals("") || passText.equals("")) {
-                    findViewById(R.id.failedLoginText).setVisibility(View.VISIBLE);
-                }
-                mAuth.signInWithEmailAndPassword(emailText, passText)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                    TextView failedView = (TextView) findViewById(R.id.failedLoginText);
+                    failedView.setText(R.string.unsuccessfulLogin);
+                } else {
+                    TextView succeededView = (TextView) findViewById(R.id.failedLoginText);
+                    succeededView.setText(R.string.successfulLogin);
+                    mAuth.signInWithEmailAndPassword(emailText, passText)
+                            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    findViewById(R.id.failedLoginText).setVisibility(View.VISIBLE);
+                                    // If sign in fails, display a message to the user. If sign in succeeds
+                                    // the auth state listener will be notified and logic to handle the
+                                    // signed in user can be handled in the listener.
+                                    if (!task.isSuccessful()) {
+                                        TextView failedView = (TextView) findViewById(R.id.failedLoginText);
+                                        failedView.setText(R.string.unsuccessfulLogin);
 //                                } else {
-                                    //final FirebaseUser user = mAuth.getCurrentUser();
+                                        //final FirebaseUser user = mAuth.getCurrentUser();
 //                                    if (user != null) {
 //                                    }
+                                    }
                                 }
-                            }
-                        });
+                            });
+                }
             }
         });
         Button cancelBtn = (Button) findViewById(R.id.cancelButton);
