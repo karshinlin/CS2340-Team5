@@ -166,6 +166,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //NEED TO STOP THIS WHEN LOG OUT
+
+    /**
+     * Method to stop this activity
+     */
     @Override
     public void onStop() {
         super.onStop();
