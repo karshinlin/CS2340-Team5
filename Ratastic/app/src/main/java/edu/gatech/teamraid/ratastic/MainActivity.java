@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -395,6 +394,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return count;
     }
 
+    /**
+     * Method to choose certain report from list view
+     * @param adapterView list view containing all the reports
+     * @param view  view that holds the list
+     * @param i item in list
+     * @param l item in list
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent cityClick = new Intent(MainActivity.this, SightingListActivity.class);
@@ -409,6 +415,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    /**
+     * helper method to show calendar widgets
+     * @param view Activity that holds the widgets
+     */
     @Override
     public void onClick(View view) {
         if(view == fromDateEditTxt) {
