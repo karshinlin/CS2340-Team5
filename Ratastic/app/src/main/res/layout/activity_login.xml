@@ -100,7 +100,7 @@
         android:layout_above="@+id/helpTextBtn"
         android:layout_alignStart="@+id/passwordEdit"
         android:layout_marginBottom="11dp"
-        android:text="@string/unsuccessfulLogin"
+        android:text="@string/successfulLogin"
         android:textColor="#FF0000"
         android:visibility="visible"
         tools:layout_editor_absoluteX="16dp"
