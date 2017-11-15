@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -139,13 +140,13 @@ public class LoginActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     findViewById(R.id.failedLoginText).setVisibility(View.VISIBLE);
 //                                } else {
-                                    //final FirebaseUser user = mAuth.getCurrentUser();
+                                        //final FirebaseUser user = mAuth.getCurrentUser();
 //                                    if (user != null) {
 //                                    }
+                                    }
                                 }
-                            }
-                        });
-            }
+                            });
+                }
         });
         Button cancelBtn = (Button) findViewById(R.id.cancelButton);
         //cancel button will bring user back to welcome page

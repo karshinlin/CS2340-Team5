@@ -97,14 +97,14 @@
         android:id="@+id/failedLoginText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/unsuccessful"
-        android:textColor="#FF0000"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="285dp"
-        android:visibility="gone"
         android:layout_above="@+id/helpTextBtn"
         android:layout_alignStart="@+id/passwordEdit"
-        android:layout_marginBottom="11dp" />
+        android:layout_marginBottom="11dp"
+        android:text="@string/successfulLogin"
+        android:textColor="#FF0000"
+        android:visibility="visible"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="285dp" />
 
     <TextView
         android:id="@+id/unverified"
