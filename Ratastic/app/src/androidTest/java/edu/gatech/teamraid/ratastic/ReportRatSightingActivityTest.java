@@ -61,6 +61,7 @@ public class ReportRatSightingActivityTest {
         // If array size wasn't updated, rat sighting wasn't added
         Assert.assertEquals("Did not add rat sighting", numSightings + 1, RatSighting.ratSightingArray.size());
 
+
         // Check different fields
         Assert.assertEquals("Added rat sighting, streetAddress incorrect", streetAddress, RatSighting.ratSightingArray.get(numSightings).getLocation().getIncidentAddress());
         Assert.assertEquals("Added rat sighting, zip incorrect", zip, RatSighting.ratSightingArray.get(numSightings).getLocation().getIncidentZip());
@@ -70,6 +71,37 @@ public class ReportRatSightingActivityTest {
         Assert.assertEquals("Added rat sighting, latitude incorrect", lat, RatSighting.ratSightingArray.get(numSightings).getLocation().getLat());
         Assert.assertEquals("Added rat sighting, longitude incorrect", lng, RatSighting.ratSightingArray.get(numSightings).getLocation().getLng());
 
+        // Remove dummy ratsighting from database
+        RatSighting.ratSightingArray.remove(RatSighting.ratSightingArray.size() - 1);
+    }
+
+    /**
+     * Method to sample add an empty sighting
+     * @throws Exception if sample sighting cannot be added
+     */
+    @Test
+    public void checkAddEmptySighting() throws Exception {
+        String streetAddress = "";
+        String zip = "";
+        String city = "";
+        String locationType = "";
+        String borough = "";
+        String latitude = "";
+        String longitude = "";
+
+        int numSightings = RatSighting.ratSightingArray.size();
+
+        onView(withId(R.id.address)).perform(typeText(streetAddress), closeSoftKeyboard());
+        onView(withId(R.id.zip)).perform(typeText(zip), closeSoftKeyboard());
+        onView(withId(R.id.city)).perform(typeText(city), closeSoftKeyboard());
+        onView(withId(R.id.locationType)).perform(typeText(locationType), closeSoftKeyboard());
+        onView(withId(R.id.borough)).perform(typeText(borough), closeSoftKeyboard());
+        onView(withId(R.id.latitude)).perform(typeText(latitude), closeSoftKeyboard());
+        onView(withId(R.id.longitude)).perform(typeText(longitude), closeSoftKeyboard());
+        onView(withId(R.id.reportSighting)).perform(click());
+
+        // Empty data should not be allowed in database
+        Assert.assertEquals("Added empty rat sighting", numSightings, RatSighting.ratSightingArray.size());
 
     }
 }
