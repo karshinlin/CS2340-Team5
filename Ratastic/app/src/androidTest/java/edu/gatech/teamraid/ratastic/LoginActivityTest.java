@@ -1,11 +1,14 @@
 package edu.gatech.teamraid.ratastic;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+
+import junit.framework.AssertionFailedError;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -20,7 +23,14 @@ public class LoginActivityTest {
     @Rule
     public ActivityTestRule<LoginActivity> barActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
-
+    @Before
+    public void delay() {
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {
+            throw new AssertionFailedError();
+        }
+    }
 
     @Test
     public void invalidLoginTest() {

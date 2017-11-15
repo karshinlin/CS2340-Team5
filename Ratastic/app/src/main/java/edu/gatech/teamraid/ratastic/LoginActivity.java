@@ -128,26 +128,30 @@ public class LoginActivity extends AppCompatActivity {
                 if (emailText.isEmpty() || passText.isEmpty()) {
                     findViewById(R.id.failedLoginText).setVisibility(View.VISIBLE);
                 }
-                mAuth.signInWithEmailAndPassword(emailText, passText)
-                        .addOnCompleteListener(LoginActivity.this,
-                                new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                else {
+                    findViewById(R.id.failedLoginText).setVisibility(View.GONE);
+                    mAuth.signInWithEmailAndPassword(emailText, passText)
+                            .addOnCompleteListener(LoginActivity.this,
+                                    new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                // If sign in fails, display a message to the user.
-                                // If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    findViewById(R.id.failedLoginText).setVisibility(View.VISIBLE);
+                                            // If sign in fails, display a message to the user.
+                                            // If sign in succeeds
+                                            // the auth state listener will be notified and logic to handle the
+                                            // signed in user can be handled in the listener.
+                                            if (!task.isSuccessful()) {
+                                                findViewById(R.id.failedLoginText).setVisibility(View.VISIBLE);
 //                                } else {
-                                        //final FirebaseUser user = mAuth.getCurrentUser();
+                                                //final FirebaseUser user = mAuth.getCurrentUser();
 //                                    if (user != null) {
 //                                    }
-                                    }
-                                }
-                            });
+                                            }
+                                        }
+                                    });
                 }
+
+            }
         });
         Button cancelBtn = (Button) findViewById(R.id.cancelButton);
         //cancel button will bring user back to welcome page
