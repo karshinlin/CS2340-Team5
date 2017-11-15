@@ -3,17 +3,18 @@ package edu.gatech.teamraid.ratastic.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 
 public class RatSighting implements Serializable{
 
-    private String UID;
-    private String createdDate;
+    private final String UID;
+    private final String createdDate;
 
-    private Location location;
+    private final Location location;
 
     public static final ArrayList<RatSighting> ratSightingArray = new ArrayList<>();
-    public static final HashMap<String, RatSighting> ratSightingHashMap = new HashMap<>();
+    public static final Map<String, RatSighting> ratSightingHashMap = new HashMap<>();
 
     public RatSighting(String UID, String createdDate, Location location) {
         this.UID = UID;
@@ -59,18 +60,19 @@ public class RatSighting implements Serializable{
      * @param end end date
      * @return list of rat sightings
      */
-    public static ArrayList<RatSighting> getRatSightingArrayBetweenDates(ArrayList<RatSighting> ratSightings,
-                                                                         String start, String end) {
+    public static ArrayList<RatSighting> getRatSightingArrayBetweenDates(
+            Iterable<RatSighting> ratSightings, String start, String end) {
 
         if (ratSightings == null) {
             throw new IllegalArgumentException("Cannot pass null data into method");
         }
-        if (start.equals("") || end.equals("") || start.compareTo(end) > 0) {
+        if ((start.isEmpty()) || (end.isEmpty()) || (start.compareTo(end) > 0)) {
             throw new IllegalArgumentException("The start date must be after the end date.");
         }
         ArrayList<RatSighting> newSightings = new ArrayList<>();
         for (RatSighting sighting : ratSightings) {
-            if (sighting.createdDate.compareTo(start) >= 0 && sighting.createdDate.compareTo(end) <= 0) {
+            if ((sighting.createdDate.compareTo(start) >= 0)
+                    && (sighting.createdDate.compareTo(end) <= 0)) {
                 newSightings.add(sighting);
             }
         }

@@ -21,6 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import edu.gatech.teamraid.ratastic.Model.User;
 import edu.gatech.teamraid.ratastic.Model.User.UserType;
@@ -70,7 +71,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null && user.isEmailVerified()) {
+                if ((user != null) && (user.isEmailVerified())) {
                     DatabaseReference currentUser = myRef.child(user.getUid());
                     currentUser.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -79,8 +80,10 @@ public class LoginActivity extends AppCompatActivity {
                             // whenever data at this location is updated.
                             //String value = dataSnapshot.getValue(String.class);
                             try {
-                                HashMap map = (HashMap) dataSnapshot.getValue();
-                                User.currentUser = new User (user.getDisplayName(), user.getEmail(), user.getEmail(), UserType.getUserType(map.get("userType").toString()));
+                                Map map = (HashMap) dataSnapshot.getValue();
+                                User.setInstance(new User (user.getDisplayName(), user.getEmail(),
+                                        user.getEmail(),
+                                        UserType.getUserType(map.get("userType").toString())));
                             } catch (Throwable e) {
                                 Log.d("FINE", "Unable to retrieve current user");
                             }
@@ -94,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
 
-                } else if (user != null && !user.isEmailVerified()){
+                } else if ((user != null) && !(user.isEmailVerified())){
                     findViewById(R.id.unverified).setVisibility(View.VISIBLE);
                     //resends verification email
                     if (!user.isEmailVerified()) {
@@ -121,7 +124,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String emailText = email.getText().toString();
                 String passText = password.getText().toString();
-                if (emailText.equals("") || passText.equals("")) {
+                if (emailText.isEmpty() || passText.isEmpty()) {
                     findViewById(R.id.failedLoginText).setVisibility(View.VISIBLE);
                 }
                 mAuth.signInWithEmailAndPassword(emailText, passText)
@@ -129,7 +132,8 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                // If sign in fails, display a message to the user. If sign in succeeds
+                                // If sign in fails, display a message to the user.
+                                // If sign in succeeds
                                 // the auth state listener will be notified and logic to handle the
                                 // signed in user can be handled in the listener.
                                 if (!task.isSuccessful()) {

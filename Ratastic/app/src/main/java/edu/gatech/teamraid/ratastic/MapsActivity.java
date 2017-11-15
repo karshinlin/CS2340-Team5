@@ -22,7 +22,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
+    private static final double NEW_YORK_LAT = 40.7128;
+    private static final double NEW_YORK_LONG = 74.0060;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,14 +89,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        LatLng ny = new LatLng(40.7128, 74.0060);
+
+        LatLng ny = new LatLng(NEW_YORK_LAT, NEW_YORK_LONG);
         googleMap.moveCamera(CameraUpdateFactory.newLatLng(ny));
         for(RatSighting rs : RatSighting.ratSightingArray) {
             // Creating a marker
             MarkerOptions markerOptions = new MarkerOptions();
 
             // Setting the position for the marker
-            markerOptions.position(new LatLng(rs.getLocation().getLat(), rs.getLocation().getLng()));
+            markerOptions.position(new LatLng(rs.getLocation().getLat(),
+                    rs.getLocation().getLng()));
 
             // This will be displayed on taping the marker
             markerOptions.title(rs.toString() + " #" + rs.getUID());
@@ -105,7 +108,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             aMarker.setTag(rs);
 
             // Animating to the touched position
-            googleMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(rs.getLocation().getLat(), rs.getLocation().getLng())));
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newLatLng(new LatLng(rs.getLocation().getLat(), rs.getLocation().getLng())));
 
             // Go to details on click
             googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {

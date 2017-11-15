@@ -38,4 +38,6 @@
     <string name="back">Back</string>
     <string name="welcome">Welcome to Ratastic! Sign in or register below:</string>
     <string name="register1">Register</string>
+    <string name="helloUser">Hello %s</string>
+    <string name="numSightings">Number of Sightings: %d</string>
 </resources>

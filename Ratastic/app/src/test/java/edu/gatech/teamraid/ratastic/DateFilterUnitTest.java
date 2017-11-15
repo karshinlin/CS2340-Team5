@@ -3,6 +3,7 @@ package edu.gatech.teamraid.ratastic;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
@@ -31,7 +32,7 @@ public class DateFilterUnitTest {
         RatSighting.ratSightingArray.add(r4);
         RatSighting.ratSightingArray.add(r5);
 
-        ArrayList<RatSighting> filtered = RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "2017/11/13", "2017/11/15");
+        List<RatSighting> filtered = RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "2017/11/13", "2017/11/15");
         assertEquals(4, filtered.size());
 
         filtered = RatSighting.getRatSightingArrayBetweenDates(RatSighting.ratSightingArray, "2017/11/14", "2017/11/16");

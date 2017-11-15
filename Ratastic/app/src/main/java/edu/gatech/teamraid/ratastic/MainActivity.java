@@ -47,7 +47,8 @@ import static edu.gatech.teamraid.ratastic.Model.DataLogger.Lock;
  *
  */
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity
+        implements AdapterView.OnItemClickListener, View.OnClickListener {
 
     private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ArrayAdapter<RatSighting> mainAdapter;
@@ -60,6 +61,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     private EditText toDateEditTxt;
 
     private SimpleDateFormat dateFormatter;
+
+    private User currentUser;
+
+    private static final int LAT_INDEX = 49;
+    private static final int LONG_INDEX = 50;
+    private static final int LOCATION_TYPE_INDEX = 7;
+    private static final int INCIDENT_ZIP_INDEX = 8;
+    private static final int INCIDENT_ADDRESS_INDEX = 9;
+    private static final int CITY_INDEX = 16;
+    private static final int BOROUGH_INDEX = 23;
 
 @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,13 +106,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         TextView text = (TextView) findViewById(R.id.userType);
-        if (User.currentUser != null && User.currentUser.getUserType() != null) text.setText("Hello " + User.currentUser.getUserType().toString());
+        currentUser = User.getInstance();
+        if ((currentUser != null) && (currentUser.getUserType() != null)) {
+            text.setText(getString(R.string.helloUser, currentUser.getUserType().toString()));
+        }
 
         Button loadCsvBtn = (Button) findViewById(R.id.loadCsv);
         loadCsvBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                countSightings.setText("Number of Sightings: " + loadDBfromCSV());
+                countSightings.setText(getString(R.string.numSightings, loadDBfromCSV()));
                 loadListFromDb();
             }
         });
@@ -113,10 +127,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         ListView mainList;
         mainList = (ListView)findViewById(R.id.mainListView);
-        mainAdapter = new ArrayAdapter<>(this, R.layout.activity_listview, R.id.listTextView, RatSighting.ratSightingArray);
+        mainAdapter = new ArrayAdapter<>(this, R.layout.activity_listview, R.id.listTextView,
+                RatSighting.ratSightingArray);
         mainList.setAdapter(mainAdapter);
-//        mainAdapter = new LinkedHashMapAdapter<String, RatSighting>(this, R.layout.activity_listview, R.id.listTextView, RatSighting.ratSightingArray);
-        //sets the onItemClickListener correctly
+    //sets the onItemClickListener correctly
         mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -127,7 +141,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
         synchronized(Lock) {
             int loaded = loadListFromDb();
-            countSightings.setText("Number of Sightings: " + loaded);
+            countSightings.setText(getString(R.string.numSightings, loaded));
         }
         //countSightings.setText("Number of Sightings: " + RatSighting.ratSightingArray.size());
 
@@ -146,7 +160,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         filterOnDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                countSightings.setText("Number of Sightings: " + loadListFromDb(fromDateEditTxt.getText().toString(), toDateEditTxt.getText().toString()));
+                countSightings.setText(getString(R.string.numSightings,
+                        loadListFromDb(fromDateEditTxt.getText().toString(),
+                                toDateEditTxt.getText().toString())));
             }
         });
 
@@ -163,7 +179,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 fromDateEditTxt.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH));
 
         toDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
 
@@ -173,7 +190,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 toDateEditTxt.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
 //    class AsyncLoadDBTask extends AsyncTask<String, String, String> {
@@ -248,16 +266,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String[] nextLine;
             count = 0;
             long successful = 0;
-            while ((nextLine = reader.readNext()) != null && count < 100) {
-                if ((nextLine[0].equals("Unique Key") || nextLine[0].equals(""))) {
+            nextLine = reader.readNext();
+            while (((nextLine != null) && (count < 100))) {
+                if ("Unique Key".equals(nextLine[0]) || nextLine[0].isEmpty()) {
                     continue;
                 }
                 String UID = nextLine[0];
-                if (nextLine[49].equals("") || nextLine[50].equals("")) {
+                if (nextLine[LAT_INDEX].isEmpty() || nextLine[LONG_INDEX].isEmpty()) {
                     continue;
                 }
-                float lat = Float.parseFloat(nextLine[49]);
-                float lng = Float.parseFloat(nextLine[50]);
+                float lat = Float.parseFloat(nextLine[LAT_INDEX]);
+                float lng = Float.parseFloat(nextLine[LONG_INDEX]);
                 String createdDate = nextLine[1];
                 //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                 SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a", Locale.US);
@@ -267,14 +286,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     createdDate = format.format(date);
                 } catch (ParseException ex) {
                     //Logger.getLogger(Prime.class.getName()).log(Level.SEVERE, null, ex);
-                    createdDate = null;
+                    createdDate = format.format(new Date());
                 }
 
-                String locationType = nextLine[7];
-                String incidentZip = nextLine[8];
-                String incidentAddress = nextLine[9];
-                String city = nextLine[16];
-                String borough = nextLine[23];
+                String locationType = nextLine[LOCATION_TYPE_INDEX];
+                String incidentZip = nextLine[INCIDENT_ZIP_INDEX];
+                String incidentAddress = nextLine[INCIDENT_ADDRESS_INDEX];
+                String city = nextLine[CITY_INDEX];
+                String borough = nextLine[BOROUGH_INDEX];
                 Location ratLocation = new Location(locationType, incidentZip,
                         incidentAddress, city, borough, lat, lng);
                 if (!RatSighting.ratSightingHashMap.containsKey(UID)) {
@@ -289,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     break;
                 }
                 stmt.clearBindings();
-
+                nextLine = reader.readNext();
             }
             if (successful < 0) {
                 throw new IOException("Unsuccessful Entry");
@@ -362,7 +381,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         DataLogger dbHelper = DataLogger.getHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.beginTransactionNonExclusive();
-        Cursor cursor = db.query(DATABASE_TABLE_NAME, null, "Created_Date BETWEEN Date(?) AND Date(?)", new String[] {fromDate, toDate}, null, null, "Created_Date ASC", null);
+        Cursor cursor = db.query(DATABASE_TABLE_NAME, null,
+                "Created_Date BETWEEN Date(?) AND Date(?)", new String[] {fromDate, toDate},
+                null, null, "Created_Date ASC", null);
 
         RatSighting.ratSightingHashMap.clear();
         RatSighting.ratSightingArray.clear();

@@ -53,7 +53,7 @@ public class ReportRatSightingActivity extends AppCompatActivity {
                         timeString = df.format(time);
                     } catch (ParseException ex) {
                         //Logger.getLogger(Prime.class.getName()).log(Level.SEVERE, null, ex);
-                        timeString = null;
+                        timeString = df.format(new Date());
                     }
                     String UID = "";
                     for (int i = 0; i < 8; i++) {
@@ -63,7 +63,8 @@ public class ReportRatSightingActivity extends AppCompatActivity {
                     float lat = Float.parseFloat(latitude.getText().toString());
                     float lng = Float.parseFloat(longitude.getText().toString());
                     Location ratLocation = new Location(locationType.getText().toString(),
-                            zip.getText().toString(), streetAddress.getText().toString(), city.getText().toString(),
+                            zip.getText().toString(), streetAddress.getText().toString(),
+                            city.getText().toString(),
                             borough.getText().toString(), lat, lng);
                     RatSighting newSighting = new RatSighting(UID, time.toString(), ratLocation);
 
@@ -72,8 +73,10 @@ public class ReportRatSightingActivity extends AppCompatActivity {
                         RatSighting.ratSightingArray.add(0, newSighting);
                         DataLogger dbHelper = DataLogger.getHelper(ReportRatSightingActivity.this);
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
-                        dbHelper.writeNormal(db, UID, timeString, locationType.getText().toString(),zip.getText().toString(),
-                                streetAddress.getText().toString(), city.getText().toString(), borough.getText().toString(),
+                        dbHelper.writeNormal(db, UID, timeString, locationType.getText().toString(),
+                                zip.getText().toString(),
+                                streetAddress.getText().toString(), city.getText().toString(),
+                                borough.getText().toString(),
                                 latitude.getText().toString(), longitude.getText().toString());
                         db.close();
                     }

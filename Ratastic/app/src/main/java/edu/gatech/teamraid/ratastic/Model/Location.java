@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class Location implements Serializable{
 
-    private String locationType;
-    private String incidentZip;
-    private String incidentAddress;
-    private String city;
-    private String borough;
-    private float lat;
-    private float lng;
+    private final String locationType;
+    private final String incidentZip;
+    private final String incidentAddress;
+    private final String city;
+    private final String borough;
+    private final float lat;
+    private final float lng;
 
     public Location(String locationType, String incidentZip,
                        String incidentAddress, String city, String borough, float lat, float lng) {

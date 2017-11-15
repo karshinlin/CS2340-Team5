@@ -16,12 +16,13 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
 
 public class GraphActivity extends AppCompatActivity {
-
+    private static final float BAR_WIDTH = 0.9f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,7 @@ public class GraphActivity extends AppCompatActivity {
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
         BarData data = new BarData(barDataSet);
-        data.setBarWidth(0.9f);
+        data.setBarWidth(BAR_WIDTH);
 
         barChart.setData(data);
 
@@ -81,9 +82,9 @@ public class GraphActivity extends AppCompatActivity {
         xAxis.setGranularity(1);
     }
 
-    private class MyXAxisValueFormatter implements IAxisValueFormatter {
-        private final ArrayList<String> dateValues;
-        private MyXAxisValueFormatter(ArrayList<String> values) {
+    private final class MyXAxisValueFormatter implements IAxisValueFormatter {
+        private final List<String> dateValues;
+        private MyXAxisValueFormatter(List<String> values) {
             this.dateValues = values;
         }
 

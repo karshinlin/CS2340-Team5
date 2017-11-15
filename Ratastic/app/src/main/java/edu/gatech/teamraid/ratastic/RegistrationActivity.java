@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.Checkable;
 import android.widget.EditText;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -65,7 +66,7 @@ public class RegistrationActivity extends AppCompatActivity {
         final EditText nameField = (EditText) findViewById(R.id.nameField);
         final EditText emailField = (EditText) findViewById(R.id.emailField);
         Button submit = (Button) findViewById(R.id.submit);
-        final CheckBox adminCheckbox =  (CheckBox) findViewById(R.id.checkBox);
+        final Checkable adminCheckbox =  (CheckBox) findViewById(R.id.checkBox);
         mAuth.signOut();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -75,7 +76,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     // User is signed in
                     if (user.getDisplayName() == null) {
                         //Update display name in authentication profiles
-                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                        UserProfileChangeRequest profileUpdates
+                                = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(name)
                                 .build();
 
@@ -129,19 +131,11 @@ public class RegistrationActivity extends AppCompatActivity {
 
                 //make a new user account
                 mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>() {
+                        .addOnCompleteListener(RegistrationActivity.this,
+                                new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                //Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-//                                if (!task.isSuccessful()) {
-//                                    //Toast.makeText(EmailPasswordActivity.this, R.string.auth_failed, Toast.LENGTH_SHORT).show();
-//                                } else {
-//
-//                                }
+                                //do nothing
                             }
                         });
         }

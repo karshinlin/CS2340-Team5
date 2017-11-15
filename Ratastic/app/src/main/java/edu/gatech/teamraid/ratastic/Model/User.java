@@ -26,9 +26,9 @@ public class User {
          * @return  matched Enum type
          */
         public static UserType getUserType(String usertype) {
-            if (usertype.equalsIgnoreCase("user")) {
+            if ("user".equalsIgnoreCase(usertype)) {
                 return UserType.USER;
-            } else if (usertype.equalsIgnoreCase("admin")) {
+            } else if ("admin".equalsIgnoreCase(usertype)) {
                 return UserType.ADMIN;
             }
             return null;
@@ -38,7 +38,7 @@ public class User {
     /**
      * Singleton reference for the user that is currently logged in
      */
-    public static User currentUser;
+    private static User currentUser;
 
     /**
      * The name of the user. Also shown as Display Name in Firebase
@@ -48,17 +48,17 @@ public class User {
     /**
      * Username of the user. Currently his or her email
      */
-    private String username;
+    private final String username;
 
     /**
      * Email of the user.
      */
-    private String email;
+    private final String email;
 
     /**
      * Usertype of the user. Enum is above
      */
-    private UserType userType;
+    private final UserType userType;
 
     /**
      * Constructor for a user
@@ -76,6 +76,21 @@ public class User {
 
     }
 
+    /**
+     * Returns singleton instance of User
+     * @return
+     */
+    public static User getInstance() {
+        return currentUser;
+    }
+
+    /**
+     * Sets the singleton
+     * @param theUser user to set
+     */
+    public static void setInstance(User theUser) {
+        currentUser = theUser;
+    }
     /**
      * Retrieves usertype
      * @return the usertype

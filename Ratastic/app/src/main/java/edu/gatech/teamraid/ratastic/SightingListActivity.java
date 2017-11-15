@@ -5,6 +5,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -40,7 +41,8 @@ public class SightingListActivity extends AppCompatActivity {
         sightingList.add("Longitude: " + Math.abs(thisSighting.getLocation().getLng()) + " W");
 
         ListView sightingListView = (ListView)findViewById(R.id.sightingListView);
-        final ArrayAdapter<String> sightingAdapter = new ArrayAdapter<>(this, R.layout.activity_listview, R.id.listTextView, sightingList);
+        final ListAdapter sightingAdapter = new ArrayAdapter<>(this,
+                R.layout.activity_listview, R.id.listTextView, sightingList);
         sightingListView.setAdapter(sightingAdapter);
     }
 }
