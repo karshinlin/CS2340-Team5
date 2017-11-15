@@ -102,7 +102,7 @@
         android:layout_marginBottom="11dp"
         android:text="@string/successfulLogin"
         android:textColor="#FF0000"
-        android:visibility="gone"
+        android:visibility="visible"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="285dp" />
 
