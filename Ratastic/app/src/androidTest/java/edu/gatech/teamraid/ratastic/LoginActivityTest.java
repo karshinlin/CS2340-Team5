@@ -23,14 +23,14 @@ public class LoginActivityTest {
     @Rule
     public ActivityTestRule<LoginActivity> barActivityRule = new ActivityTestRule<>(
             LoginActivity.class);
-    @Before
-    public void delay() {
-        try {
-            Thread.sleep(2000);
-        } catch (Exception e) {
-            throw new AssertionFailedError();
-        }
-    }
+//    @Before
+//    public void delay() {
+//        try {
+//            Thread.sleep(2000);
+//        } catch (Exception e) {
+//            throw new AssertionFailedError();
+//        }
+//    }
 
     @Test
     public void invalidLoginTest() {
