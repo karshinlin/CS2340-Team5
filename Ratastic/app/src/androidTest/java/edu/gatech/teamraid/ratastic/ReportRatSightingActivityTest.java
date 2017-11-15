@@ -30,7 +30,10 @@ public class ReportRatSightingActivityTest {
     @Rule
     public ActivityTestRule<ReportRatSightingActivity> mActivityRule = new ActivityTestRule<>(ReportRatSightingActivity.class);
 
-
+    /**
+     * Method to sample add a sighting
+     * @throws Exception if sample sighting cannot be added
+     */
     @Test
     public void checkAddSighting() throws Exception {
         String streetAddress = "2919 SAMPSON AVE";

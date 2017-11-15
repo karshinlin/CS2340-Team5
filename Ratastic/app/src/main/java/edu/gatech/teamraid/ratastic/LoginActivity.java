@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -56,6 +55,7 @@ public class LoginActivity extends AppCompatActivity {
      * Default onCreate
      * @param savedInstanceState savedInstanceState
      */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
@@ -129,7 +129,8 @@ public class LoginActivity extends AppCompatActivity {
                     findViewById(R.id.failedLoginText).setVisibility(View.VISIBLE);
                 }
                 mAuth.signInWithEmailAndPassword(emailText, passText)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                        .addOnCompleteListener(LoginActivity.this,
+                                new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
 

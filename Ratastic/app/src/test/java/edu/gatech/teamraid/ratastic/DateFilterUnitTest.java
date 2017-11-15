@@ -2,7 +2,6 @@ package edu.gatech.teamraid.ratastic;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.gatech.teamraid.ratastic.Model.Location;

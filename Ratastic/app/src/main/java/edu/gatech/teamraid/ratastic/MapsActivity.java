@@ -17,7 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
-
+/**
+ * Populates the screen with a map and relevant markers
+ */
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
 

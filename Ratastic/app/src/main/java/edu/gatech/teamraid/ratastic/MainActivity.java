@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity
 
     private SimpleDateFormat dateFormatter;
 
-    private User currentUser;
-
     private static final int LAT_INDEX = 49;
     private static final int LONG_INDEX = 50;
     private static final int LOCATION_TYPE_INDEX = 7;
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         TextView text = (TextView) findViewById(R.id.userType);
-        currentUser = User.getInstance();
+        User currentUser = User.getInstance();
         if ((currentUser != null) && (currentUser.getUserType() != null)) {
             text.setText(getString(R.string.helloUser, currentUser.getUserType().toString()));
         }
@@ -172,7 +170,7 @@ public class MainActivity extends AppCompatActivity
         toDateEditTxt.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
         fromDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-
+            @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
@@ -183,7 +181,7 @@ public class MainActivity extends AppCompatActivity
                 newCalendar.get(Calendar.DAY_OF_MONTH));
 
         toDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-
+            @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
@@ -254,20 +252,25 @@ public class MainActivity extends AppCompatActivity
     private int loadDBfromCSV() {
         DataLogger dbHelper = DataLogger.getHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //number of lines so far in the csv
         int count = 0;
         try {
-            String sql = "INSERT INTO " + DATABASE_TABLE_NAME + " ( UID, Created_Date, Location_Type, " +
-                    "Incident_Zip, Incident_Address, City, Borough, Latitude, Longitude ) VALUES (?, ?, " +
+            String sql = "INSERT INTO " + DATABASE_TABLE_NAME  +
+                    " ( UID, Created_Date, Location_Type, " +
+                    "Incident_Zip, Incident_Address, City, Borough, Latitude, Longitude ) " +
+                    "VALUES (?, ?, " +
                     "?, ?, ?, ?, ?, ?, ? )";
             db.beginTransaction();
             SQLiteStatement stmt = db.compileStatement(sql);
-
-            CSVReader reader = new CSVReader(new InputStreamReader(getResources().openRawResource(R.raw.ratsightings)));
+            //opens the actual csv
+            CSVReader reader = new CSVReader(new InputStreamReader(getResources()
+                    .openRawResource(R.raw.ratsightings)));
             String[] nextLine;
             count = 0;
             long successful = 0;
             nextLine = reader.readNext();
             while (((nextLine != null) && (count < 100))) {
+                //checks if the line is valid
                 if ("Unique Key".equals(nextLine[0]) || nextLine[0].isEmpty()) {
                     continue;
                 }
@@ -288,7 +291,7 @@ public class MainActivity extends AppCompatActivity
                     //Logger.getLogger(Prime.class.getName()).log(Level.SEVERE, null, ex);
                     createdDate = format.format(new Date());
                 }
-
+                //gets the relevant data
                 String locationType = nextLine[LOCATION_TYPE_INDEX];
                 String incidentZip = nextLine[INCIDENT_ZIP_INDEX];
                 String incidentAddress = nextLine[INCIDENT_ADDRESS_INDEX];
@@ -297,12 +300,15 @@ public class MainActivity extends AppCompatActivity
                 Location ratLocation = new Location(locationType, incidentZip,
                         incidentAddress, city, borough, lat, lng);
                 if (!RatSighting.ratSightingHashMap.containsKey(UID)) {
-                    RatSighting.ratSightingArray.add(new RatSighting(UID, createdDate, ratLocation));
+                    RatSighting.ratSightingArray.add(new RatSighting(UID, createdDate,
+                            ratLocation));
                 }
                 count++;
                 String[] args = {UID, createdDate, locationType, incidentZip, incidentAddress, city,
                         borough, lat+"", lng+""};
+                //builds the current statement
                 stmt.bindAllArgsAsStrings(args);
+                //adds statement
                 successful = stmt.executeInsert();
                 if (successful < 0) {
                     break;
@@ -313,6 +319,7 @@ public class MainActivity extends AppCompatActivity
             if (successful < 0) {
                 throw new IOException("Unsuccessful Entry");
             }
+            //end of transaction
             db.setTransactionSuccessful();
 
 

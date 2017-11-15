@@ -3,9 +3,12 @@ package edu.gatech.teamraid.ratastic.Model;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-
+/**
+ * A model class for a Rat sighting
+ */
 public class RatSighting implements Serializable{
 
     private final String UID;
@@ -16,6 +19,12 @@ public class RatSighting implements Serializable{
     public static final ArrayList<RatSighting> ratSightingArray = new ArrayList<>();
     public static final Map<String, RatSighting> ratSightingHashMap = new HashMap<>();
 
+    /**
+     * Constructyor for a new Rat Sighting
+     * @param UID id
+     * @param createdDate date
+     * @param location location
+     */
     public RatSighting(String UID, String createdDate, Location location) {
         this.UID = UID;
         this.createdDate = createdDate;
@@ -60,7 +69,7 @@ public class RatSighting implements Serializable{
      * @param end end date
      * @return list of rat sightings
      */
-    public static ArrayList<RatSighting> getRatSightingArrayBetweenDates(
+    public static List<RatSighting> getRatSightingArrayBetweenDates(
             Iterable<RatSighting> ratSightings, String start, String end) {
 
         if (ratSightings == null) {
@@ -69,7 +78,7 @@ public class RatSighting implements Serializable{
         if ((start.isEmpty()) || (end.isEmpty()) || (start.compareTo(end) > 0)) {
             throw new IllegalArgumentException("The start date must be after the end date.");
         }
-        ArrayList<RatSighting> newSightings = new ArrayList<>();
+        List<RatSighting> newSightings = new ArrayList<>();
         for (RatSighting sighting : ratSightings) {
             if ((sighting.createdDate.compareTo(start) >= 0)
                     && (sighting.createdDate.compareTo(end) <= 0)) {

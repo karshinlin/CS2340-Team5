@@ -78,7 +78,7 @@ public class User {
 
     /**
      * Returns singleton instance of User
-     * @return
+     * @return the singleton instance of currentUser
      */
     public static User getInstance() {
         return currentUser;

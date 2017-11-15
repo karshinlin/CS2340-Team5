@@ -12,7 +12,9 @@ import java.util.ArrayList;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
-
+/**
+ * Class that shows the list view for all the Rat Sightings in the database
+ */
 public class SightingListActivity extends AppCompatActivity {
 
     @Override
@@ -22,6 +24,7 @@ public class SightingListActivity extends AppCompatActivity {
 
         Button backBtn = (Button) findViewById(R.id.logoutButton);
         backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
                 SightingListActivity.this.finish();
             }

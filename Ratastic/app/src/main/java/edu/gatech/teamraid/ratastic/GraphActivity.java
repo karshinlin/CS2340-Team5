@@ -20,7 +20,9 @@ import java.util.List;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
-
+/**
+ * Class that creates and shows the graphs based on logged Rat reports
+ */
 public class GraphActivity extends AppCompatActivity {
     private static final float BAR_WIDTH = 0.9f;
 

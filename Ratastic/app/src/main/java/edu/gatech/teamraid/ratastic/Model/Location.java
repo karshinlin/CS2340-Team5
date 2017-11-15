@@ -2,6 +2,9 @@ package edu.gatech.teamraid.ratastic.Model;
 
 import java.io.Serializable;
 
+/**
+ * Location class with all relevant fields
+ */
 public class Location implements Serializable{
 
     private final String locationType;
@@ -12,6 +15,16 @@ public class Location implements Serializable{
     private final float lat;
     private final float lng;
 
+    /**
+     * Constructor to create a custom Location object
+     * @param locationType type
+     * @param incidentZip zip
+     * @param incidentAddress address
+     * @param city city
+     * @param borough borough
+     * @param lat latitude
+     * @param lng longitude
+     */
     public Location(String locationType, String incidentZip,
                        String incidentAddress, String city, String borough, float lat, float lng) {
         this.locationType = locationType;

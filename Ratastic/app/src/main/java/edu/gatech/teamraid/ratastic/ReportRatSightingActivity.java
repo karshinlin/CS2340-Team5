@@ -19,6 +19,9 @@ import edu.gatech.teamraid.ratastic.Model.DataLogger;
 import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
+/**
+ * Activity that allows user to submit and log a rat report
+ */
 public class ReportRatSightingActivity extends AppCompatActivity {
 
     @Override
