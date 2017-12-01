@@ -1,15 +1,12 @@
 package edu.gatech.teamraid.ratastic;
+
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -24,15 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.mindrot.jbcrypt.BCrypt;
-
 import java.util.HashMap;
+import java.util.Map;
 
-import edu.gatech.teamraid.ratastic.Model.DataLogger;
 import edu.gatech.teamraid.ratastic.Model.User;
 import edu.gatech.teamraid.ratastic.Model.User.UserType;
-
-import static android.webkit.ConsoleMessage.MessageLevel.LOG;
 
 /**
  * Login Page for Application. Linked to activity_login.xml
@@ -50,28 +43,28 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Firebase Auth instance variables
      */
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     /**
      * Firebase Database instance variables
      */
-    private FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
-    private DatabaseReference myRef = mFirebaseDatabase.getReference("users");
+    private final FirebaseDatabase mFirebaseDatabase = FirebaseDatabase.getInstance();
+    private final DatabaseReference myRef = mFirebaseDatabase.getReference("users");
 
     /**
      * Default onCreate
      * @param savedInstanceState savedInstanceState
      */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        ((TextView) findViewById(R.id.unverified)).setVisibility(View.GONE);
-        final CheckBox adminCheckBox = (CheckBox) findViewById(R.id.adminCheck);
+        findViewById(R.id.unverified).setVisibility(View.GONE);
 
         mAuth.signOut();
 
-        /**
+        /*
          * On Authentication state changed. Will update current user.
          * Logs User in and sets User.currentUser singleton.
          * Transitions to the MainActivity
@@ -80,7 +73,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user != null && user.isEmailVerified()) {
+                if ((user != null) && (user.isEmailVerified())) {
                     DatabaseReference currentUser = myRef.child(user.getUid());
                     currentUser.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -89,11 +82,10 @@ public class LoginActivity extends AppCompatActivity {
                             // whenever data at this location is updated.
                             //String value = dataSnapshot.getValue(String.class);
                             try {
-                                HashMap map = (HashMap) dataSnapshot.getValue();
-                                User currUser = new User (user.getDisplayName(), user.getEmail(), user.getEmail(), UserType.getUserType(map.get("userType").toString()));
-                                if (currUser != null) {
-                                    User.currentUser = currUser;
-                                }
+                                Map map = (HashMap) dataSnapshot.getValue();
+                                User.setInstance(new User (user.getDisplayName(), user.getEmail(),
+                                        user.getEmail(),
+                                        UserType.getUserType(map.get("userType").toString())));
                             } catch (Throwable e) {
                                 Log.d("FINE", "Unable to retrieve current user");
                             }
@@ -107,17 +99,17 @@ public class LoginActivity extends AppCompatActivity {
                         }
                     });
 
-                } else if (user != null && !user.isEmailVerified()){
-                    ((TextView) findViewById(R.id.unverified)).setVisibility(View.VISIBLE);
+                } else if ((user != null) && !(user.isEmailVerified())){
+                    findViewById(R.id.unverified).setVisibility(View.VISIBLE);
                     //resends verification email
                     if (!user.isEmailVerified()) {
                         user.sendEmailVerification()
                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
-                                        if (task.isSuccessful()) {
-                                            //Log.d(TAG, "Email sent.");
-                                        }
+//                                        if (task.isSuccessful()) {
+//                                            //Log.d(TAG, "Email sent.");
+//                                        }
                                     }
                                 });
                     }
@@ -134,26 +126,34 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String emailText = email.getText().toString();
                 String passText = password.getText().toString();
-                if (emailText.equals("") || passText.equals("")) {
-                    ((TextView) findViewById(R.id.failedLoginText)).setVisibility(View.VISIBLE);
-                }
-                mAuth.signInWithEmailAndPassword(emailText, passText)
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (emailText.isEmpty() || passText.isEmpty()) {
+                    TextView failedView = (TextView) findViewById(R.id.failedLoginText);
+                    failedView.setText(R.string.unsuccessfulLogin);
+                } else {
+                    TextView succeededView = (TextView) findViewById(R.id.failedLoginText);
+                    succeededView.setText(R.string.successfulLogin);
+                    mAuth.signInWithEmailAndPassword(emailText, passText)
+                            .addOnCompleteListener(LoginActivity.this,
+                                    new OnCompleteListener<AuthResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<AuthResult> task) {
 
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    ((TextView) findViewById(R.id.failedLoginText)).setVisibility(View.VISIBLE);
-                                } else {
-                                    final FirebaseUser user = mAuth.getCurrentUser();
-                                    if (user != null) {
-                                    }
-                                }
-                            }
-                        });
+                                            // If sign in fails, display a message to the user.
+                                            // If sign in succeeds
+                                            // the auth state listener will be notified and logic to handle the
+                                            // signed in user can be handled in the listener.
+                                            if (!task.isSuccessful()) {
+                                                TextView failedView = (TextView) findViewById(R.id.failedLoginText);
+                                                failedView.setText(R.string.unsuccessfulLogin);
+                                                //                                } else {
+                                                //final FirebaseUser user = mAuth.getCurrentUser();
+                                                //                                    if (user != null) {
+                                                //                                    }
+                                            }
+                                        }
+                                    });
+                }
+
             }
         });
         Button cancelBtn = (Button) findViewById(R.id.cancelButton);
@@ -179,6 +179,10 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //NEED TO STOP THIS WHEN LOG OUT
+
+    /**
+     * Method to stop this activity
+     */
     @Override
     public void onStop() {
         super.onStop();

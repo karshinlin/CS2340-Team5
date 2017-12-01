@@ -26,9 +26,9 @@ public class User {
          * @return  matched Enum type
          */
         public static UserType getUserType(String usertype) {
-            if (usertype.equalsIgnoreCase("user")) {
+            if ("user".equalsIgnoreCase(usertype)) {
                 return UserType.USER;
-            } else if (usertype.equalsIgnoreCase("admin")) {
+            } else if ("admin".equalsIgnoreCase(usertype)) {
                 return UserType.ADMIN;
             }
             return null;
@@ -38,7 +38,7 @@ public class User {
     /**
      * Singleton reference for the user that is currently logged in
      */
-    public static User currentUser;
+    private static User currentUser;
 
     /**
      * The name of the user. Also shown as Display Name in Firebase
@@ -48,24 +48,24 @@ public class User {
     /**
      * Username of the user. Currently his or her email
      */
-    private String username;
+    private final String username;
 
     /**
      * Email of the user.
      */
-    private String email;
+    private final String email;
 
     /**
      * Usertype of the user. Enum is above
      */
-    private UserType userType;
+    private final UserType userType;
 
     /**
      * Constructor for a user
-     * @param name
-     * @param username
-     * @param email
-     * @param userType
+     * @param name name of user
+     * @param username username provided
+     * @param email email provided
+     * @param userType type of user indicated
      */
     public User(String name, String username, String email, UserType userType) {
         this.name = name;
@@ -77,16 +77,25 @@ public class User {
     }
 
     /**
+     * Returns singleton instance of User
+     * @return the singleton instance of currentUser
+     */
+    public static User getInstance() {
+        return currentUser;
+    }
+
+    /**
+     * Sets the singleton
+     * @param theUser user to set
+     */
+    public static void setInstance(User theUser) {
+        currentUser = theUser;
+    }
+    /**
      * Retrieves usertype
      * @return the usertype
      */
     public UserType getUserType() { return userType; }
-
-    /**
-     * Sets the usertype
-     * @param userType usertype
-     */
-    public void setUserType(UserType userType) { this.userType = userType; }
 
     /**
      * Gets user's display name
@@ -96,21 +105,6 @@ public class User {
         return name;
     }
 
-    /**
-     * Get's the username, currently the email
-     * @return email
-     */
-    public String getUsername() {
-        return username;
-    }
-
-    /**
-     * User's email
-     * @return email
-     */
-    public String getEmail() {
-        return email;
-    }
 
     /**
      * Set display name
@@ -119,22 +113,4 @@ public class User {
     public void setName(String name) {
         this.name = name;
     }
-
-    /**
-     * Set username
-     * @param username new username
-     */
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    /**
-     * Set email
-     * @param email new email
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-
 }

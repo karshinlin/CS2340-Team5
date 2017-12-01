@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,38 +9,91 @@
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Logout"
+        android:text="@string/logout"
         tools:layout_editor_absoluteX="147dp"
         tools:layout_editor_absoluteY="70dp"
-        android:layout_marginStart="30dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="14dp" />
+        android:layout_alignParentStart="true" />
 
     <ListView
         android:id="@+id/mainListView"
         android:layout_width="fill_parent"
         android:layout_height="match_parent"
-        android:layout_alignStart="@+id/logout"
-        android:layout_below="@+id/logout" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/toDate" />
 
     <TextView
         android:id="@+id/userType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Click a sighting below"
         android:layout_alignBaseline="@+id/logout"
         android:layout_alignBottom="@+id/logout"
-        android:layout_toEndOf="@+id/logout" />
+        android:layout_toEndOf="@+id/logout"
+        android:text="@string/selectSighting"
+        android:visibility="invisible" />
 
     <Button
         android:id="@+id/report"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-condensed"
-        android:text="Report Sighting"
-        android:layout_alignBaseline="@+id/userType"
-        android:layout_alignBottom="@+id/userType"
+        android:text="@string/report"
+        android:layout_alignParentTop="true"
+        android:layout_toStartOf="@+id/loadCsv" />
+
+    <Button
+        android:id="@+id/mapButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/view_map"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/logout" />
+
+    <Button
+        android:id="@+id/loadCsv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/load_csv"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/countSightings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/logout"
+        android:text="@string/number_of_sightings" />
+
+    <EditText
+        android:id="@+id/toDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="150dp"
+        android:ems="10"
+        android:inputType="date"
+        android:layout_alignBaseline="@+id/fromDate"
+        android:layout_alignBottom="@+id/fromDate"
+        android:layout_toEndOf="@+id/fromDate"
+        android:hint="@string/to_date"/>
+
+    <EditText
+        android:id="@+id/fromDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/countSightings"
+        android:width="150dp"
+        android:ems="10"
+        android:inputType="date"
+        android:hint="@string/from_date"/>
+
+    <Button
+        android:id="@+id/filterOnDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/mainListView"
+        android:layout_toEndOf="@+id/toDate"
+        android:text="@string/filter" />
 
 </RelativeLayout>
