@@ -29,6 +29,10 @@ public class UserTypeUnitTest {
 
     @Test
     public void testOtherStrings() {
+        String testnull = null;
+        Assert.assertNotSame(User.UserType.USER, User.UserType.getUserType(testnull));
+        String testempty = "";
+        Assert.assertNotSame(User.UserType.USER, User.UserType.getUserType(testempty));
         String test1 = "adsf";
         Assert.assertNotSame(User.UserType.USER, User.UserType.getUserType(test1));
         Assert.assertNotSame(User.UserType.ADMIN, User.UserType.getUserType(test1));
