@@ -32,6 +32,8 @@
     <string name="zip">Zip</string>
     <string name="city">City</string>
     <string name="address">Address</string>
+    <string name="graph2">View Graph 2</string>
+    <string name="graph1">View Graph 1</string>
     <string name="latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="latitude_and_longitude_must_be_numbers">Latitude and Longitude

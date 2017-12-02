@@ -23,29 +23,29 @@ import edu.gatech.teamraid.ratastic.Model.RatSighting;
 /**
  * Class that creates and shows the graphs based on logged Rat reports
  */
-public class GraphActivity extends AppCompatActivity {
+public class Graph2Activity extends AppCompatActivity {
     private static final float BAR_WIDTH = 0.9f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_graph);
+        setContentView(R.layout.activity_graph2);
 
-        Button toMapBtn = (Button) findViewById(R.id.toMapButton);
+        Button toMapBtn = (Button) findViewById(R.id.toMapButton2);
         toMapBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent switchToMap = new Intent(GraphActivity.this, MapsActivity.class);
-                GraphActivity.this.startActivity(switchToMap);
+                Intent switchToMap = new Intent(Graph2Activity.this, MapsActivity.class);
+                Graph2Activity.this.startActivity(switchToMap);
             }
         });
 
-        Button toGraph2Btn = (Button) findViewById(R.id.graph2Button);
-        toGraph2Btn.setOnClickListener(new View.OnClickListener() {
+        Button toGraph1Btn = (Button) findViewById(R.id.graph1Button);
+        toGraph1Btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent switchToGraph2 = new Intent(GraphActivity.this, Graph2Activity.class);
-                GraphActivity.this.startActivity(switchToGraph2);
+                Intent switchToGraph2 = new Intent(Graph2Activity.this, GraphActivity.class);
+                Graph2Activity.this.startActivity(switchToGraph2);
             }
         });
         CreateBarChart();
@@ -53,22 +53,24 @@ public class GraphActivity extends AppCompatActivity {
 
     //Creates the bar chart for number of sightings by date
     private void CreateBarChart() {
-        BarChart barChart = (BarChart) findViewById(R.id.barChart);
+        BarChart barChart = (BarChart) findViewById(R.id.barChart2);
 
         barChart.setDrawGridBackground(true);
 
-        ArrayList<String> dateArray = new ArrayList<>();
+        ArrayList<String> locationArray = new ArrayList<>();
         ArrayList<Integer> countArray = new ArrayList<>();
         for (RatSighting ratSight : RatSighting.ratSightingArray) {
-            String thisDate = ratSight.getCreatedDate();
-            thisDate = thisDate.substring(0, 7);
-            if (dateArray.contains(thisDate)) {
-                int index = dateArray.indexOf(thisDate);
+            String thisLocation = ratSight.getLocation().getBorough();
+            if (thisLocation.length() < 3) {
+                thisLocation = "OTHER";
+            }
+            if (locationArray.contains(thisLocation)) {
+                int index = locationArray.indexOf(thisLocation);
                 int curr = countArray.get(index);
                 curr++;
                 countArray.set(index, curr);
             } else {
-                dateArray.add(thisDate);
+                locationArray.add(thisLocation);
                 countArray.add(1);
             }
         }
@@ -79,8 +81,8 @@ public class GraphActivity extends AppCompatActivity {
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Number of sightings for the specified" +
-                " date (Year-Month)");
-        barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                " location type");
+        barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
         BarData data = new BarData(barDataSet);
         data.setBarWidth(BAR_WIDTH);
@@ -88,7 +90,7 @@ public class GraphActivity extends AppCompatActivity {
         barChart.setData(data);
 
         XAxis xAxis = barChart.getXAxis();
-        xAxis.setValueFormatter(new MyXAxisValueFormatter(dateArray));
+        xAxis.setValueFormatter(new MyXAxisValueFormatter(locationArray));
         xAxis.setPosition(XAxis.XAxisPosition.BOTH_SIDED);
         xAxis.setGranularity(1);
     }
