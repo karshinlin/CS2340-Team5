@@ -81,7 +81,7 @@ public class Graph2Activity extends AppCompatActivity {
         }
 
         BarDataSet barDataSet = new BarDataSet(barEntries, "Number of sightings for the specified" +
-                " location type");
+                " borough");
         barDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
 
         BarData data = new BarData(barDataSet);
