@@ -5,34 +5,30 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
-import android.net.ParseException;
-import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.ListView;
-import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.opencsv.CSVReader;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.Locale;
 
 import edu.gatech.teamraid.ratastic.Model.DataLogger;
-import edu.gatech.teamraid.ratastic.Model.LinkedHashMapAdapter;
 import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 import edu.gatech.teamraid.ratastic.Model.User;
@@ -51,21 +47,28 @@ import static edu.gatech.teamraid.ratastic.Model.DataLogger.Lock;
  *
  */
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener, View.OnClickListener {
+public class MainActivity extends AppCompatActivity
+        implements AdapterView.OnItemClickListener, View.OnClickListener {
 
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private ListView mainList;
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private ArrayAdapter<RatSighting> mainAdapter;
 
-    TextView countSightings;
+    private TextView countSightings;
 
     private DatePickerDialog fromDateDialog;
     private DatePickerDialog toDateDialog;
-    private EditText fromDateEtxt;
-    private EditText toDateEtxt;
+    private EditText fromDateEditTxt;
+    private EditText toDateEditTxt;
 
     private SimpleDateFormat dateFormatter;
+
+    private static final int LAT_INDEX = 49;
+    private static final int LONG_INDEX = 50;
+    private static final int LOCATION_TYPE_INDEX = 7;
+    private static final int INCIDENT_ZIP_INDEX = 8;
+    private static final int INCIDENT_ADDRESS_INDEX = 9;
+    private static final int CITY_INDEX = 16;
+    private static final int BOROUGH_INDEX = 23;
 
 @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,13 +104,16 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
 
         TextView text = (TextView) findViewById(R.id.userType);
-        if (User.currentUser != null && User.currentUser.getUserType() != null) text.setText("Hello " + User.currentUser.getUserType().toString());
+        User currentUser = User.getInstance();
+        if ((currentUser != null) && (currentUser.getUserType() != null)) {
+            text.setText(getString(R.string.helloUser, currentUser.getUserType().toString()));
+        }
 
         Button loadCsvBtn = (Button) findViewById(R.id.loadCsv);
         loadCsvBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                countSightings.setText("Number of Sightings: " + loadDBfromCSV());
+                countSightings.setText(getString(R.string.numSightings, loadDBfromCSV()));
                 loadListFromDb();
             }
         });
@@ -117,11 +123,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         //creates the main ListView shown upon login
 
+        ListView mainList;
         mainList = (ListView)findViewById(R.id.mainListView);
-        mainAdapter = new ArrayAdapter<RatSighting>(this, R.layout.activity_listview, R.id.listTextView, RatSighting.ratSightingArray);
+        mainAdapter = new ArrayAdapter<>(this, R.layout.activity_listview, R.id.listTextView,
+                RatSighting.ratSightingArray);
         mainList.setAdapter(mainAdapter);
-//        mainAdapter = new LinkedHashMapAdapter<String, RatSighting>(this, R.layout.activity_listview, R.id.listTextView, RatSighting.ratSightingArray);
-        //sets the onItemClickListener correctly
+    //sets the onItemClickListener correctly
         mainList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -132,172 +139,187 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
         synchronized(Lock) {
             int loaded = loadListFromDb();
-            countSightings.setText("Number of Sightings: " + loaded);
+            countSightings.setText(getString(R.string.numSightings, loaded));
         }
         //countSightings.setText("Number of Sightings: " + RatSighting.ratSightingArray.size());
 
-        dateFormatter = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
-        fromDateEtxt = (EditText) findViewById(R.id.fromDate);
-        fromDateEtxt.requestFocus();
-        fromDateEtxt.setInputType(InputType.TYPE_NULL);
+        fromDateEditTxt = (EditText) findViewById(R.id.fromDate);
+        fromDateEditTxt.requestFocus();
+        fromDateEditTxt.setInputType(InputType.TYPE_NULL);
 
 
-        toDateEtxt = (EditText) findViewById(R.id.toDate);
-        toDateEtxt.setInputType(InputType.TYPE_NULL);
+        toDateEditTxt = (EditText) findViewById(R.id.toDate);
+        toDateEditTxt.setInputType(InputType.TYPE_NULL);
         setDateTimeField();
 
         Button filterOnDate = (Button) findViewById(R.id.filterOnDate);
         filterOnDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                countSightings.setText("Number of Sightings: " + loadListFromDb(fromDateEtxt.getText().toString(), toDateEtxt.getText().toString()));
+                countSightings.setText(getString(R.string.numSightings,
+                        loadListFromDb(fromDateEditTxt.getText().toString(),
+                                toDateEditTxt.getText().toString())));
             }
         });
 
     }
     private void setDateTimeField() {
-        fromDateEtxt.setOnClickListener(this);
-        toDateEtxt.setOnClickListener(this);
+        fromDateEditTxt.setOnClickListener(this);
+        toDateEditTxt.setOnClickListener(this);
         Calendar newCalendar = Calendar.getInstance();
         fromDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-
+            @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                fromDateEtxt.setText(dateFormatter.format(newDate.getTime()));
+                fromDateEditTxt.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH));
 
         toDateDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-
+            @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                toDateEtxt.setText(dateFormatter.format(newDate.getTime()));
+                toDateEditTxt.setText(dateFormatter.format(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH),
+                newCalendar.get(Calendar.DAY_OF_MONTH));
     }
 
-    class AsyncLoadDBTask extends AsyncTask<String, String, String> {
-        DataLogger databaseHandler;
-        String type;
-        int count;
+//    class AsyncLoadDBTask extends AsyncTask<String, String, String> {
+//        final DataLogger databaseHandler;
+//        final String type;
+//        int count;
+//
+//        protected AsyncLoadDBTask(String task) {
+//            this.databaseHandler = new DataLogger(MainActivity.this);
+//            type = task;
+//            count = 0;
+//        }
+//
+//
+//        @Override
+//        protected String doInBackground(String... url) {
+//            switch (type) {
+//                case "LoadList":
+//                    try {
+//                        synchronized (Lock) {
+//                            loadListFromDb();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    break;
+//                case "LoadDB":
+//                    try {
+//                        synchronized (Lock) {
+//                            count = loadDBfromCSV();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    break;
+//                case "LoadDB_List":
+//                    try {
+//                        synchronized (Lock) {
+//                            count = loadDBfromCSV();
+//                        }
+//                        synchronized (Lock) {
+//                            loadListFromDb();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                    break;
+//                default: break;
+//            }
+//            return null;
+//        }
+//        protected void onPostExecute(String unused) {
+//            countSightings.setText(count + "");
+//            //load arraylist
+//            mainAdapter.notifyDataSetChanged();
+//        }
+//    }
 
-        protected AsyncLoadDBTask(String task) {
-            this.databaseHandler = new DataLogger(MainActivity.this);
-            type = task;
-            count = 0;
-        }
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(String... aurl) {
-            if (type.equals("LoadList")) {
-                try {
-                    synchronized (Lock) {
-                        loadListFromDb();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (type.equals("LoadDB")) {
-                try {
-                    synchronized (Lock) {
-                        count = loadDBfromCSV();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else if (type.equals("LoadDB_List")) {
-                try {
-                    synchronized (Lock) {
-                        count = loadDBfromCSV();
-                    }
-                    synchronized (Lock) {
-                        loadListFromDb();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-        protected void onPostExecute(String unused) {
-            countSightings.setText(count + "");
-            //load arraylist
-            mainAdapter.notifyDataSetChanged();
-        }
-    }
-
-
-    public int loadDBfromCSV() {
+    private int loadDBfromCSV() {
         DataLogger dbHelper = DataLogger.getHelper(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        //number of lines so far in the csv
         int count = 0;
         try {
-            String sql = "INSERT INTO " + DATABASE_TABLE_NAME + " ( UID, Created_Date, Location_Type, " +
-                    "Incident_Zip, Incident_Address, City, Borough, Latitude, Longitude ) VALUES (?, ?, " +
+            String sql = "INSERT INTO " + DATABASE_TABLE_NAME  +
+                    " ( UID, Created_Date, Location_Type, " +
+                    "Incident_Zip, Incident_Address, City, Borough, Latitude, Longitude ) " +
+                    "VALUES (?, ?, " +
                     "?, ?, ?, ?, ?, ?, ? )";
             db.beginTransaction();
             SQLiteStatement stmt = db.compileStatement(sql);
-
-            CSVReader reader = new CSVReader(new InputStreamReader(getResources().openRawResource(R.raw.ratsightings)));
+            //opens the actual csv
+            CSVReader reader = new CSVReader(new InputStreamReader(getResources()
+                    .openRawResource(R.raw.ratsightings)));
             String[] nextLine;
             count = 0;
             long successful = 0;
-            while ((nextLine = reader.readNext()) != null && count < 100) {
-                if ((nextLine[0].equals("Unique Key") || nextLine[0].equals(""))) {
+            nextLine = reader.readNext();
+            while (((nextLine != null) && (count < 100))) {
+                //checks if the line is valid
+                if ("Unique Key".equals(nextLine[0]) || nextLine[0].isEmpty()) {
                     continue;
                 }
                 String UID = nextLine[0];
-                if (nextLine[49].equals("") || nextLine[50].equals("")) {
+                if (nextLine[LAT_INDEX].isEmpty() || nextLine[LONG_INDEX].isEmpty()) {
                     continue;
                 }
-                float lat = Float.parseFloat(nextLine[49]);
-                float lng = Float.parseFloat(nextLine[50]);
+                float lat = Float.parseFloat(nextLine[LAT_INDEX]);
+                float lng = Float.parseFloat(nextLine[LONG_INDEX]);
                 String createdDate = nextLine[1];
                 //SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+                SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a", Locale.US);
                 try {
                     Date date = format.parse(createdDate);
-                    format = new SimpleDateFormat("yyyy-MM-dd");
+                    format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
                     createdDate = format.format(date);
                 } catch (ParseException ex) {
                     //Logger.getLogger(Prime.class.getName()).log(Level.SEVERE, null, ex);
-                    createdDate = null;
+                    createdDate = format.format(new Date());
                 }
-
-                String locationType = nextLine[7];
-                String incidentZip = nextLine[8];
-                String incidentAddress = nextLine[9];
-                String city = nextLine[16];
-                String borough = nextLine[23];
+                //gets the relevant data
+                String locationType = nextLine[LOCATION_TYPE_INDEX];
+                String incidentZip = nextLine[INCIDENT_ZIP_INDEX];
+                String incidentAddress = nextLine[INCIDENT_ADDRESS_INDEX];
+                String city = nextLine[CITY_INDEX];
+                String borough = nextLine[BOROUGH_INDEX];
                 Location ratLocation = new Location(locationType, incidentZip,
                         incidentAddress, city, borough, lat, lng);
                 if (!RatSighting.ratSightingHashMap.containsKey(UID)) {
-                    RatSighting.ratSightingArray.add(new RatSighting(UID, createdDate, ratLocation));
+                    RatSighting.ratSightingArray.add(new RatSighting(UID, createdDate,
+                            ratLocation));
                 }
                 count++;
                 String[] args = {UID, createdDate, locationType, incidentZip, incidentAddress, city,
                         borough, lat+"", lng+""};
+                //builds the current statement
                 stmt.bindAllArgsAsStrings(args);
+                //adds statement
                 successful = stmt.executeInsert();
                 if (successful < 0) {
                     break;
                 }
                 stmt.clearBindings();
-
+                nextLine = reader.readNext();
             }
             if (successful < 0) {
                 throw new IOException("Unsuccessful Entry");
             }
+            //end of transaction
             db.setTransactionSuccessful();
 
 
@@ -305,14 +327,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             //Couldn't load data
             e.printStackTrace();
             db.close();
-        } finally {
-            db.endTransaction();
-            db.close();
-            return count;
         }
+        db.endTransaction();
+        db.close();
+        return count;
     }
 
-    public int loadListFromDb() {
+    private int loadListFromDb() {
         DataLogger dbHelper = DataLogger.getHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.beginTransactionNonExclusive();
@@ -343,12 +364,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String date = cursor.getString(1);
             String locType = cursor.getString(2);
             String incZip = cursor.getString(3);
-            String incAddr = cursor.getString(4);
+            String incAddress = cursor.getString(4);
             String city = cursor.getString(5);
             String borough = cursor.getString(6);
             Float lat = Float.parseFloat(cursor.getString(7));
             Float lng = Float.parseFloat(cursor.getString(8));
-            Location loc = new Location(locType, incZip, incAddr, city, borough, lat, lng);
+            Location loc = new Location(locType, incZip, incAddress, city, borough, lat, lng);
             RatSighting aRatSighting = new RatSighting(uid, date, loc);
             if (!RatSighting.ratSightingHashMap.containsKey(uid)) {
                 RatSighting.ratSightingHashMap.put(uid, aRatSighting);
@@ -363,11 +384,13 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return count;
     }
 
-    public int loadListFromDb(String fromDate, String toDate) {
+    private int loadListFromDb(String fromDate, String toDate) {
         DataLogger dbHelper = DataLogger.getHelper(this);
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         db.beginTransactionNonExclusive();
-        Cursor cursor = db.query(DATABASE_TABLE_NAME, null, "Created_Date BETWEEN Date(?) AND Date(?)", new String[] {fromDate, toDate}, null, null, "Created_Date ASC", null);
+        Cursor cursor = db.query(DATABASE_TABLE_NAME, null,
+                "Created_Date BETWEEN Date(?) AND Date(?)", new String[] {fromDate, toDate},
+                null, null, "Created_Date ASC", null);
 
         RatSighting.ratSightingHashMap.clear();
         RatSighting.ratSightingArray.clear();
@@ -378,12 +401,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             String date = cursor.getString(1);
             String locType = cursor.getString(2);
             String incZip = cursor.getString(3);
-            String incAddr = cursor.getString(4);
+            String incAddress = cursor.getString(4);
             String city = cursor.getString(5);
             String borough = cursor.getString(6);
             Float lat = Float.parseFloat(cursor.getString(7));
             Float lng = Float.parseFloat(cursor.getString(8));
-            Location loc = new Location(locType, incZip, incAddr, city, borough, lat, lng);
+            Location loc = new Location(locType, incZip, incAddress, city, borough, lat, lng);
             RatSighting aRatSighting = new RatSighting(uid, date, loc);
             if (!RatSighting.ratSightingHashMap.containsKey(uid)) {
                 RatSighting.ratSightingHashMap.put(uid, aRatSighting);
@@ -399,10 +422,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return count;
     }
 
+    /**
+     * Method to choose certain report from list view
+     * @param adapterView list view containing all the reports
+     * @param view  view that holds the list
+     * @param i item in list
+     * @param l item in list
+     */
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent cityClick = new Intent(MainActivity.this, SightingListActivity.class);
-        cityClick.putExtra("RatSighting", (RatSighting) mainAdapter.getItem(i));
+        cityClick.putExtra("RatSighting", mainAdapter.getItem(i));
         startActivity(cityClick);
     }
 
@@ -413,11 +443,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    /**
+     * helper method to show calendar widgets
+     * @param view Activity that holds the widgets
+     */
     @Override
     public void onClick(View view) {
-        if(view == fromDateEtxt) {
+        if(view == fromDateEditTxt) {
             fromDateDialog.show();
-        } else if(view == toDateEtxt) {
+        } else if(view == toDateEditTxt) {
             toDateDialog.show();
         }
     }

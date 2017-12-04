@@ -2,8 +2,8 @@ package edu.gatech.teamraid.ratastic;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ParseException;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,13 +12,16 @@ import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import edu.gatech.teamraid.ratastic.Model.DataLogger;
 import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
+/**
+ * Activity that allows user to submit and log a rat report
+ */
 public class ReportRatSightingActivity extends AppCompatActivity {
 
     @Override
@@ -47,14 +50,13 @@ public class ReportRatSightingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 try {
                     Date time = Calendar.getInstance().getTime();
-                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                    String timeString = df.format(time);
-                    SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy hh:mm:ss a");
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+                    String timeString;
                     try {
                         timeString = df.format(time);
                     } catch (ParseException ex) {
                         //Logger.getLogger(Prime.class.getName()).log(Level.SEVERE, null, ex);
-                        timeString = null;
+                        timeString = df.format(new Date());
                     }
                     String UID = "";
                     for (int i = 0; i < 8; i++) {
@@ -64,7 +66,8 @@ public class ReportRatSightingActivity extends AppCompatActivity {
                     float lat = Float.parseFloat(latitude.getText().toString());
                     float lng = Float.parseFloat(longitude.getText().toString());
                     Location ratLocation = new Location(locationType.getText().toString(),
-                            zip.getText().toString(), streetAddress.getText().toString(), city.getText().toString(),
+                            zip.getText().toString(), streetAddress.getText().toString(),
+                            city.getText().toString(),
                             borough.getText().toString(), lat, lng);
                     RatSighting newSighting = new RatSighting(UID, time.toString(), ratLocation);
 
@@ -73,15 +76,17 @@ public class ReportRatSightingActivity extends AppCompatActivity {
                         RatSighting.ratSightingArray.add(0, newSighting);
                         DataLogger dbHelper = DataLogger.getHelper(ReportRatSightingActivity.this);
                         SQLiteDatabase db = dbHelper.getWritableDatabase();
-                        dbHelper.writeNormal(db, UID, timeString, locationType.getText().toString(),zip.getText().toString(),
-                                streetAddress.getText().toString(), city.getText().toString(), borough.getText().toString(),
+                        dbHelper.writeNormal(db, UID, timeString, locationType.getText().toString(),
+                                zip.getText().toString(),
+                                streetAddress.getText().toString(), city.getText().toString(),
+                                borough.getText().toString(),
                                 latitude.getText().toString(), longitude.getText().toString());
                         db.close();
                     }
                     ReportRatSightingActivity.this.finish();
                 } catch (NumberFormatException e) {
                     TextView errorMsg = (TextView) findViewById(R.id.latlongerror);
-                    errorMsg.setVisibility(view.VISIBLE);
+                    errorMsg.setVisibility(View.VISIBLE);
                 }
 
 

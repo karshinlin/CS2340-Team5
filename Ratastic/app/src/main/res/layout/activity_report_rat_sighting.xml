@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
         android:layout_marginStart="31dp"
-        android:text="Cancel"
+        android:text="@string/cancel"
         tools:layout_editor_absoluteX="34dp"
         tools:layout_editor_absoluteY="422dp"
         android:layout_alignParentBottom="true"
@@ -22,8 +21,8 @@
         android:id="@+id/reportSighting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Report Sighting"
-        android:layout_marginLeft="62dp"
+        android:text="@string/report_sighting"
+        android:layout_marginStart="62dp"
         android:layout_alignBaseline="@+id/cancel"
         android:layout_alignBottom="@+id/cancel"
         android:layout_alignParentEnd="true"
@@ -37,7 +36,7 @@
         android:layout_below="@+id/locationType"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Borough"
+        android:hint="@string/borough"
         android:inputType="textPersonName" />
 
     <EditText
@@ -48,7 +47,7 @@
         android:layout_below="@+id/zip"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:hint="Location Type"
+        android:hint="@string/location_type"
         android:inputType="textPersonName" />
 
     <EditText
@@ -59,7 +58,7 @@
         android:layout_below="@+id/city"
         android:layout_marginTop="18dp"
         android:ems="10"
-        android:hint="Zip"
+        android:hint="@string/zip"
         android:inputType="textPersonName" />
 
     <EditText
@@ -70,7 +69,7 @@
         android:layout_below="@+id/address"
         android:layout_marginTop="18dp"
         android:ems="10"
-        android:hint="City"
+        android:hint="@string/city"
         android:inputType="textPersonName" />
 
     <EditText
@@ -81,7 +80,7 @@
         android:layout_alignStart="@+id/cancel"
         android:layout_marginTop="39dp"
         android:ems="10"
-        android:hint="Address"
+        android:hint="@string/address"
         android:inputType="textPersonName" />
 
     <EditText
@@ -92,7 +91,7 @@
         android:layout_below="@+id/borough"
         android:layout_marginTop="11dp"
         android:ems="10"
-        android:hint="Latitude"
+        android:hint="@string/latitude"
         android:inputType="textPersonName" />
 
     <EditText
@@ -102,7 +101,7 @@
         android:layout_alignStart="@+id/latitude"
         android:layout_below="@+id/latitude"
         android:ems="10"
-        android:hint="Longitude"
+        android:hint="@string/longitude"
         android:inputType="textPersonName" />
 
     <TextView
@@ -111,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/longitude"
         android:layout_centerHorizontal="true"
-        android:text="Latitude and Longitude must be numbers."
+        android:text="@string/latitude_and_longitude_must_be_numbers"
         android:textColor="#F00"
         android:visibility="invisible" />
 

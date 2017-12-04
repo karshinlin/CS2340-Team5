@@ -5,17 +5,16 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.ArrayList;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
-
 /**
- * Created by maxengle on 10/10/17.
+ * Class that shows the list view for all the Rat Sightings in the database
  */
-
 public class SightingListActivity extends AppCompatActivity {
 
     @Override
@@ -25,6 +24,7 @@ public class SightingListActivity extends AppCompatActivity {
 
         Button backBtn = (Button) findViewById(R.id.logoutButton);
         backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View view) {
                 SightingListActivity.this.finish();
             }
@@ -44,7 +44,8 @@ public class SightingListActivity extends AppCompatActivity {
         sightingList.add("Longitude: " + Math.abs(thisSighting.getLocation().getLng()) + " W");
 
         ListView sightingListView = (ListView)findViewById(R.id.sightingListView);
-        final ArrayAdapter<String> sightingAdapter = new ArrayAdapter<String>(this, R.layout.activity_listview, R.id.listTextView, sightingList);
+        final ListAdapter sightingAdapter = new ArrayAdapter<>(this,
+                R.layout.activity_listview, R.id.listTextView, sightingList);
         sightingListView.setAdapter(sightingAdapter);
     }
 }

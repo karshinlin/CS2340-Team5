@@ -16,16 +16,15 @@ import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
 /**
- * Created by maxengle on 10/31/17.
+ * Class that creates and shows the graphs based on logged Rat reports
  */
-
 public class GraphActivity extends AppCompatActivity {
-
-    BarChart barChart;
+    private static final float BAR_WIDTH = 0.9f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,16 +43,15 @@ public class GraphActivity extends AppCompatActivity {
     }
 
     //Creates the bar chart for number of sightings by date
-    public void CreateBarChart() {
-        barChart = (BarChart) findViewById(R.id.barChart);
+    private void CreateBarChart() {
+        BarChart barChart = (BarChart) findViewById(R.id.barChart);
 
         barChart.setDrawGridBackground(true);
 
-        String thisDate = "";
-        ArrayList<String> dateArray = new ArrayList<String>();
-        ArrayList<Integer> countArray = new ArrayList<Integer>();
+        ArrayList<String> dateArray = new ArrayList<>();
+        ArrayList<Integer> countArray = new ArrayList<>();
         for (RatSighting ratSight : RatSighting.ratSightingArray) {
-            thisDate = ratSight.getCreatedDate();
+            String thisDate = ratSight.getCreatedDate();
             thisDate = thisDate.substring(0, 7);
             if (dateArray.contains(thisDate)) {
                 int index = dateArray.indexOf(thisDate);
@@ -76,7 +74,7 @@ public class GraphActivity extends AppCompatActivity {
         barDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
 
         BarData data = new BarData(barDataSet);
-        data.setBarWidth(0.9f);
+        data.setBarWidth(BAR_WIDTH);
 
         barChart.setData(data);
 
@@ -86,9 +84,9 @@ public class GraphActivity extends AppCompatActivity {
         xAxis.setGranularity(1);
     }
 
-    private class MyXAxisValueFormatter implements IAxisValueFormatter {
-        private ArrayList<String> dateValues;
-        private MyXAxisValueFormatter(ArrayList<String> values) {
+    private final class MyXAxisValueFormatter implements IAxisValueFormatter {
+        private final List<String> dateValues;
+        private MyXAxisValueFormatter(List<String> values) {
             this.dateValues = values;
         }
 

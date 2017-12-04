@@ -1,4 +1,45 @@
 <resources>
     <string name="app_name">Ratastic</string>
     <string name="title_activity_maps">Map</string>
+    <string name="View_Map">View Map</string>
+    <string name="TextView_listview">TextView</string>
+    <string name="cancel">Cancel</string>
+    <string name="email">Email:</string>
+    <string name="password">Password:</string>
+    <string name="sign_in">Sign In</string>
+    <string name="help">Help</string>
+    <string name="successfulLogin"> </string>
+    <string name="unsuccessfulLogin">Unsuccessful login. Please try again.</string>
+    <string name="unverified">Account has not been verified.</string>
+    <string name="admin">Admin</string>
+    <string name="logout">Logout</string>
+    <string name="selectSighting">Click a sighting below</string>
+    <string name="report">Report</string>
+    <string name="view_map">View Map</string>
+    <string name="load_csv">Load CSV</string>
+    <string name="number_of_sightings">Number of Sightings:</string>
+    <string name="to_date">To Date:</string>
+    <string name="from_date">From Date:</string>
+    <string name="filter">Filter</string>
+    <string name="view_in_list">View in List</string>
+    <string name="graph">Graph</string>
+    <string name="name">Name</string>
+    <string name="register">Register!</string>
+    <string name="register_as_admin">Register as Admin</string>
+    <string name="report_sighting">Report Sighting</string>
+    <string name="borough">Borough</string>
+    <string name="location_type">Location Type</string>
+    <string name="zip">Zip</string>
+    <string name="city">City</string>
+    <string name="address">Address</string>
+    <string name="latitude">Latitude</string>
+    <string name="longitude">Longitude</string>
+    <string name="latitude_and_longitude_must_be_numbers">Latitude and Longitude
+        must be numbers.</string>
+    <string name="sighting_information">Sighting Information:</string>
+    <string name="back">Back</string>
+    <string name="welcome">Welcome to Ratastic! Sign in or register below:</string>
+    <string name="register1">Register</string>
+    <string name="helloUser">Hello %s</string>
+    <string name="numSightings">Number of Sightings: %d</string>
 </resources>

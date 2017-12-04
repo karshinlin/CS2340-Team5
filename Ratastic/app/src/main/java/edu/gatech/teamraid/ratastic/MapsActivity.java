@@ -1,8 +1,8 @@
 package edu.gatech.teamraid.ratastic;
 
 import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 import android.widget.Button;
 
@@ -14,34 +14,25 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.opencsv.CSVReader;
 
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Map;
-
-import edu.gatech.teamraid.ratastic.Model.Location;
 import edu.gatech.teamraid.ratastic.Model.RatSighting;
 
-
 /**
- * Created by angelseay on 10/23/17.
+ * Populates the screen with a map and relevant markers
  */
-
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
 
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-    private GoogleMap mMap;
-
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private static final double NEW_YORK_LAT = 40.7128;
+    private static final double NEW_YORK_LONG = 74.0060;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 
-        Button logout = (Button) findViewById(R.id.logoutButton);
+        Button logout = findViewById(R.id.logoutButton);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,7 +43,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        Button reportSighting = (Button) findViewById(R.id.addRatSighting);
+        Button reportSighting = findViewById(R.id.addRatSighting);
         reportSighting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -61,7 +52,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        Button listBtn = (Button) findViewById(R.id.listButton);
+        Button listBtn = findViewById(R.id.listButton);
         listBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,7 +61,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
-        Button graphBtn = (Button) findViewById(R.id.graphButton);
+        Button graphBtn = findViewById(R.id.graphButton);
         graphBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,28 +91,30 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        LatLng ny = new LatLng(40.7128, 74.0060);
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ny));
+
+        LatLng ny = new LatLng(NEW_YORK_LAT, NEW_YORK_LONG);
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(ny));
         for(RatSighting rs : RatSighting.ratSightingArray) {
             // Creating a marker
             MarkerOptions markerOptions = new MarkerOptions();
 
             // Setting the position for the marker
-            markerOptions.position(new LatLng(rs.getLocation().getLat(), rs.getLocation().getLng()));
+            markerOptions.position(new LatLng(rs.getLocation().getLat(),
+                    rs.getLocation().getLng()));
 
             // This will be displayed on taping the marker
             markerOptions.title(rs.toString() + " #" + rs.getUID());
 
             // Adding marker to map
-            Marker amarker = mMap.addMarker(markerOptions);
-            amarker.setTag(rs);
+            Marker aMarker = googleMap.addMarker(markerOptions);
+            aMarker.setTag(rs);
 
             // Animating to the touched position
-            mMap.animateCamera(CameraUpdateFactory.newLatLng(new LatLng(rs.getLocation().getLat(), rs.getLocation().getLng())));
+            googleMap.animateCamera(CameraUpdateFactory
+                    .newLatLng(new LatLng(rs.getLocation().getLat(), rs.getLocation().getLng())));
 
             // Go to details on click
-            mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                 @Override
                 public void onInfoWindowClick(Marker marker) {
                     Intent intent = new Intent(MapsActivity.this, SightingListActivity.class);
