@@ -165,7 +165,15 @@ public class LoginActivity extends AppCompatActivity {
                 LoginActivity.this.startActivity(canceled);
             }
         });
-
+        Button helpBtn = (Button) findViewById((R.id.helpButton));
+        //help button will route user to help page for password recovery
+        helpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent helpRequested = new Intent(LoginActivity.this, HelpActivity.class);
+                LoginActivity.this.startActivity(helpRequested);
+            }
+        });
     }
 
     /**

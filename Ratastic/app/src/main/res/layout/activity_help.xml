@@ -4,6 +4,128 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.gatech.teamraid.ratastic.HelpActivity">
+    tools:context="edu.gatech.teamraid.ratastic.HelpActivity"
+    tools:layout_editor_absoluteY="81dp"
+    tools:layout_editor_absoluteX="0dp">
 
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="224dp"
+        android:layout_height="29dp"
+        android:text="Forgot My Password"
+        android:textAlignment="textStart"
+        android:textSize="24sp"
+        tools:layout_constraintTop_creator="1"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="73dp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="0dp"
+        android:layout_height="49dp"
+        android:text="Please enter your email:"
+        android:textSize="18sp"
+        android:layout_marginStart="34dp"
+        android:layout_marginEnd="34dp"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toBottomOf="@+id/emailForReset"
+        app:layout_constraintRight_toRightOf="@+id/textView5"
+        android:layout_marginTop="79dp"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="85dp"
+        app:layout_constraintLeft_toLeftOf="@+id/resetEmailSent"
+        app:layout_constraintTop_toTopOf="@+id/textView5" />
+
+    <EditText
+        android:id="@+id/emailForReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        tools:layout_constraintTop_creator="1"
+        android:layout_marginTop="244dp"
+        tools:layout_constraintLeft_creator="1"
+        app:layout_constraintLeft_toLeftOf="@+id/textView8"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/sendReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send Reset Email"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintRight_creator="1"
+        android:layout_marginEnd="13dp"
+        app:layout_constraintRight_toRightOf="@+id/emailForReset"
+        android:layout_marginTop="35dp"
+        app:layout_constraintTop_toBottomOf="@+id/emailForReset" />
+
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:text="Email should be sent within 10 minutes. Please try logging in again."
+        android:layout_marginStart="16dp"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="7dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
+
+    <Button
+        android:id="@+id/backButtonForReset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancel"
+        android:layout_marginEnd="16dp"
+        tools:layout_constraintRight_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginBottom="17dp" />
+
+    <TextView
+        android:id="@+id/resetEmailNotSent"
+        android:layout_width="244dp"
+        android:layout_height="54dp"
+        android:text="Email could not be sent!"
+        android:textColor="@android:color/holo_red_dark"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        android:layout_marginStart="4dp"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="134dp"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="131dp"
+        app:layout_constraintLeft_toLeftOf="@+id/resetEmailSent"
+        app:layout_constraintTop_toTopOf="@+id/sendReset"
+        android:layout_marginLeft="4dp"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/resetEmailSent"
+        android:layout_width="0dp"
+        android:layout_height="30dp"
+        android:text="Email has been sent!"
+        android:textColor="@android:color/holo_green_dark"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        tools:layout_constraintTop_creator="1"
+        tools:layout_constraintBottom_creator="1"
+        android:layout_marginStart="46dp"
+        app:layout_constraintBottom_toBottomOf="@+id/resetEmailNotSent"
+        android:layout_marginTop="41dp"
+        app:layout_constraintTop_toBottomOf="@+id/sendReset"
+        tools:layout_constraintLeft_creator="1"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintLeft_toLeftOf="parent" />
 </android.support.constraint.ConstraintLayout>

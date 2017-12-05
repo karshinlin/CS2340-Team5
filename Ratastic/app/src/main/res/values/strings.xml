@@ -44,4 +44,6 @@
     <string name="register1">Register</string>
     <string name="helloUser">Hello %s</string>
     <string name="numSightings">Number of Sightings: %d</string>
+    <string name="title_activity_help">HelpActivity</string>
+    <string name="helpButtonText">Help</string>
 </resources>

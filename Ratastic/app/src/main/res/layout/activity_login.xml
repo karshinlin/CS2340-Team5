@@ -16,6 +16,17 @@
         android:layout_alignTop="@+id/signInBtn"
         android:layout_toEndOf="@+id/textView" />
 
+    <Button
+        android:id="@+id/helpButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/helpButtonText"
+        tools:layout_editor_absoluteX="50dp"
+        tools:layout_editor_absoluteY="387dp"
+        android:layout_below="@+id/cancelButton"
+        android:layout_alignStart="@+id/cancelButton"
+        android:layout_marginTop="16dp" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
